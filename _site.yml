@@ -14,7 +14,6 @@ navbar:
       href: posts.html
     - text: "About"
       href: about.html
-  
   search: true
   
 base_url: https://www.aghiretti.com/
