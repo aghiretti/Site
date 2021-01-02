@@ -1,9 +1,12 @@
 name: "Alessandro Ghiretti"
 title: "Data, Statistics and Econometrics"
-description: "Exploring Statistics and Econometrics with R"
+description: 'Exploring Statistics and Econometrics with R'
 output_dir: "docs"
 theme: theme.css
 navbar:
+  left:
+   - icon: fab fa-linkedin-in
+     href: https://www.linkedin.com/in/alessandro-ghiretti-90/
   right:
     - text: "Home"
       href: index.html
@@ -13,8 +16,7 @@ navbar:
       href: about.html
     - text: "Contributors"
       href: contributors.html
-    - icon: fab fa-linkedin-in
-      href: https://www.linkedin.com/in/alessandro-ghiretti-90/
+  
   search: true
   
 base_url: https://www.aghiretti.com/
