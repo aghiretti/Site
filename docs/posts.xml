@@ -8,16 +8,6 @@
     <generator>Distill</generator>
     <lastBuildDate>sab, 02 gen 2021 00:00:00 +0000</lastBuildDate>
     <item>
-      <title>An introduction to Linear Mixed Effect Models</title>
-      <dc:creator>Alessandro Ghiretti</dc:creator>
-      <link>https://www.aghiretti.com/posts/LMM</link>
-      <description/>
-      <category>Statistics</category>
-      <category>Mixed Effect Models</category>
-      <guid>https://www.aghiretti.com/posts/LMM</guid>
-      <pubDate>sab, 02 gen 2021 00:00:00 +0000</pubDate>
-    </item>
-    <item>
       <title>Applying Dynamic Linear Regression to Marketing Mix Modelling</title>
       <dc:creator>Alessandro</dc:creator>
       <dc:creator/>
@@ -30,6 +20,16 @@
       <pubDate>sab, 02 gen 2021 00:00:00 +0000</pubDate>
     </item>
     <item>
+      <title>An introduction to Linear Mixed Effect Models</title>
+      <dc:creator>Alessandro Ghiretti</dc:creator>
+      <link>https://www.aghiretti.com/posts/LMM</link>
+      <description/>
+      <category>Statistics</category>
+      <category>Mixed Effect Models</category>
+      <guid>https://www.aghiretti.com/posts/LMM</guid>
+      <pubDate>sab, 02 gen 2021 00:00:00 +0000</pubDate>
+    </item>
+    <item>
       <title>Seemengly Unrelated Regression Equations (SURE)</title>
       <dc:creator>Alessandro Ghiretti</dc:creator>
       <link>https://www.aghiretti.com/posts/SURE</link>
@@ -37,7 +37,7 @@
       <category>Econometrics</category>
       <category>Regression</category>
       <guid>https://www.aghiretti.com/posts/SURE</guid>
-      <pubDate>ven, 01 gen 2021 00:00:00 +0000</pubDate>
+      <pubDate>sab, 02 gen 2021 00:00:00 +0000</pubDate>
     </item>
   </channel>
 </rss>

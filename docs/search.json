@@ -6,7 +6,7 @@
       "description": "Few words about myself",
       "author": [],
       "contents": "\r\nAlessandro Ghiretti\r\nMy name is Alessandro Ghiretti and I work as a Data Scientist. After graduating in Marketing I obtained a Phd in Statistics where I got interested in time series analysis, econometrics, robust statistics and outlier detection and machine learning.\r\nR is my first choice as a programming language but in the past I have also spent time playing extensively with Matlab. I am a big Julia fan and I can not wait till it will overcome the other programming languages for data analysis and computation. (Ops I did not mention Pyhton…SHAME ON ME!)\r\nWhile I am not working with data you can find me riding my motorbike (I am an happy KTM 790 Adventure owner) or spending time traveling, reading or listening music (I listen pretty much everything).\r\n\r\n\r\n\r\n",
-      "last_modified": "2021-01-02T23:34:33+01:00"
+      "last_modified": "2021-01-02T23:38:09+01:00"
     },
     {
       "path": "index.html",
@@ -14,7 +14,7 @@
       "description": "",
       "author": [],
       "contents": "\r\n\r\n\r\n\r\n\r\n",
-      "last_modified": "2021-01-02T23:34:34+01:00"
+      "last_modified": "2021-01-02T23:37:35+01:00"
     },
     {
       "path": "posts.html",
@@ -22,7 +22,7 @@
       "description": "",
       "author": [],
       "contents": "\r\n\r\n\r\n\r\n",
-      "last_modified": "2021-01-02T23:34:35+01:00"
+      "last_modified": "2021-01-02T23:37:46+01:00"
     }
   ],
   "collections": ["posts/posts.json"]
