@@ -3,6 +3,7 @@ title: "Seemengly Unrelated Regression Equations (SURE)"
 description: "In this post we give an introduction to the theory behind SURE models." 
 categories:
   - Econometrics
+  - Regression
 author:
   - first_name: "Alessandro"
     last_name: "Ghiretti" 

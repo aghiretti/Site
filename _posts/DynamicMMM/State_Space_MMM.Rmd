@@ -1,12 +1,16 @@
 ---
 title: "Applying Dynamic Linear Regression to Marketing Mix Modelling"
 description: ""
+categories:
+  - Econometrics
+  - State Space Models
+  - Time Series
 author:
   - first_name: Alessandro
   - second_name: Ghiretti
-    url: https://example.com/
+    url: 
     affiliation: 
-    affiliation_url: https://example.com/StateSpaceMarketingMix
+    affiliation_url: 
 date: "`r Sys.Date()`"
 output: 
   distill::distill_article:

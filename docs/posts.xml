@@ -8,15 +8,6 @@
     <generator>Distill</generator>
     <lastBuildDate>sab, 02 gen 2021 00:00:00 +0000</lastBuildDate>
     <item>
-      <title>Applying Dynamic Linear Regression to Marketing Mix Modelling</title>
-      <dc:creator>Alessandro</dc:creator>
-      <dc:creator/>
-      <link>https://www.aghiretti.com/posts/DynamicMMM</link>
-      <description/>
-      <guid>https://www.aghiretti.com/posts/DynamicMMM</guid>
-      <pubDate>sab, 02 gen 2021 00:00:00 +0000</pubDate>
-    </item>
-    <item>
       <title>An introduction to Linear Mixed Effect Models</title>
       <dc:creator>Alessandro Ghiretti</dc:creator>
       <link>https://www.aghiretti.com/posts/LMM</link>
@@ -27,13 +18,26 @@
       <pubDate>sab, 02 gen 2021 00:00:00 +0000</pubDate>
     </item>
     <item>
+      <title>Applying Dynamic Linear Regression to Marketing Mix Modelling</title>
+      <dc:creator>Alessandro</dc:creator>
+      <dc:creator/>
+      <link>https://www.aghiretti.com/posts/DynamicMMM</link>
+      <description/>
+      <category>Econometrics</category>
+      <category>State Space Models</category>
+      <category>Time Series</category>
+      <guid>https://www.aghiretti.com/posts/DynamicMMM</guid>
+      <pubDate>sab, 02 gen 2021 00:00:00 +0000</pubDate>
+    </item>
+    <item>
       <title>Seemengly Unrelated Regression Equations (SURE)</title>
       <dc:creator>Alessandro Ghiretti</dc:creator>
       <link>https://www.aghiretti.com/posts/SURE</link>
       <description>In this post we give an introduction to the theory behind SURE models.</description>
       <category>Econometrics</category>
+      <category>Regression</category>
       <guid>https://www.aghiretti.com/posts/SURE</guid>
-      <pubDate>sab, 02 gen 2021 00:00:00 +0000</pubDate>
+      <pubDate>ven, 01 gen 2021 00:00:00 +0000</pubDate>
     </item>
   </channel>
 </rss>

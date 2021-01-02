@@ -66,14 +66,14 @@ html {
   --text-color:       rgba(255,255,255, 1);
   --text-size:        15px;
   --hover-color:      white;
-  --bkgd-color:       #FF4B71;
+  --bkgd-color:       rgba(103, 66, 138, 1);
 }
 
 .distill-site-footer {
   --text-color:       rgba(255, 255, 255, 1);
   --text-size:        15px;
   --hover-color:      white;
-  --bkgd-color:       #FF4B71;
+  --bkgd-color:       rgba(103, 66, 138, 1);
 }
 
 /*-- Additional custom styles --*/
