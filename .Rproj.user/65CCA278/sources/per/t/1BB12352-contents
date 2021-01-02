@@ -1,5 +1,5 @@
 name: "Alessandro Ghiretti"
-title: "Data, Statistics and Econometrics"
+title: "Alessandro Ghiretti"
 description: 'Exploring Statistics and Econometrics with R'
 output_dir: "docs"
 theme: theme.css
@@ -14,8 +14,6 @@ navbar:
       href: posts.html
     - text: "About"
       href: about.html
-    - text: "Contributors"
-      href: contributors.html
   
   search: true
   
