@@ -1,0 +1,1 @@
+{"frames":[{"func":"covid %>% slice_min(population_density, ..., 5)","file":"","line_number":0,"end_line_number":0,"character_number":0,"end_character_number":0}],"message":"Error in covid %>% slice_min(population_density, ..., 5) : \n  '...' usato in un contesto sbagliato\n"}

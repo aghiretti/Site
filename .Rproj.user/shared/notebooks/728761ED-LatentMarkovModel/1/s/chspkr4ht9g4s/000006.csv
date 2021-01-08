@@ -1,0 +1,5 @@
+"0","product %>% group_by(commodity_desc,brand) %>% summarize(n = n()) %>% 
+  pivot_wider(names_from = brand, values_from = n) %>% arrange(desc(National,Private))
+"
+"2","`summarise()` regrouping output by 'commodity_desc' (override with `.groups` argument)
+"

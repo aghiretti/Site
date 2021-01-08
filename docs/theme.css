@@ -63,17 +63,17 @@ html {
 
 .distill-site-header {
   --title-size:       18px;
-  --text-color:       rgba(255,255,255, 1);
+  --text-color:       black;
   --text-size:        15px;
-  --hover-color:      white;
-  --bkgd-color:       rgba(103, 66, 138, 1);
+  --hover-color:      purple;
+  --bkgd-color:       white;
 }
 
 .distill-site-footer {
-  --text-color:       rgba(255, 255, 255, 1);
+  --text-color:       black;
   --text-size:        15px;
-  --hover-color:      white;
-  --bkgd-color:       rgba(103, 66, 138, 1);
+  --hover-color:      purple;
+  --bkgd-color:       white;
 }
 
 /*-- Additional custom styles --*/

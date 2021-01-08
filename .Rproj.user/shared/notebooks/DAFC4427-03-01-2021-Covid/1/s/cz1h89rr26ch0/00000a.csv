@@ -1,0 +1,5 @@
+"0","map <- get_map(""europe"", source = ""stamen"")
+"
+"2","Errore: Google now requires an API key.
+       See ?register_google for details.
+"

@@ -1,0 +1,324 @@
+---
+title: "An introduction to Linear Mixed Effect Models"
+description: "" 
+categories:
+  - Statistics
+  - Mixed Effect Models
+author:
+  - first_name: "Alessandro"
+    last_name: "Ghiretti" 
+    url: https://example.com/
+    affiliation: 
+    affiliation_url: https://example.com/spacelysprokets
+date: "`r Sys.Date()`"
+draft: true
+output: 
+  distill::distill_article:
+      toc: true
+      toc_depth: 3
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+# Linear mixed effects models
+
+Linear Mixed Effects models (LMM), are an extension of the standard linear regression model in which the residuals are normally distributed but may not be independent or have constant variance.  As the name suggests LMM are models linear in the unknown parameters and are defined by two components the fixed  and the random effects component. While it is customary to identify the fixed effects are represented by the unknown parameters associated with continuous covariates or with the level of a factor. On the other hand, random effects are used when the level of on or more factors are sampled randomly from an underlying population and inference needs to be extended to the whole population of levels. Fixed effects therefore describe the relationship between the depndent variable and a set of regressors for the entire population or for a relatively small number of subpopulations defined by the levels of a fixed factor for example the sex. On the contrary Random effects are random variables associated to the levels of a factor which represent random deviations from the population relationship described by the fixed effects.
+
+
+Examples of datataset that are analized with mixed effect models are
+
+* **Clustered** or **hierachical data** where units or observations are nested whitin clusters.
+
+* **Longitudinal or panel studies**, where individuals or units are observed over time or under o situations in which data are collected through time under uncontrolled circumstances
+
+* **Repeated measurement** studies, where individuals are monitored under controlled conditions through time or under different conditions
+
+* **Clustered longitudinal** or **clustered repeated measurement** studies, where individuals or units are clustered and observed at instants in time or under different conditions
+
+In clustered data it is reasonable to assume that units belonging to the same cluster share some common characteristics or are commonly affected by some external factors and therefore exhibits correlation. In longitudinal and repeated measurement studies, the same subject or the same unit is observed repeatedly in time and therefore observations are the responses of the same unit are prone the exhibit a similar or correlated pattern that might be significantly different from that of the other individuals.
+Given their flexibility LMM become widely applied in many scientific fields, such as econometrics, social science, biology, psychologies.
+
+## Linear mixed effects models theory
+
+For the sake of simplicity we will consider a 2-level longitudinal data model where $y_{it}$ represents the $t$th response for the $i$th subject. 
+
+$$y_{ti} = \underbrace{x_{ti}' \beta}_{fixed} + \underbrace{z_{ti}' u_{ti}}_{random}  + \epsilon_{ti} \quad  \quad i = 1, \dots, m \quad t = 1, \dots, n_{i}.
+$$
+
+$y_{ti}$ is the response for subject $i$ at instant$t$, $x_{ti}$ is a $k \times 1$ vector of regressors, $\beta$ a $k \times 1$ vector of fixed effect parameters, $z_{ti}$ is the $q \times 1$ covariate vector of $j$th memeber of cluster $i$th for random effects and $u_{i}$ the $q \times 1$ vector of random effect parameters and $\epsilon$ is the error term.
+By stacking the observations for the $i$th subject we obtain the subject-level representation as
+
+\begin{equation*}
+\begin{pmatrix}
+y_{1i} \\
+y_{2i} \\
+\vdots \\
+y_{n_{i} i}
+\end{pmatrix}
+
+=
+
+
+\begin{pmatrix}
+x_{1i}^{(1)} & x_{1i}^{(2)}& \dots & x_{1n_{i}}^{(k)} \\
+x_{2i}^{(1)} & x_{2i}^{(2)} & \dots & x_{2n_{i}}^{(k)} \\
+\vdots & \vdots & \ddots & \vdots \\
+x_{n_{i}i}^{(1)} & x_{n_{i}i}^{(2)} & \dots & x_{n_{i}i}^{(k)} 
+\end{pmatrix}
+
+\begin{pmatrix}
+\beta_{1} \\
+\beta_{2}\\
+\vdots\\
+\beta_{k} 
+\end{pmatrix}
+
++
+
+\begin{pmatrix}
+z_{1i}^{(1)} & z_{1i}^{(2)} & \dots & z_{1n_{i}}^{(q)} \\
+z_{2i}^{(1)} & z_{2i}^{(2)} & \dots & z_{2n_{i}1}^{(q)} \\
+\vdots & \vdots & \ddots & \vdots \\
+z_{n_{i}i}^{(1)} & z_{n_{i}i}^{(2)} & \dots & z_{n_{i}i}^{(q)} 
+\end{pmatrix}
+
+\begin{pmatrix}
+u_{1} \\
+u_{2}\\
+\vdots\\
+u_{q} 
+\end{pmatrix}
+\end{equation*}
+
+
+
+
+
+
+$$ Y_{i} = X_{i} \beta +  Z_{i}U_{i}  + \epsilon_{i} $$
+
+The $Z_{i}$ matrix contains the same covariates of the $X_{i}$ matrix with the difference that in general it has less elements.
+For random intercept model the $Z_{i}$ matrix will be a vector of ones.
+
+
+Finally, stacking again the the observation level vectors and matrix we obtain the overall matrix formulation. That is,
+
+$$ Y = X \beta + ZU + \epsilon $$
+
+### Model assumptions
+
+Thorough the following we will assume that the following assumptions are satisfied
+
+* Assumption A1: the error $\epsilon$ are normally distributed with mean $0$ and covariance matrix $R_{i}$
+
+$$ \epsilon_{i} \sim N(0,R_{i}) $$
+
+
+* Assumption A2; the random effects are normally distributed with mean $0$ and covariance matrix $G$
+
+$$ u_{i} \sim N(0, G)$$
+
+* Assumption A3: the error terms associated to different subjects are indepent from eachother
+
+$$ E(\epsilon'_{i} \epsilon_{i}) = 0 \quad i,j = 1,2,\dots,m $$
+
+
+* Assumption A4: the error terms $\epsilon_{i}$ and the fixed effects covariates $u_{i}$ are uncorrelated
+
+$$ E(u'_{j} \epsilon_{i}) = 0 \quad i,j = 1,\dots,m $$
+* Assumption A5: the error $\epsilon_{i}$ and the covariates are uncorrelated
+
+$$ cov(u_{i},x_{j}) = 0 \quad i,j = 1,2,\dots,m$$
+
+
+Under assumption A1 and A2 the unconditional distribution of $Y_{i}$ implied by the model is
+$$ Y_{i}\sim (X_{i}\beta,\: Z_{i}D Z_{i}' + R_{i})  $$
+
+## Correlation structure for the random effects
+
+The $D$ matrix defines the correlation between random effects.
+When no constraints, apart the one of positive-definitneness and simmetry are imposed on the $D$ matrix is said to be unstructured. In a 2-level LMM the unrestricted matrix is
+
+$$
+D = var(u_{i}) = 
+\begin{pmatrix}
+\sigma^{2}_{u1} & \sigma_{u1,u2} \\
+\sigma_{u1,u2} & \sigma^{2}_{u2}
+\end{pmatrix}
+$$
+In this case the parameters to estimate are $\theta_{D} = (\sigma^{2}_{u1},\sigma^{2}_{u2}, \sigma_{u1,u2})$
+Other more parsimonious corvariance matrix can be obtained by imposing restrictions on $D$ for example we might assume that the $D$ matrix is diagonal,that is to say that random effects are not correlated.
+
+$$
+D = var(u_{i}) = 
+\begin{pmatrix}
+\sigma^{2}_{u1} & 0 \\
+0 & \sigma^{2}_{u2}
+\end{pmatrix}
+$$
+Where $\theta_{D} = (\sigma^{2}_{u1},\sigma^{2}_{u2})$.
+Despite these are the two most common correlation forms in practice other specifications can be used. For example we can assume that the variances between two groups are different but the correlations within each group are the same
+
+## Covariance structure for the errors
+The simplest covariance matrix for matrix $R_{i}$ is the diagonal structure where the errors of the same observations are assumed to be uncorrelated and to have equal varaince. For subject $i$ the $R_{i}$ has the following form
+
+$$
+D = var(u_{i}) = \sigma^{2}I_{n_{i}}
+\begin{pmatrix}
+\sigma^{2} & 0 & \dots & 0 \\
+0 & \sigma^{2} & \dots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \dots & \sigma^{2}
+\end{pmatrix}
+$$
+
+This is the most simple structure as it requires only one parameter to be estimated $\theta_{R} = (\sigma^{2})$.
+When errors for the $i$th subject are assumed to be correlated a parsimlnious parametrization can be obtained with the **compound symmetric** matrix
+
+
+
+$$
+D = var(u_{i}) = var(\epsilon_{i})
+\begin{pmatrix}
+\sigma^{2} + \sigma^{1} & \sigma^{1} & \dots & \sigma^{1} \\
+0 & \sigma^{2} + \sigma^{1} & \dots & \sigma^{1} \\
+\vdots & \vdots & \ddots & \vdots \\
+\sigma^{1} & \sigma^{1} & \dots & \sigma^{2} + \sigma^{1}
+\end{pmatrix}
+$$
+in this case the errors associated to the $i$th unit are assumed have constant variance equal to \sigma^{2} + \sigma^{1} and equal covariance $\sigma^{1}$. In this case the parameters are $\theta_{R} = (\sigma^{2} + \sigma^{1})$. The compound symmetric structure is plausible when the correlation between errors of the same observation can be assumed constant. For example when repeated observations are performed under the same conditions. When the correlation structure is assumed to vary with time  the **first-order autoregressive** structure, **AR(1)** is a preferable structure for $R_{i}$. The AR(1) structure is 
+$$
+D = var(u_{i}) = var(\epsilon_{i})
+\begin{pmatrix}
+\sigma^{2} & \sigma^{2}\rho & \dots & \sigma^{2}\rho^{n_{i}-1} \\
+\sigma^{2}\rho & \sigma^{2} & \dots & \sigma^{2}\rho^{n_{i}-2} \\
+\vdots & \vdots & \ddots & \vdots \\
+\sigma^{2}\rho^{n_{i}-1} & \sigma^{2}\rho^{n_{i}-2} & \dots & \sigma^{2}
+\end{pmatrix}
+$$
+with $\theta_{R} = (\sigma^{2}, \rho)$ and $\rho \in (-1,1)$, The AR(1) structure assumes that the error variances for an observation ar all the same while the errors $w$ times apart have covariance $\sigma^{2}\rho^{w}$. Thsi structure implies that onbservations close in time are more correlated and that the correlation decay exponentially with the lag time.
+
+## Estimation 
+
+In LMM the paramters to be estimated are: the fixed effect patameter $\beta$ and the covariance paramters $\theta_{G}$ and $\theta_{R}$. Therefore the parameters vector is $\theta = (\beta,\theta_{G}, \theta_{R}). We begin with maximum likelihood estimator and next we move to the other techniques
+
+### Maximum Likelihood estimation
+HAving observed the data the likelihood contribution for the $i$th subject [referenza] is
+
+$$ L_{i}(\theta) = (2\pi)^{\frac{-n_{i}}{2}} det(V_{i})^{-\frac{1}{2}} exp(-0.5 \times (y_{i}-X_{i}\beta)'V_{i}^{-1}(y_{i} -X_{i}\beta))$$
+where $V_{i}$ was defined in [referenza].
+The Likelihood is then defined of the product of the $m$ marginal contributions
+
+$$ L(\theta) = \prod_{i=1}^{m} L_{i}(\theta) = \prod_{i}^{m} (2\pi)^{\frac{-n_{i}}{2}} det(V_{i})^{-\frac{1}{2}} exp(-0.5 \times (y_{i}-X_{i}\beta)'V_{i}^{-1}(y_{i} -X_{i}\beta))$$
+
+By taking log of [Referenza] we obtain the corresponding log-likelihood
+
+$$ \ell(\theta) = ln L(\theta) = -0.5n \times ln(2\pi) - 0.5 \times \sum_{i=1}^{m} ln(det(V_{i})) -0.5 \times \sum_{i=1}^{m} ((y_{i}-X_{i}\beta)'V_{i}^{-1}(y_{i} -X_{i}\beta))$$
+
+where $n = \sum_{i=1}^{m} n_{i}$. Despite it is possible to maximize [Referenza ] simultaneously for $\beta$ and $\theta_{R}$ and $\theta_{D}$ profile maximum likelihood is generally used especially when the number of parameters to be estimated is particularly large. Two cases can be considered for the maximization of[]. In maximizing [] two cases can be considered. The first assumes that the matrix $V_{i}$ is known, but this hardly happens in practice. The second which is generally implemented in practice estimates both $\beta$ and $\theta$.
+When the vector $\theta$ and as a consequence the matrix $V_{i}$ the log likelihood function becomes a function only of $\beta$ and the minimization of $- \ell(\theta)$ reduces in the minimization of
+
+$$ q(\beta) = \sum_{i=1}^{m} ((y_{i}-X_{i}\beta)'V_{i}^{-1}(y_{i} -X_{i}\beta)) $$
+
+Differentiating [] leads to
+
+$$ \hat{\beta}_{GLS} = \left( \sum_{i=1}^{m} X_{i}' V_{i}^{-1} X_{i} \right)^{-1} \sum_{i=1}^{m} X_{i}'V_{i}^{-1} y_{i} $$
+However the matrix $V_{i}$ is not known in practice and alternative estimators must be used.
+
+## Profile Maximum Likelihood estimator
+Despite maximizaion of the log-likelihood can be carried out contemporaneously for both $\theta$ and $\beta$ the profile maximum likelihood is a convenient tool that can be used especially when the number of parameters is large.
+The profile likelihood can be obtained by "profiling-out" the fixed effect parameters $\beta$ by substituting in [] the $GLS$ expression. The resulting function is
+
+$$ \ell(\theta)_{profile} =  -0.5n \times ln(2\pi) - 0.5 \times \sum_{i=1}^{m} ln(det(V_{i})) -0.5 \times \sum_{i=1}^{m} r_{i}' 'V_{i}^{-1} r_{i}$$
+where $r_{i} = X_{i} \left( \left( \sum_{i=1}^{m} X_{i}' V_{i}^{-1} X_{i} \right)^{-1} \sum_{i=1}^{m} X_{i}'V_{i}^{-1} y_{i} \right)$. the maximization of [] is a nonlinear optimization problem with positive-definiteness constraints imposed on the matrices $D$ and $R_{i}$. 
+After obtaining the maximum likelihood estimators of $D$ and $R_{i}$, that is $\hat{D}$ and $\hat{R_{i}}$ we can use them to estimate the vector of fixed effects parameters $\beta$.\\
+First we use $\hat{D}$ and $\hat{R_{i}}$ to estimate $V_{i}$
+
+$$ \hat{V_{i}} = Z_{i} \hat{D}Z_{i} ' + \hat{R}_{i} $$
+nest, we can plug in $\hat{V}_{i}$ in [] to obtain an estimate for $\betaB. That is,
+
+$$ \hat{\beta} = \left( \sum_{i=1}^{m} X_{i}' \hat{V}_{i}^{-1} X_{i} \right)^{-1} \sum_{i=1}^{m} X_{i}'\hat{V}_{i}^{-1} y_{i} $$
+The resulting estimator is the best linear unbiased empirical estimator of $\beta$.\\
+The main issue with this estimator [citazione ] is that the estimates of $\theta$ do not take into account the loss in the degrees of freedom resulting from estimating $\beta$, for this reason $REML$ is commonly adopted in practice.
+
+## Restricted Maximum Likelihood estimator (REML)
+REML estimator produces unbiased estimates of the covariance aprameters $\theta$ by taking into account the loss of degrees of freedom which results from estimating $\beta$.\\
+The REML estimator is obtained by maximizing the restricted log-likelihood function
+
+$$ \ell(\theta)_{restricted} =  -0.5(n-p) \times ln(2\pi) - 0.5 \times \sum_{i=1}^{m} ln(det(V_{i})) -0.5 \times \sum_{i=1}^{m} r_{i} 'V_{i}^{-1} r_{i} - 0.5 \times \sum_{i=1}^{m} ln(det(X'_{i}V_{i}^{-1}X_{i}))$$
+
+Once an estimate of $V_{i}$ is obtained we can use formula [] to estimate $\beta$. Although the same formula is used to estimate the vector of fixed effects parameters the rulting anstiamtes and the associated variance will differe as the estimate of $b_{i}$ obtained with the two technqiues is different.\\
+
+## Testing restrictions on parameters estimates
+Testing parameters restriction in LMM is generally performed with likelihood ratio or Wald type statistics.
+When likelihood ratio is adopted the restrictions on the parameters are generally introduced with the concept of nested model, moreover the likelihood ratio requires the estimation of two different models the reference and the nested one.
+We will first introduce the two statistics and next expalin their use in testing restrictions on fixed effect and random effect parameters.\\
+
+
+## Likelihood ratio
+The likelihood ratio statistics is obtained by computing the lieklihood ratio of two models one nested in eachoter.
+The resulting test statistics is
+
+$$ LR = -2 ln \left(\frac{L_{nested}}{L_{reference}} \right) = -2 \ell_{nested} -2 \ell_{reference}. $$
+Where $ell_{nested}$ and $\ell_{reference}$ ar the likelihood evaluated at the parameters estimates of the two models.
+Under mild regularity conditions the $LR$ statistics is asimptotically distributed as a chi-square distribution with degrees of freedom equals to the difference between the number of parameters in the reference and in the nested model.
+
+### Testing fixed effects linear restrictions
+To test restrictions on the fixed effects of the form 
+
+$$ 
+H_{0}: L \beta = 0 \\
+H_{1}: L \beta \neq 0
+
+$$
+where $\iota$ is a $k \times k$ matrix containing ones depending on the restrictions to be tested.
+we can compute the LR ratio statistics and compare its result with a prescribed quantile of the $\chi^{2}$ distribution. If the $LR$ statistics is larger than the Prescribed threshold value we reject $H_{0}$.
+
+### Testing random effects restictions
+When testing restriction of the covariance parameters of the random effects the $REML$ should be preferred since, as stated previously they results in unbiased estimates for $\theta$. Depending on the fact that the covariance parameters under the null hypothesis lie or no on the boundary of the parameter space two cases must be discusses.
+
+* Case 1: Under the null hypothesis the covarance parameters lie on the boundary of the patameter space.
+In this case we are testing if the random effect associate with unit $i$ can be omitted from the model. Taht is,
+
+$$ H_{0}: L D = 0 \\
+H_{1}: L D \neq 0
+$$
+where $\iota$ was defined previously.
+In this case the $LR$ statistics is distributed a mixture of chi-squared distributions with $0$ and $1$; $LR \sim 0.5 \chi^{2}_{0} + 0.5 \chi^{2}_{1}$. 
+
+* Case 2. Under the null hypothesis the covariance parameters do not lie on the boundary of the parameter space
+In this case the likelihood ratio statistics follows a standard chi squared distribution with df equal to the difference between the number of parameters in the reference model and the number of parameters in the reduced model.
+
+## Wald type statistics
+The  main advantage of the likelihood ratio test is that only requires to know the likelihood function. However, two separate models needs to be fitted to test the linear restricitions. Converselly the Wald type statistic requires less computation as it only needs the reference model to be fitted 
+For a single parameter $\theta$ a Wald type statistic is given by 
+
+$$
+W_{stat} = \frac{(\hat{\theta} - \theta_{0})^{2}}{var(\hat{\theta})}
+$$
+where $var(\hat{\theta})$ is the variance associated to $\hat{\theta}$ and $\theta_{0}$ is the parameter value under the null hypothesis $H_{0}$. When $\theta_{0} = 0$ the statistic reduces to
+
+
+$$
+W_{stat} = \frac{\hat{\theta}^{2}}{var(\hat{\theta})}
+
+$$
+
+A Wald type statistic is asimptotically equivalent to the $LR$ statistic and has a chi-squared distribution with one degree of freedom. That is $W_{stat} \sim \chi^{2}_{1}$
+
+
+### Testing linear restriction on the fixed effects 
+
+
+
+## Fitting linear models in R
+Marketing mix modelling aims to understand the effect that different marketing variables or campaigns have on the sales or on other quantities of interest. Depending on the aggregation level of a marketing mix model can be develop to study the marginal effect of the marketing variables on the product, the category, the shop, the area etc.
+Given the hierarchy of data mixed effect models can therefore applied to marketing mix modelling when a sample of categories, products or shop is considered.
+In this example we will consider the sales of 6 products coming from 3 different 
+In marketing or retailing it is of primary importance to evaluate the marginal effect that promotions or other activities have on sales or other targeted variables. For example, a retailer might be interested in estimating the effects that a series of activites such as price promotions and advertising had on the average sales of the categories over a certain period of time. Since retailers data clustere at different levels: regions, cities, shops, categories, products and time it is reasonable to assume that shops in the same city as well as products in the same category are correlated. LMM can be used to account for this correlation.
+
+
+We begin the analysis by loading the lmer and the other packages needed for the analysis. Desptie lme4 is generally used lmer allows for the specification of more detailed correlation structures.

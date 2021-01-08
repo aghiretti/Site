@@ -1,0 +1,7 @@
+"0","# build the variable indicating the quarter"
+"0","quarter <- rep(seq(1:8), each = 120)"
+"0","day <- seq(1:length(quarter))"
+"0","time_quarter <- data.frame(quarter,day)"
+"0",""
+"0","# assign the transactions to the corresponding quarter by joining on the day"
+"0","adjust_transactions <- transactions %>% left_join(time_quarter, by = c(""day"" = ""day""))"

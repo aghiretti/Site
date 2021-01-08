@@ -1,0 +1,23 @@
+name: "Alessandro Ghiretti"
+title: "Alessandro Ghiretti"
+description: 'Exploring Statistics and Econometrics with R'
+output_dir: "docs"
+theme: theme.css
+navbar:
+  left:
+   - icon: fab fa-linkedin-in
+     href: https://www.linkedin.com/in/alessandro-ghiretti-90/
+   - icon: fa fa-rss
+     href: index.xml
+  right:
+    - text: "Home"
+      href: index.html
+    - text: "Posts"
+      href: posts.html
+    - text: "About"
+      href: about.html
+  search: true
+  
+base_url: https://www.aghiretti.com/
+
+output: distill::distill_article

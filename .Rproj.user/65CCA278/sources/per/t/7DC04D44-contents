@@ -1,0 +1,251 @@
+---
+title: "Seemengly Unrelated Regression Equations (SURE)"
+description: "In this post we give an introduction to the theory behind SURE models." 
+categories:
+  - Econometrics
+  - Regression
+author:
+  - first_name: "Alessandro"
+    last_name: "Ghiretti" 
+    url: https://example.com/
+    affiliation: 
+    affiliation_url: https://example.com/spacelysprokets
+date: "`r Sys.Date()`"
+draft: true
+output: 
+  distill::distill_article:
+      toc: true
+      toc_depth: 3
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+## The SURE model
+
+Suppose that $y_{it}$ is a dependent variable, $x_{it} = (1, x_{it1}, x_{it2}, ..., x_{itK−1})$
+is a $K_{i}$-vector of explanatory variables for observational unit $i$, and $u_{it}$ is an unobservable error term, where the double index $it$ denotes the $t$th observation of the $i$th equation in the system. A classical SURE model is given by the system of linear regression equations
+$$y_{i} = X_{i}\boldsymbol{\beta}_{i} + u_{i}, \quad i = 1,2,\dots,m $$
+where $y_{i} = (y_{i1}, y_{i2},\dots,y_{iT})'$ is a $T \times 1$ vector on the dependetn variable $y_{it}$ and $X_{it}$ is a $T \times k_{i}$ matrix of observations on the $k_{i}$ vector of regressors explaining $y_{it}$, $\beta_{i}$ is a $k \times 1$ vector of unknonw coefficients and $u_{i} = (u_{i1}, u_{i2}, \dots, u_{iT})$ is a $T \times 1$ vecotr of disturbances.
+By stacking the the different equations in the system as
+
+\begin{equation*}
+\begin{pmatrix}
+y_{1}\\
+y_{2} \\
+\vdots\\
+y_{m}\\
+\end{pmatrix}
+=
+\begin{pmatrix}
+X_{1} & 0 & \cdots & 0\\
+0 & X_{2} & \cdots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \cdots & X_{m} \\
+\end{pmatrix}
+
+\begin{pmatrix}
+\beta_{1}\\
+\beta_{2} \\
+\vdots\\
+\beta_{m}
+\end{pmatrix}
++
+\begin{pmatrix}
+u_{1}\\
+u_{2} \\
+\vdots\\
+u_{3}
+\end{pmatrix}
+\end{equation*}
+
+we can obtain the model written in compact notation
+$$ y = G \beta + u$$
+
+### Model assumptions
+
+In order to be able to estimate the model parameters and obtain consistent and unbiased estimates some assumptions must be introduced.
+
+* Assumption A1:The vector of disturbances $u$ has zero conditional mean
+
+$$ E(u|X_{1},X_{2},\dots,X_{m}) = 0$$
+
+* Assumption A2:The disturbances are uncorrelated across observations
+
+$$ E(u_{i}u'_{i}|X_{1},X_{2},\dots,X_{m}) = \sigma^{2}_{ii} I_{T}$$
+
+In particular three cases can be considered
+1. The disturbances are contemporaneously uncorrelated: $E(u_{i}u'_{j}) = 0$ for $i \neq j$
+
+2. The disturbances are uncorrelated and the regressors are identical across all the equations 
+
+$E(u_{i}u'_{j}) = \sigma_{ij} I_{T}$ and $X_{i} = X_{j}$ for all $i,j$
+
+3. The disturbances are uncorrelated and the regressors are different across all the equations 
+
+$E(u_{i}u'_{j}) = \sigma_{ij} I_{T}$ and $X_{i} \neq X_{j}$ for some $i,j$
+
+## Estimation
+
+Estimates for the unknonwn parameters $\beta$ can be obtained with different estimation procedures. The most common one are the Maximum Likelihood ($ML$) and the Generalized Least Squares ($GLS$) estimator.
+Here we will consider the $GLS$ estimator. Good reference for $ML$ estimation is given in [referenze]. The three different cases discussed above will be discussed separately. Following [PESARAN] we start from the more general case 3, that is the disturbances are contemporaneously uncorrelated and the regressors are different across all the equations
+
+### Disturbances are uncorrelated and the regressors are different across all the equations
+
+Under the assumption that $E(u_{i}u_{j}'|X_{1}, X_{2},\dots, X_{m}) = \sigma_{ij} I_{T}$ we have that
+$$ E(uu'|X_{1}, X_{2},\dots,X_{m}) = \Omega = \Sigma \otimes I_{T} $$
+where $\Sigma = (\sigma_{ij})$ is an $m \times m$ symmetric posivie definite matrix. When $\Sigma$ is known an efficient estimator of $\beta$ is the $GLS$ estimator, that is
+
+$$ \hat{\beta}_{GLS} = [G'(\Sigma^{-1} \otimes I_{T})G]^{-1}G'(\Sigma^{-1} \otimes I_{T}) y $$
+
+with asymptotic covariance matrix
+
+$$ var(\hat{\beta}_{GLS}) = [G'(\Sigma^{-1} \otimes I_{T}) G]^{-1}. $$
+
+In practice $\Sigma$ is not known and a feasible generalzied least squares $FGLS$ estimator is obtained by replacing $\Sigma$ with a suitable estimate. When $m$ is small with respect to $T$ two stage least squares is generally adopted. $2SLS$ proceeds as follows:
+
+1. Compute $\hat{\beta}_{OLS} = (G'G)^{-1}G'y$
+
+2. Otain the residuals $\hat{u} = y - G\hat{\beta}_{OLS}$
+
+3. Estimate the elements of $\Sigma$ as $\hat{\sigma}_{ij} = \frac{\hat{u}'_{i}\hat{u}_{j}}{T}$ for $i,j = 1,2,\dots,m$
+
+The final $FGLS$ is then obtained substituting $\hat{\Sigma}$ in the $GLS$ equation, leading to:
+
+$$ \hat{\beta}_{FGLS} = [G'(\hat{\Sigma}^{-1} \otimes I_{T})G]^{-1}G'(\hat{\Sigma}^{-1} \otimes I_{T}) y $$
+however when $m$ is large other estimators for $\Sigma$ are preferred [REFERENZA CAP 29 PESARAN].
+
+### Contemporaneously uncorrelated disturbances
+
+When the disturbances are contemporaneously uncorrelated, that is $E(u_{i}u'_{j}) = 0$ for $i \neq j$, there is no gain by considering the equations in (REFERENZA) as a system and the application of single equation estimators will yield efficient estimators
+
+\begin{equation*}
+\hat{\beta}_{GLS}=
+
+\begin{pmatrix}
+\left(X_{1}' X_{1}\right)^{-1} & 0 & \ldots & 0 \\
+0 & \left(X_{2}^{\prime} X_{2}\right)^{-1} & \ldots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \ldots & \left(X_{m}' X_{m}\right)^{-1}
+\end{pmatrix}
+
+
+\begin{pmatrix}
+X_{1}' y_{1} \\
+X_{2}' y_{2} \\
+\vdots \\
+X_{m}' y_{m}
+\end{pmatrix}
+
+
+=
+
+\begin{pmatrix}
+\hat{\beta}_{1, OLS} \\
+\hat{\beta}_{2, OLS} \\
+\vdots \\
+\hat{\beta}_{m, OLS}
+\end{pmatrix}
+\end{equation*}
+
+### Identical regressors
+
+In the case of identical regressors the matrix $G$ can be written as $G = I_{m} \otimes X$. With some algebra in can be shown that the $GLS$ estimator can be written as
+
+\begin{equation*}
+\begin{split}
+\hat{\beta}_{GLS} & = \left[ \left( I_{m} \otimes X' \right) \left( \Sigma^{-1} \otimes I_{T} \right) \left(I_{m} \otimes X \right)\right]' \left(I_{m} \otimes {X}' \right) \left(\Sigma^{-1} \otimes I_{T} \right) y \\
+
+& =\left(\Sigma^{-1} \otimes X' X \right)^{-1} \left(\Sigma^{-1} \otimes X' \right) y = \left[ \Sigma \otimes\left(X' X \right)^{-1} \right] \left(\Sigma^{-1} \otimes X' \right) y \\
+
+& =\left[ I_{m} \otimes\left(X' X \right)^{-1} X' \right] y \\
+
+& =\left( \hat{\beta}_{1, OLS}', \hat{\beta}_{2, OLS}', \ldots, \hat{\beta}_{m, OLS} \right)'
+
+\end{split}
+\end{equation*}
+
+Therefore, when all the equations have the same regressors in common the $GLS$ reduces to the leas square procedure applied to one equation at a time.
+
+### Maximum Likelihood estimation
+
+Under the assumption that $u_{t} \sim \operatorname{IID} N(0, \Sigma), t=1,2, \ldots, T$ the log-likelihood function of the stacked system [Riferimento] can be written as
+
+\begin{equation} \label{loglike}
+\ell(\theta)= -\frac{T m}{2} \log(2 \pi)-\frac{T}{2} \log |\Sigma|-\frac{1}{2}(y-G \beta)' \left(\Sigma^{-1} \otimes I_{T} \right)(y-G \beta)
+\end{equation}
+
+
+
+where we used the fact that $\Omega = \Sigma \otimes I_{T}$.
+
+Differentiating $\ref{loglik}$ with resepct to the unknown parameters lead to the $ML$ estimators
+
+\begin{equation} \label{ml1}
+\tilde{\sigma}_{i j}=\frac{\left(y_{i} - X_{i} \tilde{\beta}_{i}\right)' \left(y_{j}-X_{j} \tilde{\beta}_{j}\right)}{T}
+\end{equation}
+
+\begin{equation} \label{ml2}
+\tilde{\beta}=\left[G' \left(\tilde{\Sigma}^{-1} \otimes I_{T} \right) G \right]^{-1} G' \left(\tilde{\Sigma}^{-1} \otimes I_{T} \right) y
+\end{equation}
+
+In order to obtain the maximum likelihood estimates several approaches can be adopted such as the profile likelihood which consists in first maximizing the log-likelihood with respect to $\Sigma$ and then substituting $\hat{\Sigma}$ into \ref{loglik} and maximize it with respect to $\beta$ or the iterative least squares $(IRLS)$.
+$IRLS$ is performed by iterating equations \ref{ml1} and \ref{ml2} until a convergence criterion is not met, such as
+
+$$
+\sum_{\ell=1}^{k_{4}} |\beta_{i}^{(r)} - \beta_{i}^{(r-1)} |< k_{i} \times 10^{-4}, \quad i=1,2, \ldots, m
+$$
+
+where $r$ denotes the algorithm iteration. As starting values of $\boldsymbol{\beta}_{i}$ ordinary least squares stimates can be used.
+
+## Testing linear and nonlinear restrictions
+
+Under fairly general conditions $ML$ estimators are asimptotically normally distributed, that is
+
+$$
+\hat{\beta}_{ML} \rightarrow N(\boldsymbol{\beta},\left[\mathbf{G}'\left(\Sigma^{-1} \otimes I_{T}\right) G \right]^{-1})
+$$
+
+Therefore, in order to test restrictions on the parameters of the form
+
+$$
+\begin{array}{l}
+H_{0}: h(\beta)=0 \\
+H_{1}: h(\beta) \neq 0
+\end{array}
+$$
+
+we can adopt Wald procedure leading to
+
+$$
+W =h (\widetilde{\beta})^{\prime}\left[H(\widetilde{\beta}) \widehat{Cov}(\widetilde{\beta}) H'(\tilde{\beta})\right]^{-1} h(\tilde{\beta})
+$$
+where $\widehat{Cov}(\widetilde{\beta}) = \left[G'\left(\Sigma^{-1} \otimes I_{T}\right) G\right]^{-1}$.
+$W$ has a Chi square distribution with $r$ degrees of freedom where $r$ is equal to the rank of the first order derivatives matrix of $h$
+
+## Testing wether $\Omega$ is diagonal
+
+Suppose we want to test the hypothesis that the errors from the equations are uncorrelated against the alternative that one or more of the off-diagonal elements of $\Sigma$ are non-zero. That is
+
+$$
+\begin{array}{l}
+H_{0}: \Sigma = diag(\sigma_{ii}) \\
+H_{1}: \Sigma \neq diag(\sigma_{ii})
+\end{array}
+$$
+
+The log-likelihood ratio statistic which is given by
+
+$$
+LR=2\left[\ell(\tilde{\theta})-\sum_{i=1}^{m} \ell_{i}\left(\hat{\theta}_{i,OLS}\right)\right]
+$$
+Under $\mathbf{H}_{0}$, $LR$ is asymptotically distributed as a $\chi^{2}$ with $m(m − 1)/2$ degrees of freedom.
+
+## Category sales sensitivity to price
+
+In this example we are going to use SURE model to estimate the demand of different product categories in funtion of the average price. Once the system of equations is estimated we can obtain the price elasticities of the different categories. A simpler procdure consists in fitting a separate linear regression to every category and then compute the price elasticities. However, it is reasonable to assume that the different categories are affected by some common drivers and therefore a correlation is observed in the demand equations. For this reason first we fit the SURE model, and next we test the presence of correlation among the equation by testing for the diagonlaity of $\Omega$. 
+Through the example we will use the systemfit package wich provide a common framework for fitting system of equation models.
+
+We start the analysis loading the packages needed for the analysis. The data is already loaded in R and is freely available from kaggle.

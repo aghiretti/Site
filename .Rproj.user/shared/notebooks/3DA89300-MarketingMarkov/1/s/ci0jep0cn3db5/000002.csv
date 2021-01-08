@@ -1,0 +1,10 @@
+"0","customer_quarter <- adjust_transactions %>% "
+"0","  # join with demographics data"
+"0","  left_join(demo, by = c(""household_key"" = ""household_key"")) %>% "
+"0","  # group by customer Id"
+"0","  group_by(household_key, quarter) %>% "
+"0","  # obtain total spend per customer"
+"0","  summarise(tot_spend = sum(sales_value)) %>% "
+"0","  ungroup()"
+"2","`summarise()` regrouping output by 'household_key' (override with `.groups` argument)
+"

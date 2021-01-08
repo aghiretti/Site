@@ -1,0 +1,3 @@
+"0","# clean column names"
+"0","colnames(transactions) <- make_clean_names(colnames(transactions))"
+"0","colnames(demo) <- make_clean_names(colnames(demo))"

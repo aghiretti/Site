@@ -6,38 +6,34 @@
     <atom:link href="https://www.aghiretti.com/posts.xml" rel="self" type="application/rss+xml"/>
     <description>Exploring Statistics and Econometrics with R</description>
     <generator>Distill</generator>
-    <lastBuildDate>sab, 02 gen 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>ven, 08 gen 2021 00:00:00 +0000</lastBuildDate>
     <item>
-      <title>Applying Dynamic Linear Regression to Marketing Mix Modelling</title>
+      <title>Latent Markov Models for modeling customer spending dynamics</title>
       <dc:creator>Alessandro</dc:creator>
       <dc:creator/>
-      <link>https://www.aghiretti.com/posts/DynamicMMM</link>
-      <description/>
+      <link>https://www.aghiretti.com/posts/04-01-2021-MarkovModel</link>
+      <description>In this post we will apply Latent Markov Models to model the customers portfolio 
+composition of a retailer. To fit the models we will use the R package LMest</description>
+      <category>Econometrics</category>
+      <category>Latent Markov Models</category>
+      <category>Marketing</category>
+      <guid>https://www.aghiretti.com/posts/04-01-2021-MarkovModel</guid>
+      <pubDate>ven, 08 gen 2021 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>Media Mix Modeling via Dynamic Linear Regression</title>
+      <dc:creator>Alessandro</dc:creator>
+      <dc:creator/>
+      <link>https://www.aghiretti.com/posts/18-12-2020-DynamicRegression</link>
+      <description>In this post we discuss the application of Dynamic Linear Regression 
+model to Media Mix Modeling. We adopt a state space representation of the 
+linear regression model and use the dlm R package to fit the model to a
+media mix modeling example.</description>
       <category>Econometrics</category>
       <category>State Space Models</category>
       <category>Time Series</category>
-      <guid>https://www.aghiretti.com/posts/DynamicMMM</guid>
-      <pubDate>sab, 02 gen 2021 00:00:00 +0000</pubDate>
-    </item>
-    <item>
-      <title>An introduction to Linear Mixed Effect Models</title>
-      <dc:creator>Alessandro Ghiretti</dc:creator>
-      <link>https://www.aghiretti.com/posts/LMM</link>
-      <description/>
-      <category>Statistics</category>
-      <category>Mixed Effect Models</category>
-      <guid>https://www.aghiretti.com/posts/LMM</guid>
-      <pubDate>sab, 02 gen 2021 00:00:00 +0000</pubDate>
-    </item>
-    <item>
-      <title>Seemengly Unrelated Regression Equations (SURE)</title>
-      <dc:creator>Alessandro Ghiretti</dc:creator>
-      <link>https://www.aghiretti.com/posts/SURE</link>
-      <description>In this post we give an introduction to the theory behind SURE models.</description>
-      <category>Econometrics</category>
-      <category>Regression</category>
-      <guid>https://www.aghiretti.com/posts/SURE</guid>
-      <pubDate>sab, 02 gen 2021 00:00:00 +0000</pubDate>
+      <guid>https://www.aghiretti.com/posts/18-12-2020-DynamicRegression</guid>
+      <pubDate>ven, 08 gen 2021 00:00:00 +0000</pubDate>
     </item>
   </channel>
 </rss>

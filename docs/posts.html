@@ -2132,17 +2132,17 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   
   .distill-site-header {
     --title-size:       18px;
-    --text-color:       rgba(255,255,255, 1);
+    --text-color:       black;
     --text-size:        15px;
-    --hover-color:      white;
-    --bkgd-color:       rgba(103, 66, 138, 1);
+    --hover-color:      purple;
+    --bkgd-color:       white;
   }
   
   .distill-site-footer {
-    --text-color:       rgba(255, 255, 255, 1);
+    --text-color:       black;
     --text-size:        15px;
-    --hover-color:      white;
-    --bkgd-color:       rgba(103, 66, 138, 1);
+    --hover-color:      purple;
+    --bkgd-color:       white;
   }
   
   /*-- Additional custom styles --*/
@@ -2323,6 +2323,9 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <a href="https://www.linkedin.com/in/alessandro-ghiretti-90/">
 <i class="fab fa-linkedin-in" aria-hidden="true"></i>
 </a>
+<a href="index.xml">
+<i class="fa fa-rss" aria-hidden="true"></i>
+</a>
 <input id="distill-search" class="nav-search hidden" type="text" placeholder="Search..."/>
 </div>
 <div class="nav-right">
@@ -2471,10 +2474,10 @@ function init_posts_list() {
 <div class="posts-container posts-with-sidebar posts-apply-limit l-screen-inset">
 <div class="posts-list">
 <h1 class="posts-list-caption" data-caption="POSTS">POSTS</h1>
-<a href="posts/DynamicMMM/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["Econometrics","State Space Models","Time Series"]}</script>
+<a href="posts/04-01-2021-MarkovModel/" class="post-preview">
+<script class="post-metadata" type="text/json">{"categories":["Econometrics","Latent Markov Models","Marketing"]}</script>
 <div class="metadata">
-<div class="publishedDate">Jan. 2, 2021</div>
+<div class="publishedDate">Jan. 8, 2021</div>
 <div class="dt-authors">
 <div class="dt-author">Alessandro</div>
 <div class="dt-author"></div>
@@ -2484,53 +2487,39 @@ function init_posts_list() {
 <img/>
 </div>
 <div class="description">
-<h2>Applying Dynamic Linear Regression to Marketing Mix Modelling</h2>
+<h2>Latent Markov Models for modeling customer spending dynamics</h2>
+<div class="dt-tags">
+<div class="dt-tag">Econometrics</div>
+<div class="dt-tag">Latent Markov Models</div>
+<div class="dt-tag">Marketing</div>
+</div>
+<p>In this post we will apply Latent Markov Models to model the customers portfolio 
+composition of a retailer. To fit the models we will use the R package LMest</p>
+</div>
+</a>
+<a href="posts/18-12-2020-DynamicRegression/" class="post-preview">
+<script class="post-metadata" type="text/json">{"categories":["Econometrics","State Space Models","Time Series"]}</script>
+<div class="metadata">
+<div class="publishedDate">Jan. 8, 2021</div>
+<div class="dt-authors">
+<div class="dt-author">Alessandro</div>
+<div class="dt-author"></div>
+</div>
+</div>
+<div class="thumbnail">
+<img/>
+</div>
+<div class="description">
+<h2>Media Mix Modeling via Dynamic Linear Regression</h2>
 <div class="dt-tags">
 <div class="dt-tag">Econometrics</div>
 <div class="dt-tag">State Space Models</div>
 <div class="dt-tag">Time Series</div>
 </div>
-<p></p>
-</div>
-</a>
-<a href="posts/LMM/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["Statistics","Mixed Effect Models"]}</script>
-<div class="metadata">
-<div class="publishedDate">Jan. 2, 2021</div>
-<div class="dt-authors">
-<div class="dt-author">Alessandro Ghiretti</div>
-</div>
-</div>
-<div class="thumbnail">
-<img/>
-</div>
-<div class="description">
-<h2>An introduction to Linear Mixed Effect Models</h2>
-<div class="dt-tags">
-<div class="dt-tag">Statistics</div>
-<div class="dt-tag">Mixed Effect Models</div>
-</div>
-<p></p>
-</div>
-</a>
-<a href="posts/SURE/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["Econometrics","Regression"]}</script>
-<div class="metadata">
-<div class="publishedDate">Jan. 2, 2021</div>
-<div class="dt-authors">
-<div class="dt-author">Alessandro Ghiretti</div>
-</div>
-</div>
-<div class="thumbnail">
-<img/>
-</div>
-<div class="description">
-<h2>Seemengly Unrelated Regression Equations (SURE)</h2>
-<div class="dt-tags">
-<div class="dt-tag">Econometrics</div>
-<div class="dt-tag">Regression</div>
-</div>
-<p>In this post we give an introduction to the theory behind SURE models.</p>
+<p>In this post we discuss the application of Dynamic Linear Regression 
+model to Media Mix Modeling. We adopt a state space representation of the 
+linear regression model and use the dlm R package to fit the model to a
+media mix modeling example.</p>
 </div>
 </a>
 </div>
@@ -2540,26 +2529,22 @@ function init_posts_list() {
 <ul>
 <li>
 <a href="#category:Articles">Articles</a>
-<span class="category-count">(3)</span>
+<span class="category-count">(2)</span>
 </li>
 <li>
 <a href="#category:Econometrics">Econometrics</a>
 <span class="category-count">(2)</span>
 </li>
 <li>
-<a href="#category:Mixed_Effect_Models">Mixed Effect Models</a>
+<a href="#category:Latent_Markov_Models">Latent Markov Models</a>
 <span class="category-count">(1)</span>
 </li>
 <li>
-<a href="#category:Regression">Regression</a>
+<a href="#category:Marketing">Marketing</a>
 <span class="category-count">(1)</span>
 </li>
 <li>
 <a href="#category:State_Space_Models">State Space Models</a>
-<span class="category-count">(1)</span>
-</li>
-<li>
-<a href="#category:Statistics">Statistics</a>
 <span class="category-count">(1)</span>
 </li>
 <li>

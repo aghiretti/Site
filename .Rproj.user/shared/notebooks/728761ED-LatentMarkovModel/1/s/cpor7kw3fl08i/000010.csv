@@ -1,0 +1,8 @@
+"0","# bind demo info the the households
+purchases <- purchases %>% left_join(demo, by = c(""household_key"")) %>% 
+  # remove customers with missing values
+  drop_na() %>% 
+  dplyr::select(-c(""quarter""))
+"
+"2","Adding missing grouping variables: `quarter`
+"

@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" version="1.0">
   <url>
     <loc>https://www.aghiretti.com/about.html</loc>
-    <lastmod>2021-01-02T23:20:48+01:00</lastmod>
+    <lastmod>2021-01-08T21:49:49+01:00</lastmod>
   </url>
   <url>
     <loc>https://www.aghiretti.com/</loc>
@@ -13,15 +13,11 @@
     <lastmod>2021-01-02T23:09:42+01:00</lastmod>
   </url>
   <url>
-    <loc>https://www.aghiretti.com/posts/DynamicMMM/</loc>
-    <lastmod>2021-01-02T23:35:14+01:00</lastmod>
+    <loc>https://www.aghiretti.com/posts/04-01-2021-MarkovModel/</loc>
+    <lastmod>2021-01-08T10:36:32+01:00</lastmod>
   </url>
   <url>
-    <loc>https://www.aghiretti.com/posts/LMM/</loc>
-    <lastmod>2021-01-02T14:55:09+01:00</lastmod>
-  </url>
-  <url>
-    <loc>https://www.aghiretti.com/posts/SURE/</loc>
-    <lastmod>2021-01-02T23:35:27+01:00</lastmod>
+    <loc>https://www.aghiretti.com/posts/18-12-2020-DynamicRegression/</loc>
+    <lastmod>2021-01-08T21:28:14+01:00</lastmod>
   </url>
 </urlset>

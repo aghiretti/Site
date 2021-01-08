@@ -1,0 +1,4 @@
+"0","setwd(""C:\\Users\\USR02193\\OneDrive - Chiesi Farmaceutici S.p.A\\Documents\\Marketing\\Markov"")"
+"2","The working directory was changed to C:/Users/USR02193/OneDrive - Chiesi Farmaceutici S.p.A/Documents/Marketing/Markov inside a notebook chunk. The working directory will be reset when the chunk is finished running. Use the knitr root.dir option in the setup chunk to change the working directory for notebook chunks."
+"0","demo <-  read.csv(""hh_demographic.csv"")  "
+"0","transactions <- read.csv(""transaction_data.csv"") "

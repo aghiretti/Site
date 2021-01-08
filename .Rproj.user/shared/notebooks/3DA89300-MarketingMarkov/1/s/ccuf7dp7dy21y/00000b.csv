@@ -1,0 +1,2 @@
+"0","fit <- data.frame(model = c(""M1"", ""M2""), aic = c(mod1$aic,mod2$aic), bic = c(mod1$bic,mod2$bic))"
+"0","fit %>%  paged_table()"
