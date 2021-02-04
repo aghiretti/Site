@@ -1,0 +1,4 @@
+"0","# number of advertisers"
+"0","n_adv <- length(unique(train$advertiser_id))"
+"0","n_usr <- length(unique(train$user_id))"
+"0","n_kyw <- length(unique(train$keyword_id))"

@@ -1,0 +1,106 @@
+{
+    "sources": [
+        {
+            "author": [
+                {
+                    "family": "Durbin",
+                    "given": "James"
+                },
+                {
+                    "family": "Koopman",
+                    "given": "Siem Jan"
+                }
+            ],
+            "id": "durbin2012time",
+            "issued": {
+                "date-parts": [
+                    [
+                        2012
+                    ]
+                ]
+            },
+            "publisher": "Oxford university press",
+            "title": "Time series analysis by state space methods",
+            "type": "book"
+        },
+        {
+            "author": [
+                {
+                    "family": "Harvey",
+                    "given": "Andrew C"
+                },
+                {
+                    "family": "Fernandes",
+                    "given": "Clara"
+                }
+            ],
+            "container-title": "Journal of Business & Economic Statistics",
+            "id": "harvey1989time",
+            "issue": "4",
+            "issued": {
+                "date-parts": [
+                    [
+                        1989
+                    ]
+                ]
+            },
+            "page": "407-417",
+            "publisher": "Taylor & Francis",
+            "title": "Time series models for count or qualitative observations",
+            "type": "article-journal",
+            "volume": "7"
+        },
+        {
+            "author": [
+                {
+                    "family": "Petris",
+                    "given": "Giovanni"
+                },
+                {
+                    "family": "Petrone",
+                    "given": "Sonia"
+                },
+                {
+                    "family": "Campagnoli",
+                    "given": "Patrizia"
+                }
+            ],
+            "container-title": "Dynamic linear models with r",
+            "id": "petris2009dynamic",
+            "issued": {
+                "date-parts": [
+                    [
+                        2009
+                    ]
+                ]
+            },
+            "page": "31-84",
+            "publisher": "Springer",
+            "title": "Dynamic linear models",
+            "type": "chapter"
+        },
+        {
+            "author": [
+                {
+                    "family": "Chan",
+                    "given": "David"
+                },
+                {
+                    "family": "Perry",
+                    "given": "Mike"
+                }
+            ],
+            "id": "chan2017challenges",
+            "issued": {
+                "date-parts": [
+                    [
+                        2017
+                    ]
+                ]
+            },
+            "title": "Challenges and opportunities in media mix modeling",
+            "type": "article-journal"
+        }
+    ],
+    "project_biblios": []
+}

@@ -1,5 +1,0 @@
-"0","covid_low = covid %>% slice_min(population_density,...,5)
-"
-"2","Error in covid %>% slice_min(population_density, ..., 5) : 
-  '...' usato in un contesto sbagliato
-"

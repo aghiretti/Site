@@ -1,0 +1,4 @@
+"0","learners <- lapply(learners,lrn)
+"
+"2","Errore: Element with key 'classif.knn' not found in DictionaryLearner! Did you mean 'classif.fnn' / 'classif.kknn' / 'classif.nnet'?
+"

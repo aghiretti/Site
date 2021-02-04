@@ -1,2 +1,0 @@
-"0","# convert the data to a ts object"
-"0","adv.ts <- ts(advertising, start = advertising$Time[1], frequency = 12)"

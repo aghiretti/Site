@@ -1,3 +1,0 @@
-"0","# join the three datasets"
-"0","full_data <- transactions %>% left_join(demo, by = c(""household_key"" = ""household_key"")) %>% "
-"0","  left_join(product, by = c(""product_id"" = ""product_id"")) "

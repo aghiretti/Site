@@ -1,5 +1,0 @@
-"0","prior <- rbind(mod1$piv,mod2$piv) %>% data.frame()"
-"0","colnames(prior) <- c(""low spender"", ""middle-low spender"", ""middle-high spender"", ""high spender"")"
-"0","prior <-  cbind(model = c(""M1"", ""M2""),prior)"
-"0",""
-"0","prior %>%  paged_table()"

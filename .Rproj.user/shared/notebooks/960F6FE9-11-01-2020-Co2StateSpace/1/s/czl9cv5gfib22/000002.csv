@@ -1,0 +1,83 @@
+"0","library(dplyr)"
+"2","
+Attaching package: ‘dplyr’
+
+"
+"2","The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+"
+"2","The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+"
+"0","library(tidyr)"
+"0","library(ggplot2)"
+"0","library(MARSS)"
+"0","library(formattable)"
+"2","Registered S3 method overwritten by 'htmlwidgets':
+  method           from         
+  print.htmlwidget tools:rstudio
+"
+"0","library(patchwork)"
+"2","
+Attaching package: ‘patchwork’
+
+"
+"2","The following object is masked from ‘package:formattable’:
+
+    area
+
+"
+"0","library(plotly)"
+"2","Registered S3 method overwritten by 'data.table':
+  method           from
+  print.data.table     
+"
+"2","
+Attaching package: ‘plotly’
+
+"
+"2","The following object is masked from ‘package:formattable’:
+
+    style
+
+"
+"2","The following object is masked from ‘package:ggplot2’:
+
+    last_plot
+
+"
+"2","The following object is masked from ‘package:stats’:
+
+    filter
+
+"
+"2","The following object is masked from ‘package:graphics’:
+
+    layout
+
+"
+"0","library(reshape)"
+"2","
+Attaching package: ‘reshape’
+
+"
+"2","The following object is masked from ‘package:plotly’:
+
+    rename
+
+"
+"2","The following objects are masked from ‘package:tidyr’:
+
+    expand, smiths
+
+"
+"2","The following object is masked from ‘package:dplyr’:
+
+    rename
+
+"
+"0","library(RColorBrewer)"

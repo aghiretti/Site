@@ -1,0 +1,249 @@
+---
+title: ""
+author: "Alessandro Ghiretti"
+date: "1/2/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+```{r}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(GGally)
+library(reshape2)
+library(mlr3verse)
+library(mlr3extralearners)
+library(mlr3pipelines)
+```
+
+
+```{r}
+setwd("C:\\Users\\USR02193\\OneDrive - Chiesi Farmaceutici S.p.A\\Desktop\\Blog\\Data\\PPC\\")
+
+# load train and test data
+train <- read.csv("train.csv")
+test <- read.csv("test.csv")
+```
+
+
+```{r}
+# number of advertisers
+n_adv <- length(unique(train$advertiser_id))
+n_usr <- length(unique(train$user_id))
+n_kyw <- length(unique(train$keyword_id))
+```
+
+
+We compute the metrics aggreated at three different levels
+
+```{r}
+######################## METRICS ######################
+# 1) ad metrics
+ad_metrics <- train %>% group_by(ad_id) %>% 
+  summarise(
+    n_clicks = sum(click),
+    tot_clicks = length(click),
+    prc_clicks = (sum(click)/length(click))*100) %>% 
+  arrange(desc(n_clicks))
+  
+# 2) advertiser metrics
+adv_metrics <- train %>% group_by(advertiser_id) %>% 
+  summarise(
+    n_clicks = sum(click),
+    tot_clicks = length(click),
+    prc_clicks = (sum(click)/length(click))*100) %>% 
+  arrange(desc(n_clicks))
+
+# 3) keyword metrics
+adv_keyword <- train %>% group_by(keyword_id) %>% 
+  summarise(
+    n_clicks = sum(click),
+    tot_clicks = length(click),
+    prc_clicks = (sum(click)/length(click))*100) %>% 
+  arrange(desc(n_clicks))
+```
+
+
+## Data inspection
+
+```{r}
+train %>% select(click) %>% melt() %>% ggplot()+
+geom_bar(aes(x = value, fill = factor(value)), alpha = 0.7) + theme_minimal()
+```
+The number of clicked ad is equal to
+
+```{r}
+sum(train$click)
+```
+```{r}
+sum(!train$click)
+```
+with a class ratio of
+
+```{r}
+(sum(train$click)/nrow(train))*100
+```
+
+
+The dataset is highly imbalanced and rebalancing strategy must be implemented.
+In this case a cost sensitive learning approach could represent the best option
+but unfortunately we do not have any informatio that can be used to assign
+costs to the two different classes. We opt for a resampling strategy.
+Given the high imbalance score oversampling would probably introduce much noise
+by producing many replicates of the records which belongs to class 1. 
+Since the dataset is not so small in this case undersampling, which reduces the observations
+in the 0 class might be a better choice. We decide to proceed further using
+both SMOTE and undersampling.
+We proceed further inspecting the feature variables
+
+```{r}
+print(apply(train,2, function(x) length(unique(x))))
+```
+
+All the features that can be used to predict the click are factors and many of them
+can assume a huge number of values. The one-hot encoding could be adopted to 
+code the depth, position and impression but appear unreasonable for the other variables
+since the dimension of the feature space would explode producing course of dimensionality.
+In order to overcome this difficulty we decode categorical variable by applying the
+Laplace smoothing.
+
+
+
+
+## MLR model
+
+In practical applications it is common that different steps are involved in
+constructing a machine learning model such as data preprocessing, feature reduction
+model valdiation and so on.
+Inorder to stardadize all these procedure ML pipelines are generally first
+tested and next sent into production.
+In MLR3 pipelines are represented by graphs, where each node corresponde to 
+an operation which is performed on the data and the lines define the input/output
+relationships between the operations.
+A pipeline is generally constructud by first defining the single transofrmations
+and/or elements and subsequently by merging all the elements in the pipeline graph.
+Despite in this case we are not going to put in production the model or repeat
+the workflow on new data we adopt this pipeline approach as it is closer to
+what happens in reality.
+
+In the first part we will define all the elements that will be used in building
+the graph, while in the second part we will compose the workflow pipeline.
+
+The first ingredient that we need is to convert our training data to a classification task.
+
+```{r}
+# define the classification task
+train$click <- factor(train$click)
+task <- TaskClassif$new(id = "ppc",  = train, target = "click")
+```
+
+Next, we define the learners that we will use for prdedicting the click of 
+a customer. We will use kernel support vector machine, kernel nearest neighbour and extreme
+gradient  boosting.
+
+```{r, echo = TRUE}
+# define learners and ids
+learners <- c("classif.ksvm", "classif.kknn", "classif.xgboost")
+# obtain te selected learners
+learners <- lapply(learners,lrn)
+```
+
+In order to rebalance the data we will adopt two different resampling strategies 
+We will consider under and over sampling. Both methods
+work by randomly sampling observations from the two classes. Undersampling
+balance the dataset by subsampling units from the majority class, while oversampling
+augment the minority class by randomly ampling observations.
+
+```{r, echo = TRUE}
+# define rebalancing pipeline
+po_under <- po("classbalancing", id = "undersample", adjust = "minor",
+  reference = "nior", shuffle = FALSE, ratio = 1 / 6)) 
+
+po_over <- po("classbalancing", id = "oversample", adjust = "major",
+  reference  = "major", shuffle = FALSE, ratio = 6)
+```
+
+The third step is to define how to tune the hyperparameters and how to select
+the best performing model. Two paths can be generally follow. The first consists
+in splitting splitting the data 
+into three sets:
+
+ * **Training**. Which is used to train different models and compare their
+  performances.
+  
+ * **Validation**. Which is used to tune the hyperparameters of a model.
+ 
+ * **Test**. Which is used to obtain an unbiased estimate of the classification error.
+ 
+On one hand this first approach requires  that a huge amount of data is available and
+on the other hand, that it is possible to produce three omogeneous sets.
+In our case since it might be difficult to identify a rule that can be used to split
+the data into two sets with similar characteristics we adopt a nested cross validation approach.
+In order to score the different models we will monitor four different metrics
+
+* Classification Error
+* Specitivity
+* Sensitivity
+* AUC
+
+Classification Error and AUC represent two standard metric which are used to 
+evaluate the performances of a classifier when the data are balanced. However,
+when data are unbalanced the Specitivity and Sensitivity represent better metrics
+as they allow to see the goodness that the classifier can achieve on the two 
+different classes. Finally as a searching strategy for hyperparameters
+optimization we adopt a random search method.
+
+
+```{r, echo = TRUE}
+# define the resampling strategy
+inner_resampler <- rsmp("cv", folds = 10L)
+
+# define the outer resampler
+outer_resampler <- rsmp("cv", fould = 5L)
+
+# define the tuner
+tuner <- tnr("random_search", resolution = 10)
+```
+
+Since nested corss validation is obtained with two nested CV loops we first
+have to encapsulate all the informations in the learner which now encompass the
+nested CV steps and subsequently apply the outer resampling strategy.
+
+```{r}
+# create the autotuner for each learner
+auto_tuner <- lapply(learners, function(x) AutoTuner$new(
+  learner = x,
+  resampling = resampling,
+  measure = measure,
+  search_space = search_space,
+  terminator = terminator,
+  tuner = tuner
+))
+```
+
+Having defined all the ingredients it is now to time to put them together in 
+the workflow graph. The first step in building the ML pipeline is to define
+the transformation that will be applied to the incoming data.
+As said in the beginning to avoid curse of dimension we are going to
+recode our categorical features with the frequency conversion.
+
+```{r}
+# define the mutate pipe
+mutate = po("mutate")
+
+# define the function that convert each feature with the corresponding frequency
+freq_conv = function(x){
+  
+}
+```
+
+
+
+# define the resampling strategy for hyperparameter tuning and model scoring
+resampling <- rsmp()

@@ -1,0 +1,2 @@
+"0","# Read data"
+"0","co2 <- read.csv(""owid-co2-data.csv"")"

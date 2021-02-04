@@ -1,6 +1,6 @@
 name: "Alessandro Ghiretti"
 title: "Alessandro Ghiretti"
-description: 'Exploring Statistics and Econometrics with R'
+description: 'Data and Statistics'
 output_dir: "docs"
 theme: theme.css
 navbar:

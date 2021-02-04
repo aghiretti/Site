@@ -1,6 +1,6 @@
 ---
 title: "ABOUT"
-description: "Few words about myself"
+description: "Life lover"
 ---
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
@@ -8,17 +8,17 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ## Alessandro Ghiretti | Phd Statistics
 
-Statistician, enthusiat for traveling and motorbike riding, love for statistics
+Statistician, data enthusiast, traveller and motrbike rider.
 
 My name is Alessandro Ghiretti and I work as a Data Scientist.
-After graduating in Marketing I obtained a Phd in Statistics where I got
+After graduating in Marketing I obtained a Phd in Statistics where I got 
 interested in time series analysis, econometrics, robust statistics and outlier
 detection and machine learning.
 
-R is my computing choice but in the past I have also spent time playing with Matlab. 
-I am a big Julia fan and sorry guys but I do not Python that much
+R is my computing choice but in the past I have also spent time playing with Matlab 
+and Python.
 
 In my free time I like traveling, riding my motorbike (KTM 790 adventure S),
-listening music, reading a watching movies (Netflix addicted)
+listening music, reading and watching movies (Netflix addicted)
 
 

@@ -1,0 +1,5 @@
+"0","setwd(""C:\\Users\\USR02193\\OneDrive - Chiesi Farmaceutici S.p.A\\Desktop\\Blog\\Data\\PPC\\"")"
+"0",""
+"0","# load train and test data"
+"0","train <- read.csv(""train.csv"")"
+"0","test <- read.csv(""test.csv"")"

@@ -1,0 +1,8 @@
+"0","# plot results"
+"0","p1 <- res2 %>% ggplot() +"
+"0","  geom_line(aes(x = t, y = my), color = ""darkturquoise"") +"
+"0","  geom_line(aes(x = t, y = X1 + 1.96*X1.1), linetype = ""dashed"", color = ""red"", size = 0.8) +"
+"0","    geom_line(aes(x = t, y = X1 - 1.96*X1.1), linetype = ""dashed"", color = ""red"", size = 0.8) +"
+"0","  geom_line(aes(x = t, y = X1), color = ""orange"", size = 1) +"
+"0","  ggtitle(""Local level trend estimated state with 95% CI"") +"
+"0","  theme_minimal()"

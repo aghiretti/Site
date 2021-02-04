@@ -1,0 +1,612 @@
+---
+title: "CO2 emissions. An analysis using Dynamic Factor Models"
+description: |
+  In this post we will use DFM to investigate  
+  the CO2 emissions produced over the last 100 years by 15 countries of different geographical and
+  economical areas. To estimate the models we will use the R package MARSS.
+categories:
+  - Econometrics
+  - Time series
+  - R
+  - Environment
+preview: Preview.jpg
+author:
+  - name: Alessandro Ghiretti 
+date: "`r Sys.Date()`"
+output: 
+  distill::distill_article:
+    self_contained: false
+    toc: true
+    toc_depth: 3
+code_folding: true
+bibliography: references.bib
+nocite: | 
+  @durbin2012time, @harvey1989time, @dlmharvey, @MARSS
+---
+
+```{r setup, include=FALSE}
+```
+# Introduction
+Carbon dioxide emissions are the primary driver of global climate change and
+it is widely recognized that to avoid the worst impacts of climate change, 
+the world needs to urgently reduce emissions.
+Prior to the Industrial Revolution, emissions were very low and growth in emissions 
+was still relatively slow until the mid-20th century. For example, in 1950 the world emitted 
+just over 5 billion tonnes of (CO2), about the same as the US, or half of China’s 
+annual emissions today. By 1990 this had quadrupled to 22 billion tonnes. 
+Emissions have continued to grow rapidly and we now emit over 36 billion tonnes each year.
+Emissions growth has slowed over the last few years, but they have yet to reach their peak.
+
+The purpose of this post is to use dynamic factor models and try to identify 
+hidden common trends between the three main geographical areas of EU, North America 
+and Asia that can be used to describe the evolution of the CO2 emissions.
+We will consider CO2 emissions from 15 of the main Global Economies.To fit our 
+model we will use the R package MARSS
+
+
+# Analysis 
+## Data Description
+The data that we consider available at the following link:
+
+https://raw.githubusercontent.com/owid/co2-data/master/owid-co2-data.csv
+
+The data contains the CO2 emissions, the GPD and other relevant variables for all the
+world countries starting from 1715 to 1018.
+In our analysis we will consider data starting from 1900 to 2018 for the following
+countries: Italy, United Kingdom, France, Germany, Spain, United States, Canada,
+Japan, India, China, Argentina, Brazil, Peru, New Zealand and Australia
+ 
+
+
+```{r, echo = FALSE, messages = FALSE}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(MARSS)
+library(formattable)
+library(patchwork)
+library(plotly)
+library(reshape)
+library(RColorBrewer)
+```
+
+## Exploratory Data Analysis
+
+We start the analysis by loading the data into R. In my case the data in in the
+project folder
+
+```{r, echo = TRUE}
+# Read data
+co2 <- read.csv("owid-co2-data.csv")
+```
+
+We proceed filtering out the countries and the variables that are not of interest
+to us. Moreover, as it might be interesting to compare the results at continent
+level we add the variable zone which contains the geographic zone of every country
+that we selected.
+
+```{r, echo = TRUE}
+# Filter countries to include in the analysis
+countries <- c("Italy","United Kingdom","France","Germany","Spain","United States", 
+               "Canada","Japan", "India", "China",  "Argentina",
+               "Brazil", "Peru", "New Zealand", "Australia")
+
+# Define geographical zones 
+zone <- c(rep("Europe",5), rep("North America", 2), rep("Asia",2),
+          rep("South America",3), rep("Oceania",2))
+
+# Add geographical zones to the data
+co2 <-co2 %>% 
+  mutate(zone = ifelse(country %in% 
+    c("Italy","United Kingdom","France","Germany","Spain"),
+    "Europe",ifelse( country %in% c ("United States","Canada"), "North America",
+    ifelse(country %in% c("Japan", "India", "China"), "Asia",
+    ifelse(country %in% c("Argentina","Brazil", "Peru"),"South America", "Oceania")))))
+
+# Filter the data 
+dat <- co2 %>% 
+  # filter the countries and the year
+  filter(country %in% countries &
+         year >= 1910) %>% 
+  # select columns
+  select(iso_code, country, year, zone, co2)
+```
+
+Now we are ready to analyze our data. Lets start by  
+looking at the temporal structure of the CO2 emissions for the different countries.
+
+```{r, echo = TRUE, code_folding=TRUE}
+nb.cols <- length(countries)
+mycolor <- mycolors <- colorRampPalette(brewer.pal(9, "YlGnBu"))(nb.cols)
+# Co2 Emissions Plot
+# Plot co2 emissions
+p1 <- dat %>% ggplot(aes(x = year, y = co2, color = country)) +
+  geom_line() +
+  scale_color_manual(values = mycolor) +
+  ggtitle("CO2 emissions time series")+
+  ylab("CO2 emissions") +
+  theme_minimal()
+
+ggplotly(p1)  
+```
+
+As we immediately see there are big differences in the CO2 emissions. 
+As expected USA is the country with the highest CO2 emissions for the entire period,
+followed by China that shows an impressive positive trend starting from 1975.
+Germany, Japan and India represent the other four countries with the highest CO2
+values. Since there are great differences between the series, in order to reduce the
+discrepancies it might be useful to take a look at the log transformed data.
+
+
+```{r}
+p1 <- dat %>% ggplot(aes(x = year, y = log(co2), color = country)) +
+  geom_line() +
+  scale_color_manual(values = mycolor) +
+  ggtitle("log(CO2) time series")+
+  ylab("CO2 emissions") +
+  theme_minimal()
+
+ggplotly(p1)  
+```
+
+With the log transform we are able to see that there is a upward trend
+common to all of the countries. By looking at the whole picture in more detail
+we see that Peru and New Zealand are the countries with the lowest emission.
+Moreover, an interesting pattern is observed around 1945 where many countries 
+exhibit severe downward spikes.
+
+
+```{r, echo = TRUE, code_folding=TRUE}
+ p1 <- dat %>% ggplot(aes(x = zone, y = co2, color = country)) +
+  geom_boxplot() +
+   scale_color_manual(values = mycolor) +
+  ggtitle("CO2 concentration boxplot")+
+  ylab("CO2 concentration") +
+  theme_minimal()
+
+ p1
+
+```
+
+When we consider the aggregated data over the entire period the differences in
+the CO2 emission between countries are even more evident.
+Oceania and South America are the zone with the lowest and less variable
+average emissions. In Europe the emissions appear on average pretty low but more
+variable compared to those of Oceania and South America. Overall, with the 
+exception of USA and China, we observe
+that the variability and the average value of the CO2 emissions are similiar
+between the countries that belong to the same geographical zone.
+
+```{r, echo = TRUE, code_folding = TRUE}
+ p1 <- dat %>% 
+  group_by(year,zone) %>% summarise(co2 = sum(co2)) %>% 
+  ggplot() +
+  geom_line(aes(x = year, y = co2, color = zone),
+            size = 1.2, alpha = 0.6) +
+   scale_color_brewer(palette = "Set2") +
+  ggtitle("CO2 total concentration by area")+
+  ylab("CO2 concentration") +
+  theme_minimal()
+
+ggplotly(p1)
+```
+
+
+To conclude our exploratory analysis we compute and examine the correlation of the 
+CO2 emissions between the different countries. 
+It appears that in general there is a general high positive correlation between the 
+CO2 levels observed in the different countries and apparently this correlation
+is not strictly related to the geographical area.
+
+```{r}
+m <- dat %>% 
+  select(country,year,co2) %>% 
+  pivot_wider( names_from  = country, values_from = co2) %>% 
+  select(-c("year")) %>% 
+  cor() %>% melt()
+  
+ggplot(m, aes(x = X1, y = X2, fill = value), alpha = 0.4) +
+  geom_tile() +
+  scale_fill_gradient(low = "pink", high = "royalblue")+
+  xlab("") + ylab("") +
+  theme_minimal()+  theme( panel.background = element_blank(),
+                          axis.text.x = element_text(size = 7, angle = 90))
+```
+
+
+
+
+## Model specification and estimation
+Having explored our data we proceed to specify the model.
+In this case we will use a dynamic factor model to identify common trends
+between the CO2 emissions of the different countries.
+Compared to VAR,  in dynamic factor models require a lower number of parameters
+need to be estimated, and therefore they result particularly useful when
+then number os series considered is high.
+The genera idea behind DFM is that the behavior of $k$ time series can be described
+by a set of $m$ common states where in general $m$ is much smaller than $k$.
+After the $m$ states are obtained they can be used for different purposes, for 
+example to identify common structures in the series, such as trends, cyclical
+or seasonal patterns or as proxy variables that resumes global structures of the
+underlying series. Following Harvey (referenze)
+and MARSS we cosnider the following Dynamic Factor model (DFM).
+
+
+$$
+\begin{aligned}
+
+\begin{pmatrix}
+y_{1} \\
+y_{2} \\
+\vdots \\
+y_{m+k}
+\end{pmatrix}_{t}
+
+&= 
+
+\begin{pmatrix}
+b_{11} & 0 & \cdots & 0 \\
+b_{21} & b_{22} & \cdots & 0 \\
+\vdots& \vdots & \ddots & \vdots \\
+b_{k1} & b_{k2} & \cdots & b_{km}
+\end{pmatrix}
+
+\begin{pmatrix}
+x_{1} \\
+x_{2} \\
+\vdots \\
+x_{m}
+\end{pmatrix}_{t}
+
++
+
+\begin{pmatrix}
+w_{1} \\
+w_{2} \\
+\vdots \\
+w_{m}
+\end{pmatrix}_{t} \\
+
+
+
+
+
+
+\begin{pmatrix}
+x_{1} \\
+x_{2} \\
+\vdots \\
+x_{m}
+\end{pmatrix}_{t}
+
+&= 
+
+\begin{pmatrix}
+1 & 0 & \cdots & 0 \\
+0 & 1 & \cdots & 0 \\
+\vdots& \vdots & \ddots & \vdots \\
+0 & 0 & \cdots & 1
+\end{pmatrix}
+
+\begin{pmatrix}
+x_{1} \\
+x_{2} \\
+\vdots \\
+x_{m}
+\end{pmatrix}_{t-1}
+
++
+
+\begin{pmatrix}
+v_{1} \\
+v_{2} \\
+\vdots \\
+v_{m+k}
+\end{pmatrix}_{t}
+\end{aligned}
+$$
+
+According to model (ref) the $k$ CO2 emission time series are related to $m$ common hidden trends, 
+each one described by a random walk and possibly correlated to the others.
+The relevance that each state has on the observed series is expressed by the corresponding
+factor loading $b_{jq}$.
+According to the explanatory analysis we fit a model with four states and an unrestricted
+covariance matrix. As it is generally suggested when fitting this kind of models the observations
+are standardized. In the following  we reshape our data in a $N \times T$ matrix and
+proceed to fit the model
+
+```{r, echo = TRUE}
+# row: country column: year
+y <- dat %>% 
+  select(-c("zone")) %>% 
+  pivot_wider(names_from = year, values_from = co2) %>% 
+  arrange(iso_code)
+
+# convert the data in matrix
+y = as.matrix(y[,3:ncol(y)])
+
+# set parameters for optimizer
+cntl.list <- list(minit = 200, maxit = 5000, allow.degen = FALSE)
+
+#  Define values for grid search
+# define covariance structures for the states
+R.structure <- "unconstrained"
+m <- 4
+
+model.list <- list(m = m, R = R.structure)
+# fit model to standardized data
+mod.me <- MARSS(y, model = model.list, z.score = TRUE, form = "dfa",
+                control = cntl.list, silent = TRUE)
+```
+
+### Estimated trends
+Once we have estimated our model we can extract and plot the states of the system.
+Since there exists many possible solutions to model (ref), we apply the varimax
+rotation of the factors and of the trends. (referenza)
+
+```{r, echo = TRUE}
+# perform rotation of the states before plotting
+# get the inverse of the rotation matrix
+Z.est <- coef(mod.me, type = "matrix")$Z
+H.inv <- 1
+if (ncol(Z.est) > 1){
+H.inv <- varimax(coef(mod.me, type = "matrix")$Z)$rotmat}
+
+# rotate factor loadings
+Z.rot <- Z.est %*% H.inv
+#extract the rotated loadings and reshape into a matrix
+loadings <- t(Z.est) %>% data.frame()
+colnames(loadings) <- unique(dat$country)
+loadings$x <- c("X1","X2", "X3", "X4")
+# add zone to the loadings
+loadings <- loadings %>% 
+  pivot_longer(-c("x"), names_to = "country", values_to = "loading") %>% 
+  mutate(zone = ifelse(country %in% 
+    c("Italy","United Kingdom","France","Germany","Spain"),
+    "Europe",ifelse( country %in% c ("United States","Canada"), "North America",
+    ifelse(country %in% c("Japan", "India", "China"), "Asia",
+    ifelse(country %in% c("Argentina","Brazil", "Peru"),"South America", "Oceania")))))
+
+
+# rotate trends and covnert them to a data frame
+trends.rot <- solve(H.inv) %*% mod.me$states
+trends.rot <- t(trends.rot)
+trends.rot <- data.frame(trends.rot)
+
+# assign column names
+colnames(trends.rot) <- c("x1","x2","x3","x4")
+
+# add year and reshape
+trends.rot$Year <- seq(from = 1910, to = 2018)
+trends.rot <- trends.rot %>% 
+  pivot_longer(cols = -c("Year"),
+              names_to = "state", values_to = "val") %>% 
+  group_by(state) %>% dplyr::arrange(Year, .by_group = TRUE)
+
+# obtain estimated states
+s <- tsSmooth(mod.me)
+colnames(s) <- c("state", "Year", "val","se")
+s$statesRot <- trends.rot$states 
+s$Year <- rep(seq(from = 1910, to =2018),4)
+
+```
+
+```{r states, fig.cap = "Smoothed states", code_folding = TRUE}
+p1 <- trends.rot %>% ggplot() +
+  geom_line(aes(x = Year, y = val, group = state, color = state), size = 1.3, alpha = 0.7) +
+  scale_color_brewer(palette = "Set2") +
+  theme_minimal()+  
+  ggtitle("Smoothed states") +
+  facet_wrap(~ state ,ncol = 2)
+
+
+p2 <- s %>% ggplot() +
+  geom_line(aes(x = Year, y = val, group = state, color = state), size = 1.3, alpha = 0.7) +
+  scale_color_brewer(palette = "Set2") +
+  theme_minimal()+  
+  ggtitle("Rotated states") +
+  facet_wrap(~ state,ncol = 2)
+
+p1/p2
+```
+
+```{r factors,fig.cap = "Loading factors", code_folding=TRUE}
+# Loadings by country
+m <- loadings %>% 
+  arrange(desc(loading)) %>% 
+  ggplot() +
+  geom_bar(stat = "identity", aes(x = country, y = loading, 
+                                  fill = country, color = country)) +
+  scale_color_manual(values = mycolor) +
+  scale_fill_manual(values = mycolor) +
+  theme_minimal()+  theme(legend.position = "none", panel.background = element_blank(),
+                          axis.text.x = element_text(size = 7, angle = 90))+
+  ylab("loadings")+
+  ggtitle("Factor loadings by country") + 
+  xlab("")+
+  facet_wrap(~x,ncol = 2)
+
+ggplotly(m)
+```
+
+Figure \@ref(fig:states) shows the smoothed states before and after the varimax rotation
+and  Figure \@ref(fig:factors) the rotated factors loadings of the different series.
+By looking at the loadings in Figure \@ref(fig:factors) 
+we immediately see that X1 represent the state  more relevant to all the countries.
+All the loadings associated to it are positive and it describes the common upward
+trend observed in the exploratory phase. State X3 is characterized by slow negative trend 
+followed by a slow increasing ramp at the end at the period. The largest loadings, 
+in absolute value associated to it are observed for Italy, Japan, France, china and
+India. To conclude state X3 and X4 describe two opposite behaviors. It is interesting
+to note that for states X3 and X2 the loadings associated to Italy, India, 
+Germany and France follow the exact opposite behavior of those associated to Japan
+and China.
+
+
+## Forecasts
+Having inspected the common trends it is time to check if the model is truly able
+to produce accurate forecasts for the series considered.
+We consider the one step ahead predictions and the associated prediction errors.
+
+```{r, echo = FALSE}
+y.hat <- predict(mod.me, type = "ytt1")$pred
+y.hat <- y.hat %>% 
+  # add columns
+  mutate(country = rep(unique(dat$country),each = nrow(y.hat)/15),
+  Year = rep(seq(from = 1910, to = 2018), 15))
+```
+
+
+```{r predict, echo = TRUE, fig.caption = "One step ahead predictions", code_folding = TRUE}
+p1 <- y.hat %>% ggplot() +
+  geom_point(aes(x = Year, y = y, group = country),color = "pink", alpha = 0.7) +
+  geom_line(aes(x = Year, y = estimate, group = country), 
+            size = 1.2, color = "royalblue", alpha = 0.7) +
+  facet_wrap(~country, ncol = 3) +
+  ggtitle("One step ahead predictions") +
+  theme_minimal()
+
+ggplotly(p1)
+```
+
+
+From plot \@ref(fig:predict) it appears that forecasts produced by the model are 
+pretty accurate. Few pronounced errors are observed for the series of Italy and France 
+in 1921, 1925 and 1945. In order to quantify the accuracy and compare numerically
+the predictive power of the model for the different countries we
+compute the following error metrics:
+
+* MSE: $mean((y - \hat{y})^{2})$
+* MAE: $mean(|y - \hat{y}|)$
+* MAPE:$mean \left( \left| \frac{100( y - \hat{y})}{y} \right|   \right)$
+
+```{r, echo = TRUE}
+# define the metrics
+mse <- function(x){
+   m <- mean((x$y - x$estimate)^2)
+   return(m)
+}
+
+mae <- function(x){
+   m <- mean(abs(x$y - x$estimate))
+   return(m)
+}
+
+mape <- function(x){
+   m <- mean(abs(((100*(x$y - x$estimate))/x$y)))
+   return(m)
+}
+
+# estimate the metrics for the different series
+metrics <- y.hat %>% group_by(country) %>% 
+  nest() %>% mutate(mse = lapply(data,mse),
+                    mae = lapply(data,mae),
+                    mape = lapply(data,mape)) %>% 
+unnest() %>% 
+  dplyr::select(country,mse,mae,mape) %>% 
+  arrange(desc(mse), desc(mae), desc(mape)) %>% 
+  unique()
+
+metrics %>% formattable(list(`mae` = color_bar("#FA614B"),
+                             `mse` = color_bar("#FA614B"),
+                             `mape` = color_bar("#FA614B")))
+```
+There is a general agreement in the metrics for Italy, France and India that appear
+as the countries for which the model produces the worst predictions.
+MAjor disagreements are observed for China, Spain and Germany. While according to 
+mse and mae the performances in predicting the CO2 emissions of these countries
+are not that bad, the same is not observed in the mape. Overall by taking into 
+account that no covariates are included in the model and that the states are
+modeled as random walk the one step ahead predictions appear good.
+However, it is important to note that in order to produce accurate forecasts on 
+longer horizons model the states as autoregressive process or including covariates
+should be seriously considered.
+
+### Diagnostics
+We conclude the analysis with the inspection of the residuals plot in order to 
+check if the underlying model assumptions are violated.
+
+```{r, echo = FALSE}
+# extract model residuals
+mod.res = autoplot(mod.me, plot.type = "model.resids")$data %>% 
+  mutate(country = rep(unique(dat$country),each = nrow(y.hat)/15),
+         Year = rep(seq(from = 1910, to = 2018), 15))
+# extract state residuals
+state.res = autoplot(mod.me, plot.type = "state.resids")$data %>% 
+  mutate(Year = rep(seq(from = 1911, to =2018),4))
+```
+
+```{r fittedres, echo = TRUE, fig.cap = "Fitted residuals", code_folding = TRUE}
+# plot model residuals
+p1 <- mod.res %>% ggplot() +
+  geom_point(aes(x = Year, y = .resids, group = country), color = "royalblue", alpha = 0.4) +
+  geom_ribbon(aes(x = Year, ymin = - 1.96*.sigma, 
+                  ymax = +1.96*.sigma), alpha = 0.4) +
+  facet_wrap(~country, ncol = 3) +
+  theme_minimal() +
+  ylab("residuals") + ggtitle("Fitted residuals")
+
+ggplotly(p1)
+```
+
+
+
+
+```{r stateres, fig.cap = "State residuals", code_foldin = TRUE}
+p1 <- state.res %>% ggplot() +
+  geom_point(aes(x = Year, y = .resids, group = .rownames), color = "royalblue", alpha = 0.4) +
+  geom_ribbon(aes(x = Year, ymin = - 1.96*.sigma, 
+                  ymax = +1.96*.sigma), alpha = 0.3) +
+  facet_wrap(~.rownames, ncol = 2) +
+  theme_minimal() +
+  ylab("residuals") + ggtitle("State residuals")
+
+ggplotly(p1)
+
+```
+
+From @\ref(fig:fittedres) we see that the overall fit of the model is not too bad, 
+but for some countries such as Italy, France and India the model is not able to 
+capture a correlation structure that remains evident in the cyclical pattern of
+the residuals. Moreover, some outlying units appear to be present in the data. This is
+particularly evident for Italy, France, India and United Kingom.
+From figure @\ref(fig:stateres) the state residuals appear well dispersed but
+for state X4 there is some autocorrelation evident from the cyclical pattern.
+
+
+```{r, echo = FALSE}
+p1 <- mod.res %>% ggplot() +
+  geom_qq(aes(sample = .resids, group = country), color = "royalblue", alpha = 0.4) +
+  stat_qq_line(aes(sample = .resids, group = country), color = "red", alpha = 0.4) +
+  facet_wrap(~country, ncol = 3) +
+  theme_minimal() + 
+  ggtitle("State residuals")
+
+ggplotly(p1)
+```
+
+
+```{r, echo = FALSE}
+p1 <- state.res %>% ggplot() +
+  geom_qq(aes(sample = .resids, group = .rownames), color = "royalblue", alpha = 0.4) +
+  stat_qq_line(aes(sample = .resids, group = .rownames), color = "red", alpha = 0.4) +
+  facet_wrap(~.rownames, ncol = 2) +
+  theme_minimal() + 
+  ggtitle("State residuals")
+
+ggplotly(p1)
+```
+Overall the normality assumption appears satisfied for the fitted residuals, while
+in the state residuals a slight deviation is observed in state X3 and X4.
+
+
+## Conclusions
+In this post we have investigated the application of dynamic factor model
+to study the CO2 emissions of 15 countries. Despite the model performed well
+when the forecast horizon is equal to one year, the inclusion of covariates or 
+the use of autoregressive process to describe the evolution of the states could
+improve the model performances. This is also confirmed from the
+analysis of the residuals that both at observation and state level showed a cyclical
+pattern. Moreover the inclusion of dummy variable to account for structural breaks
+should be considered in order to improve the validity of the underlying model.
+

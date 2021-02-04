@@ -1,0 +1,44 @@
+"0","knitr::opts_chunk$set(echo = FALSE)"
+"0","library(dplyr)"
+"2","
+Attaching package: ‘dplyr’
+
+"
+"2","The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+"
+"2","The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+"
+"0","library(tidyr)"
+"0","library(ggplot2)"
+"0","library(janitor)"
+"2","
+Attaching package: ‘janitor’
+
+"
+"2","The following objects are masked from ‘package:stats’:
+
+    chisq.test, fisher.test
+
+"
+"0","library(kableExtra)"
+"2","
+Attaching package: ‘kableExtra’
+
+"
+"2","The following object is masked from ‘package:dplyr’:
+
+    group_rows
+
+"
+"0","library(LMest)"
+"2","LMest: Generalized Latent Markov Models (Version 3.0.1)
+Type 'citation(""LMest"")' for citing this package.
+"
+"0","library(rmarkdown)"
+"0","library(patchwork)"

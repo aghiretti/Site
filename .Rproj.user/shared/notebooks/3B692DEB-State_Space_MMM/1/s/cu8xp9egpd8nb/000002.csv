@@ -1,8 +1,0 @@
-"0","# Assign parameters to the estimated model"
-"0","TVREG.dlm <- buildTVREG(TVREG.mle$par,x)"
-"0",""
-"0","# Obtain fitlered states"
-"0","TVREG.f <- dlmFilter(y,TVREG.dlm)"
-"0",""
-"0","# Obtain smoothed states"
-"0","TVREG.s <-  dlmSmooth(TVREG.f)"

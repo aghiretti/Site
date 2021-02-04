@@ -1,0 +1,8 @@
+"0",""
+"0","setwd(""C:\\Users\\USR02193\\OneDrive - Chiesi Farmaceutici S.p.A\\Desktop"")"
+"0",""
+"0","ho <- read.csv(""temperature-anomaly.csv"")"
+"0","colnames(ho) <- c(""Geo"", ""t"",""my"",""ub"" ,""lb"")"
+"0",""
+"0","ho <- ho %>% filter(Geo == ""Global"")"
+"0","y <- t(as.matrix(ho$my))"

@@ -1,0 +1,12 @@
+"0"," p1 <- dat %>% "
+"0","  group_by(year,zone) %>% summarise(co2 = sum(co2)) %>% "
+"0","  ggplot() +"
+"0","  geom_line(aes(x = year, y = co2, color = zone),"
+"0","            size = 1.2, alpha = 0.6) +"
+"0","   scale_color_brewer(palette = ""Set2"") +"
+"0","  ggtitle(""CO2 total concentration by area"")+"
+"0","  ylab(""CO2 concentration"") +"
+"0","  theme_minimal()"
+"2","`summarise()` regrouping output by 'year' (override with `.groups` argument)
+"
+"0","ggplotly(p1)"

@@ -1,172 +1,245 @@
 ---
 title: "Media Mix Modeling via Dynamic Linear Regression"
 description: | 
-  In this post we discuss the application of Dynamic Linear Regression 
-  model to Media Mix Modeling. We adopt a state space representation of the 
-  linear regression model and use the dlm R package to fit the model to a
-  media mix modeling example.
+  In this post we discuss the application of the Dynamic Linear Regression 
+  model to Media Mix Modeling. To fit the model we will use the R package MARSS.
 categories:
   - Econometrics
-  - State Space Models
+  - R
   - Time Series
+  - Marketing
+preview: Preview.jpg
 author:
-  - first_name: Alessandro
-  - second_name: Ghiretti
+  - name: Alessandro Ghiretti
     url: 
-    affiliation: 
-    affiliation_url: 
-bibliography: references.bib
-date: "`r Sys.Date()`"
+date: 08-12-2020
 output: 
   distill::distill_article:
-      toc: true
-      toc_depth: 3
-repository_url: https://github.com/rstudio/distill
-base_url: https://www.aghiretti.com/
-self_contained: false
+    self_contained: false
+    toc: true
+    toc_depth: 3
+bibliography: references.bib
 nocite: | 
-  @durbin2012time, @harvey1989time, @petris2009dynamic, @chan2017challenges
+  @durbin2012time, @harvey1989time, @dlmharvey, @MARSS, @chan2017challenges, 
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
-library(dplyr)
-library(tidyr)
-library(ggplot2)
-library(dlm)
-library(lubridate)
-library(kableExtra)
-library(GGally)
-library(corrplot)
-library(patchwork)
 ```
 
 # Introduction
-Marketers are generally interested in building models that link different marketing variables such as
-sales activities, operations and external factors, to changes in consumer
-behavior, such as acquisition, sales, revenue, and
-retention .Once the model are implemented these can then support the development of forwardlooking business 
-simulations and optimization exercises. When only advertising variables are included in the model 
-this practice is generally called media mix modeling.
 
-One of the models most used in practice for media mix modeling is the linear regression model. Once the regression is fitted and unknown parameters are estimated, it is possible
-to infer the effect that the different explanatory variables have on the response variable and obtain key information such as marginal estimated contributions and elasticities.
-One of the key assumptions about the plain linear regression model is that the estimates of the parameters remain constant over the period considered. This assumption appears to be limited in many context, for example in marketing it might be assumed that the marginal effect on budget allocated to different media changes, as the customer behavior or the penetration of one media evolves over time.
+Marketers are generally interested in building models that link different marketing 
+variables such as sales activities, operations and external factors, to changes in consumer behavior, 
+such as acquisition, sales, revenue, and retention. Once the model are implemented 
+these can then support the development of forwardlooking business simulations and optimization exercises. 
+When only advertising variables are included in the model this practice is generally called **media mix modeling**.
 
-In order to overcome this limitation the Dynamic Linear Regression Model (DLM), which allows for time varying parameters represent a powerful alternative to plain linear regression. Once the DLM is casted in State Space form it is possible to estimate the parameters in a dynamic way and conduct a series of inferential procedures. 
+One of the models most used in practice for media mix modeling is the linear 
+regression model. Once the regression is fitted and unknown parameters are estimated, 
+it is possible to infer the marginal effect that the different explanatory variables have 
+on the response variable. One limitation of the plain linear regression model is that 
+the estimates of the parameters remain constant over time. This assumption might be limited in some context,
+for example in marketing, where it is well known that the preferences of the customers 
+or the penetration of a certain media evolves with time.
 
-We will first give an introduction to the State Space models, and then we will show, using the R package dlm, how to fit a DLM to a Media Mix Modeling problem.
+In order to overcome this limitation the Dynamic Linear Regression Model (DLM), which allows for 
+time varying parameters represent a powerful alternative to plain linear regression. 
+Once the DLM is formulated in State Space form it is possible to estimate the 
+parameters in a dynamic way and conduct a series of inferential procedures.
 
 
-# State Space Models
-State space models provide a unified methodology for treating a wide range
-of problems in time series analysis. In this approach it is assumed that the
-development of the time series under study is determined by an unobserved component  $\alpha_{1},\dots,\alpha_{n}$, with which are associated a series of observations
-$y_{1},\dots,y_{n}$. The unobserved components are called the states of the process and their evolution is assumed to be described by a first order Markov process. The relation between the $\alpha_{t}$’s and the $y_{t}$’s is specified by the state
-space model.  The main purpose of state space analysis is to infer the relevant
-properties of the $\alpha_{t}$'s from a knowledge of the observations $y_{1},\dots,y_{n}$.
-The simple linear Gaussian state space model is given by
+
+# Dynamic Linear Model
+Given a standard linear regression model
+
+$$
+y_{t} = x'_{t} \beta + \epsilon_{t} \quad \epsilon_{t} \sim N(0, \sigma^{2}) 
+$$
+
+where $y_{i}$ is a scalar variable, $x_{i}$ is a $ k \times 1$ vector of 
+regressors, $\beta$ is a $k \times 1$ vector of unknown parameters
+and $\epsilon_{i}$ is a disturbance term, a dynamic linear model is obtained by
+allowing the paramters $\beta$ to evolve over time thorough a prescribed stochastic
+model. That is,
 
 $$
 \begin{aligned}
-y_{t} &=Z_{t} \alpha_{t}+\varepsilon_{t}, & & \varepsilon_{t} \sim \mathrm{N}\left(0, H_{t}\right) \\
-\alpha_{t+1} &=T_{t} \alpha_{t}+R_{t} \eta_{t}, & & \eta_{t} \sim \mathrm{N}\left(0, Q_{t}\right), & t=1, \ldots, n,
+y_{t} & = x'_{t} \beta_{t} + \epsilon_{t} \quad  & \epsilon_{t} \sim N(0,\sigma^{2})\\
+\beta_{t}& = f(\beta_{t-1}) + v_{t} \quad  & v_{t} \sim N(0,R)
 \end{aligned}
 $$
-where $y_{t}$ is a $p \times 1$ vector of observations called the observation vector and $\alpha_{t}$
-is an unobserved $m \times 1$ vector called the state vector. The idea underlying the
-model is that the development of the system over time is determined by $\alpha_{t}$
-according to the second equation of, but because $\alpha_{t}$ cannot be observed
-directly we must base the analysis on observations $y_{t}$. The first equation of 
-is called the **observation equation** and the second is called the **state equation**. The
-matrices $Z_{t}, T_{t}, R_{t}, H_{t} and Q_{t}$ are initially assumed to be known and the error
-terms $\epsilon_{t}$ and $\eta_{t}$t are assumed to be serially independent and independent of each
-other at all time points.  In practice, some or all of the matrices $Z_{t}, T_{t}, R_{t}, H_{t} and Q_{t}$ will depend
-on elements of an unknown parameter vector $psi$ that needs to be estimated.
-Estimation of $\psi$ is generally performed by maximizing the prediction error 
-decomposition form of the likelihood, that is
-
-
-$$
-\log L\left(Y_{n}\right)=-\frac{n p}{2} \log 2 \pi-\frac{1}{2} \sum_{t=1}^{n}\left(\log \left|F_{t}\right|+v_{t}^{\prime} F_{t}^{-1} v_{t}\right).
-$$
-
-In order to obtain the prediction error decomposition of the likelihood the Kalman Filter is generally adopted.
-The Kalman Filter consists of the following set of recursive equations.
+Several specifications of $f(\cdot)$ can be specified but here we will consider the cases where $f(\cdot)$ is a linear function. 
+A Dynamic Linear Regression (DLR) model therefore is a linear regression model where the parameters
+are allowed to change over time according to a specific stochastic process.
+A natural and useful representation of the DLM can be obtained by casting the model in state space form,
+which represent a general representation for many other statistical models.
+In its most general form a state space model is defined by the following two equations
 
 $$
 \begin{aligned}
-v_{t} &=y_{t}-Z_{t} a_{t}, & F_{t} &=Z_{t} P_{t} Z_{t}^{\prime}+H_{t} \\
-a_{t \mid t} &=a_{t}+P_{t} Z_{t}^{\prime} F_{t}^{-1} v_{t}, & P_{t \mid t} &=P_{t}-P_{t} Z_{t}^{\prime} F_{t}^{-1} Z_{t} P_{t} \\
-a_{t+1} &=T_{t} a_{t}+K_{t} v_{t}, & P_{t+1} &=T_{t} P_{t}\left(T_{t}-K_{t} Z_{t}\right)^{\prime}+R_{t} Q_{t} R_{t}^{\prime}
+x_{t} & =B_{t} x_{t-1}+ u_{t}+ C_{t} c_{t}+ G_{t} w_{t}, & \quad w_{t} \sim MVN\left(0, Q_{t}\right) \\
+y_{t} & =Z_{t} x_{t}+a_{t}+D_{t} d_{t}+H_{t} v_{t}, & \quad v_{t} \sim MVN\left(0, R_{t}\right) \\
+
 \end{aligned}
 $$
 
-The application of the Kalman Filter requires that the initial condition of the systems $\alpha_{1} \sim N(a_{1},P_{1})$ are known. This rarely happens in practice and when the initial conditions of the system are not known a diffuse initialization is adopted. In practice  diffuse initialization consists of initialize the distribution of $\alpha_{1}$ with a diffuse prior distribution. When the diffuse initialization is adopted the resulting likelihood is
-
-$$
-\log L_{d}\left(Y_{n}\right)=-\frac{n p}{2} \log 2 \pi-\frac{1}{2} \sum_{t=1}^{d} w_{t}-\frac{1}{2} \sum_{t=d+1}^{n}\left(\log \left|F_{t}\right|+v_{t}^{\prime} F_{t}^{-1} v_{t}\right)
-$$
-
-where $w_{t}$ is a variable related to the diffuse initialization, see [@durbin2012time] for a detail explanation of the diffuse initialization.
-
-### Filtering, Smoothing and Forecasting
-Once a model has been casted in state space it is then possible to perform three different types of "inference":
-
-* **Filtering**.In Filtering the rucursions of the Kalman Filter are used to recover the states distributions conditioned on the observed series $y_{1}, \dots, y_{T}$, that is, $f(\alpha_{t}|y_{1:T})$.
-
-* **Smoothing**. In Smoothing the interest is to retrospectively reconstruct the behavior of the system. While in filter recursions are taken forward starting from $t = 1$, in this case, we use a backward-recursive
-algorithm to compute the conditional distributions of $\alpha_{t}$ given $y_{1:T}$ , for any
-$t < T$, starting from the filtering distribution $f(\alpha_{t} |y_{1:T} )$ and estimating backward
-all the states history.
-
-
-* **Forecasting** With y1:t at hand, one can be interested in forecasting future values of the
-observations, $Y_{t+k}$, or of the state vectors, $\alpha_{t+k}$. For state space models, the
-recursive form of the computations makes it natural to compute the one-step ahead
-forecasts and to update them sequentially as new data become available. The one-step ahead forecasts
-corresponds to $E(Y_{t+1}|y_{1:t})$ for the observed series and to $E(\alpha_{t+1}|\alpha_{1:t})$ for the states.
+where $x_{1} \sim MVN(\pi, \Lambda)$ or $x_{0} \sim MVN(\pi, \Lambda)$.
+Here $y_{t}$ and $x_{t}$ can be multivariate series and the index $t$ denotes that the matrix are allowed to change over time. The different matrices are in generally not know and are related to a series of unknown parameters that need to be estimated. Estimation of the unknown parameters and the related quantities necessary for inference are obtained by running the Kalman Filter see @durbin2012time or @harvey1989time for a detailed description. 
+Following the state space specification the dynamic linear regression model can
+be easily represented. The unknown parameters $\beta$ corresponds to the state of the system
+and the smoothed states obtained with the Kalman Filter represent estimates of
+the parameters conditioned on all of the observed data. 
+The two most simple dynamic linear models are obtained when a random walk process or an autorgressive process are respectviely adopted adopted to describe the evolution of $\beta_{t}$.
 
 
 
+ 
+In this case each $\beta_{t}$ is assumed to be non stationary and it is modeled
+as a random walk. That is,
+ 
 
-## Regression with time varying parameters
-State Space form represent a natural way to represent a linear regression with time varying parameters.
-In this case the regression equation represent the observation equation and the parameters are modeled as the unobserved states of the system.
-The observation equation is formulated as
-
-$$ y_{t} = x'_{t}\beta_{t} + \epsilon_{t} \quad \epsilon_{t} \sim N(0,\sigma^{2})$$
-
-where $y_{t}$ is the response variable observed at time $t$, $x_{t}$ is a $k \times 1$ vector of regressors, 
-$\beta_{t}'$ is a $k \times 1$ vector of time varying parameters and $\epsilon_{t}$ is the error term.
-In order to describe the behavior of the parameters the a state equation must be specified.
-If the parameters $\beta_{t}$ are assumed follow a random walk model the full specification of the DLM becomes
-
-$$
 \begin{aligned}
-y_{t} &= x'_{t} \beta_{t}+\varepsilon_{t} & & \varepsilon_{t} \sim \mathrm{N}\left(0, \sigma^{2}\right) \\
-\beta_{t+1} &= \beta_{t}+\eta_{t} & & \eta_{t} \sim \mathrm{N}\left(0, Q \right) & t=1, \ldots, n,
-\end{aligned}
-$$
-where $T_{t} = I$ and $Z_{t} = x'_{t}$. The behavior of the parameters is guided by the matrix $Q$, when $Q = 0$ the model reduces the standard static linear regression model.The specification of the dynamic behavior of the parameters $\beta_{t}$ is generally guided by underlying assumptions or empirical evidence of the phenomena under study. 
-For example when cyclical behavior is observed an autoregressive process of order 2, can be used to model the parameters.That is,
 
-$$ 
+y_{t} & = 
+
+\underbrace{\begin{pmatrix}
+1 & x_{1} & \cdots & x_{k}
+\end{pmatrix}_{t}}_{B_{t}}
+
+\underbrace{
+\begin{pmatrix}
+\beta_{1} \\
+\beta_{2} \\
+\vdots \\
+\beta_{k+1}
+\end{pmatrix}_{t}}_{x_{t}}
+
++ w_{t}
+
+\\
+
+\underbrace{\begin{pmatrix}
+\beta_{1} \\
+\beta_{2} \\
+\vdots \\
+\beta_{k+1}
+\end{pmatrix}_{t}}_{x_{t}}
+
+
+& = 
+
+\underbrace{\begin{pmatrix}
+1 & 0 & \cdots & 0 \\
+0 & 1 & \cdots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \cdots & 1 \\
+\end{pmatrix}_{t}}_{Z_{t}}
+
+\underbrace{\begin{pmatrix}
+\beta_{1} \\
+\beta_{2} \\
+\vdots \\
+\beta_{k+1}
+\end{pmatrix}_{t-1}}_{x_{t-1}}
+
++
+
+
+\underbrace{\begin{pmatrix}
+v_{1} \\
+v_{2} \\
+\vdots \\
+v_{k+1}
+\end{pmatrix}_{t}}_{v_{t}}
+
+
+\end{aligned}
+
+
+## Dynamic regression with AR(1) coefficients
+
+When a stationarity assumption is necessary on the parameters $\beta_{t}$ the
+autoregressive process of order one represent the simplest form of dynamic linear model.
+
+
 \begin{aligned}
-y_{t} &= x'_{t} \beta_{t}+\varepsilon_{t}  \quad &\varepsilon_{t} \sim \mathrm{N}\left(0, \sigma^{2}_{t}\right) \\
-\beta_{t+1} &= \phi_{0} + \phi_{1}\beta_{t-1} + \phi_{2} \beta_{t-2} + \eta_{t} \quad &\eta_{t} \sim N(0,Q). 
-\end{aligned}
-$$
 
+y_{t} & = 
+
+\underbrace{\begin{pmatrix}
+1 & x_{1} & \cdots & x_{k}
+\end{pmatrix}_{t}}_{B_{t}}
+
+\underbrace{
+\begin{pmatrix}
+\beta_{1} \\
+\beta_{2} \\
+\vdots \\
+\beta_{k+1}
+\end{pmatrix}_{t}}_{x_{t}}
+
++ w_{t}
+
+\\
+
+\underbrace{\begin{pmatrix}
+\beta_{1} \\
+\beta_{2} \\
+\vdots \\
+\beta_{k+1}
+\end{pmatrix}_{t}}_{x_{t}}
+
+
+& = 
+
+\underbrace{\begin{pmatrix}
+\phi_{11} & 0 & \cdots & 0 \\
+0 & \phi_{21} & \cdots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \cdots & \phi_{k1} \\
+\end{pmatrix}_{t}}_{Z_{t}}
+
+\underbrace{\begin{pmatrix}
+\beta_{1} \\
+\beta_{2} \\
+\vdots \\
+\beta_{k+1}
+\end{pmatrix}_{t-1}}_{x_{t-1}}
+
++
+
+
+\underbrace{\begin{pmatrix}
+v_{1} \\
+v_{2} \\
+\vdots \\
+v_{k+1}
+\end{pmatrix}_{t}}_{v_{t}}
+
+\end{aligned}
 
 
 
 # Dynamic Marketing Mix Model
 
 ## Data description
+
 The data contains sales (expressed in thousand of units) and the corresponding advertising budget (expressed in thousand of dollars) for several media. The data ranges from 2001/01/01 to 2017/08/01 for a total of 200 observations.
 
 ## Preliminary Analysis
+
+We begin by loading the packages used for the analysis
+
+```{r, echo = TRUE}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(MARSS)
+library(corrplot)
+library(patchwork)
+library(reshape2)
+```
 
 ```{r, echo = FALSE, warnings = FALSE, preview=TRUE}
 # load the data
@@ -176,12 +249,14 @@ advertising <- advertising %>% mutate(Time = as.Date(Time,"%d/%m/%y"))
 
 ```
 
+After loading the data that in my case was on a desktop folder we begin the analysis
+looking at the different time series.
 
-```{r, echo = FALSE, preview = TRUE}
-advertising %>%
+```{r, echo = TRUE}
+  advertising %>%
   select(-c("Native","Programmatic","OOH","sales")) %>% 
   pivot_longer(cols = -c("Time"), names_to = "Media") %>% 
-  ggplot(aes(x = Time, y = value, color = Media, group = Media)) +
+  ggplot(aes(x = Time, y = value, color = Media, )) +
   geom_line() +
   facet_grid(rows  = vars(Media))+
   scale_x_date(date_breaks = "1 year",date_labels = "%Y") +
@@ -190,220 +265,194 @@ advertising %>%
   axis.text.x = element_text(angle = 90)) +
   scale_y_continuous(breaks = seq(0, 250, by = 125))
 ```
-A time series plot reveals that there is a great difference between the budget allocated to the different media. TV represents the media to which more money are allocated and the investments are divided depending on the TV program. Moreover, it emerges clearly that when some media are used other are stopped. In particular overt the period 2009-2011 no budget was allocated to Search and social media but a high investment was allocated to tv_cricket. 
 
-```{r echo = FALSE, preview = TRUE}
+A time series plot reveals that there is a great difference between the budget allocated to the different media. TV represents the media to which more money are allocated and the investments are divided depending on the TV program. Moreover, it emerges clearly that when some media are used other are stopped. In particular overt the period 2009-2011 no budget was allocated to Search and social media but a high investment was allocated to tv_cricket.
+
+```{r}
 advertising %>% select(-c("Time")) %>% cor() %>% corrplot()
 ```
 
+From the correlation matrix it appears that sales are positively correlated with the budget allocated to TV, Radio, Social, Display rest and Search while there is no apparent linear relationship with the other media. TV and Radio represent the classical media more correlated with sales, while Social, Display_Rest and Search are the modern media with the highest correlation. As it is evident from the correlation matrix there is a strong positive correlation between the budget allocated to different media. For example there is an high positive correlation between Social, tv_sponsorship, Display_Rest and Search, meaning that when the budget in increased in one of these media is increased also in the others.
 
-From the correlation matrix it appears that sales are positively correlated with the budget allocated to TV, Radio, Social, Display rest and Search while there is no apparent linear relationship with the other media.
-TV and Radio represent the classical media more correlated with sales, while Social, Display_Rest and Seaarch are the new media with the highest correlation.
-As it is evident from the correlation matrix there is a strong  positive correlation between the budget allocated to different media.For example there is an high positive correlation between Social, tv_sponsorship, Display_Rest and Search, meaning that when the budget in increased in one of these media is increased also in the others.
-We proceed to specify the media mix model.
 
-## Media mix model specification 
-A general model specification for media mix modeling is the standard linear regression model,
+## Dynamic linear regression
+```{r, echo  = TRUE}
+# convert the data into a matrix
+response <- matrix(advertising$sales, nrow = 1)
 
-$$ y_{t} = \mu_{t} + \gamma_{t} + x_{t}'\beta + \epsilon_{t} \quad \epsilon_{t} \sim N(0,\sigma^{2}) $$
+# covariates matrix (k x TT)
+covariates <- advertising %>% select(-c("Time","sales"))
+covariates <- t(covariates) 
 
-where $\mu_{t}$ is the trend component representing the long run beahvior of the series, $\gamma_{t}$ is the seasonal component, $x'_{t}$ is the vector of covariates, $\beta$ is the vector of unknown parameter and $\epsilon_{t}$ is the error term. When no seasonal behavior or trend are detected or assumed in the series the model reduces to
+# number of state = # of regression params (slope(s) + intercept)
+m <- 1 + 12
 
-$$ y_{t}  = x'_{t}\beta + \epsilon_{t} \quad \epsilon_{t} \sim N(0,\sigma^{2}).$$
-
-As stated in the introduction one limitation of the plain linear regression model is that the marginal effects of the explanatory variables, represented by $\beta$, remains constant over time. Nevertheless, in some context, it might be more natural to allow the vector $\beta$ to evolve with time.
-In this example we will consider the following model
-
-$$
-\begin{aligned}
-y_{t} &= x_{t}'\beta_{t} + \epsilon_{t} \quad &\epsilon_{t} \sim N(0,\sigma^{2}) \\
-\beta_{t+1} &= \phi_{0} + \phi_{1}\beta_{t-1} + \eta_{t}  \quad &\eta_{t} \sim N(0, Q)
-\end{aligned}
-$$
-
-where the behavior of the parameters is modeled as a random walk process.
-
-## Fittinig dynamic models in R: the dlm package
-
-The package that we will use to fit the dynamic linear model is the dlm package, developed by Giovanni Petris, which provides a flexible environment for fitting Dynamic Linear Gaussian models.
-Before to be fitted the data needs to be transformed into a ts object. Since we are working with monthly data we
-set the frequency equal to 12.
-
-```{r, echo =TRUE}
-# convert the data to a ts object
-adv.ts <- ts(advertising, start = advertising$Time[1], frequency = 12)
+# obtain the total number or observations
+TT <- length(response)
 ```
 
-Next, we extract the response variable (sales) and the explanatory variables, and proceed to fit the model and obtain the filtered and the smoothed states.
-
-```{r,echo = TRUE}
-x <-  adv.ts[,2:13]
-y <-  adv.ts[,14] 
-
-# Define the linear regression model
-# Logarithmic transformation is applied to variance components to increase
-# the stability of the Kalman Filter
-buildTVREG <-  function(parm, x.mat){
-  # parametrize the model as log(variance)
-  parm <- exp(parm)
-  # return function output
-  return(dlmModReg(X = x.mat, dV = parm[1], dW = parm[2:14]))
-}
-
-# Set initial values for optimizer
-start.values = rep(0,14)
-
-# Obtain maximum likelihood estimates
-TVREG.mle = dlmMLE(y = y, parm = start.values, x.mat = x, buildTVREG)
-```
-
-
-
-In order to be sure that the optimizer converged we check the convergence criterion
-
-```{r, echo =TRUE}
-TVREG.mle$convergence
-```
-A zero values represent that the optimizer converged. The resulting estimated variances are
-
-```{r, echo = FALSE}
-exp(TVREG.mle$par)
-
-```
-
-The estimated variances can be built into the model to obtain the filtered and the smoothed states, which in our dynamic linear model correspond to the unknown time varying parameters.
+Next, we proceed to specify the matrices needed for fitting the dlm model
 
 ```{r, echo = TRUE}
-# Assign parameters to the estimated model
-TVREG.dlm <- buildTVREG(TVREG.mle$par,x)
+# STATE EQUATION
+# specify the B matrix 
+B <- diag(m)
+# specify B matrix for AR1 states
+diag(B)[2:13] <- paste("b",2:13, sep = "")
+# specify remaining matrices
+U <- matrix(0, nrow = m, ncol = 1) 
+Q <- "unconstrained"
 
-# Obtain fitlered states
-TVREG.f <- dlmFilter(y,TVREG.dlm)
+# OBSERVATION EQUATION
+Z <- array(NA, c(1, m, TT)) # NxMxT; empty for now
+Z[1, 1, ] <- rep(1, TT) # Nx1; 1's for intercept
+Z[1, 2:13, ] <- covariates # Nx1; regr variable
+A <- matrix(0) # 1x1; scalar = 0
+R <- matrix("r") # 1x1; scalar = r
 
-# Obtain smoothed states
-TVREG.s <-  dlmSmooth(TVREG.f)
+# initialize thate vector
+inits.list <- list(x0 = matrix(0, nrow = m))
+# set parameters for optimizer
+cntl.list <- list(minit = 200, maxit = 20000)
+
+# list of model matrices & vectors
+mod.list <- list(B = B, U = U, Q = Q, Z = Z, A = A, R = R)
+```
+
+And finally we fit the model.
+
+```{r, echo = TRUE, warnings = FALSE, message=FALSE}
+# dlm with autoregressive states
+dlr <- MARSS(response, inits = inits.list, model = mod.list,
+                 control = cntl.list, silent = TRUE)
 ```
 
 
-Once the smoothed states are calculated we proceed to plot them over the period considered.
+### Model analysis
+We start by examining the smoothed states in Figure \@ref(fig:smoothstate).
 
-```{r state-plot, fig.cap = "Smoothed states", echo = TRUE}
-# Extract smoothed states
-s = TVREG.s$s
+```{r smoothstate, fig.cap= "Smoothed states"}
+# obtain smoothed states
+s<- tsSmooth(dlr)
+colnames(s) <- c("state", "Year", "val","se")
+state.names <- c("intercept",colnames(advertising)[2:m])
+s$state <- rep(state.names,each = 200)
 
-Time = advertising$Time
-# Assign column names to the smoothed states
-colnames(s) <- paste("s", sep = "_",c("Intercept",colnames(x)))
+ s %>% ggplot() +
+  geom_line(aes(x = Year, y = val,color = state), 
+            size = 0.4, alpha = 0.7) +
+  theme_minimal()+  
+  ggtitle("States") +
+  facet_wrap(~ state,ncol = 4, scales = 'free')
 
-# Plot the smoothed states
-s  %>% as_tibble() %>% 
-  filter(between(row_number(),1,n()-1)) %>% 
-  mutate(Time = Time) %>% 
-  pivot_longer(cols = -c("Time"), names_to = "States") %>% 
-  ggplot(aes (x = Time, y = value, color = States)) +
-  geom_line() +
-  ylab("Smoothed State") +
-  xlab("")+
-  facet_wrap(.~States, scales = "free") +
- scale_x_date(date_breaks = "1 year",date_labels = "%Y") +
-  theme(strip.background = element_blank(),
-        strip.text.x = element_text(size = 7),
-  axis.text.x = element_blank(),
-  axis.ticks.x = element_blank()) 
 ```
-Figure \@ref(fig:state-plot) shows all the smoothed states over the period considered.
-The smoothed intercept represent the expected volume of sales when no budget is allocated to any media  while the other states represent the unitary increase in sales when another dollar is allocated to the corresponding media. It is apparent that the variability in the smoothed states is different among the different media.
-The intercept shows an upward trend over the entire period, however the size of the increment is particularly small and to refine the model a fixed parameter restriction seems reasonable. The marginal effect of Magazines and Native is negative for the entire period while those of Search and Programmatic alternates from negative to positive values. Overall tv_cricket, tv_sponsorships, Radio and Social appear the safest media to which allocate budget. Overall despite new media represent good opportunities, traditional media appear to be more reliable form of investment. It is important to note that despite NPP is only slightly correlated to sales the corresponding estimated parameter shows a steady positive trend.
+Looking at the smoothed states it appears that there is an high variation in the states.
+The intercept, which represent the average volume of sales in absence of advertising 
+activities in sales shows an increasing trend.
+Display_Rest, Native, OOH, Programmatic Radio and Magazines shows an increasing marginal 
+effect on the quantity of units sold. Programmatic being the one with the highest marginal
+effect. The interpretation of the estimated negative values associated to the budget
+allocated to a particular media has many interpretations. It might indicate that
+for that period the particular activity performed on that media was not appreciated 
+by the customer, or again  it might indicate that the customer got bored or not interested in that media and
+using it as advertisement produced the opposite effect on sales.
 
-## Elasticities
-Once the model is estimated we can use it to calculate the elasticity of sales to the different media.
-The price elasticity (PED) is a measure of the responsiveness of the quantity demanded of a good to a change in its price
-When PED is greater than one, demand is elastic. This can be interpreted as consumers being very sensitive to changes with respect to a given variable $x$: a $1\%$ increase in $x$ will lead to a drop in quantity demanded of more than $1\%$.
-When PED is less than one, demand is inelastic. This can be interpreted as consumers being insensitive to changes in $x$: a $1\%$ increase in price will lead to a drop in quantity demanded of less than $1\%$.
-Given that the estimated model is
-
-$$ 
-\widehat{sales}_{t}  = \hat{\beta}_{0t} +  \sum_{j=1}^{k} x_{jt} \times \hat{\beta}_{jt} 
-$$
-
-where each $\beta_{t}$ is modeled as a random walk process, the elasticity of sales with respect to a media can be obtained as
-
-$$
-E_{jt} = \frac{\Delta sales}{\Delta x_{j}} \times \frac{x_{j}}{sales} = \beta_{jt} \frac{\overline{x}_{j}}{\overline{sales}}.
-$$
-
-where $\overline{x}_{j}$ and $\overline{sales}$ represent the mean of the $j$th explanatory variable and of the sales. Another common approach to estimate elasticity with regression models is to adopt a double log transformation, which result in a model of the form
-
-$$
-log(y_{t}) = log(x'_{t})\beta + \epsilon_{t}.
-$$
-Under this transformation the estimated parameter $\hat{\beta}$ correspond to the value of the elasticity.
-
-We proceed to compute the elasticity of sales with the media that appeared more correlated to them.
-
-
-```{r, include = TRUE, echo =TRUE}
-
-# Obtain the elasticities from the smoothed states
-elasticities <- s %>% as_tibble() %>%
-  filter(between(row_number(),1,n()-1)) %>% 
-  cbind(advertising) %>% 
-  # calculate elasticities
-  mutate(tv_cricket_el = s_tv_cricket*(mean(tv_cricket)/mean(sales)),
-         tv_RON_el = s_tv_RON*(mean(tv_RON)/mean(sales)),
-         tv_sponsor_el = s_tv_sponsorships*(mean(tv_sponsorships)/mean(sales)),
-         Radio_el = s_radio*(mean(radio)/mean(sales)),
-         Social_el = s_Social*(mean(Social)/mean(sales)),
-         Display_el = s_Display_Rest*(mean(Display_Rest)/mean(sales)),
-         Search_el = s_Search*(mean(Search)/mean(sales))) %>%
-  # select time and elasticities
-  select(Time,contains("el")) 
-           
+```{r}
+s %>% dcast(Year~state) %>% 
+  select(-c("Year")) %>% cor() %>% 
+  corrplot()
 ```
 
-```{r plot-elasticities, fig.cap = "Estimated elasticities"}
-# Plot the elasticities
-elasticities %>% 
-  pivot_longer(cols = -c("Time"), names_to = "Elasticities") %>% 
-  ggplot(aes (x = Time, y = abs(value), color = Elasticities)) +
-  geom_line() +
-  ylab("Elasticities") +
-  facet_grid(rows = vars(Elasticities), scales = "free") +
-  theme(strip.background = element_blank(),
-        strip.text.y = element_text(angle = 45, size = 7),
-  axis.text.x = element_blank(),
-  axis.ticks.x = element_blank()) 
+The correlation structure of the states is of complex interpretation. However 
+the important thing is that it highlights the fact that there exhists synergies between
+some medias. For example when the marginal effect of the budget allocated to
+tv_sponsorship increases we expect that also the marginal effect allocated to
+budget will increase.
+Apart from the theoretical assumptions on the regression parameters one of the main
+advantages in adopting a state space representation is the possibility of producing
+forecasts as soon as new data is available. By running the Kalman filter, it is in
+fact possible to produce the one step ahead forecasts, $\hat{y}_{t+1|t}$, in an 
+iterative fashion. The one step ahead predictions obtained with the
+fitted dynamic linear regression are reported in Figure \@ref(fig:yhat).
+
+```{r yhat, fig.cap = "One ste ahead predictions"}
+t <- advertising$Time
+yhat <- forecast.marssMLE(dlr, type = "ytt1")$pred
+colnames(yhat)[2:9] <- c("Time","sales", "predicted_sales", "se", "lo", "hi",
+                         "LO", "HI")
+
+yhat <- yhat[1:200,]
+yhat$Time <- t
+
+
+p1 <- yhat %>% ggplot() +
+  geom_point(aes(x = Time, y = sales), color = "royalblue", 
+            size = 1, alpha = 0.7) +
+  geom_line(aes(x = Time, y = predicted_sales), color = "orange", 
+            size = 0.8, alpha = 0.7) +
+  geom_point(aes(x = Time, y = predicted_sales), color = "orange", 
+            size = 1, alpha = 0.7) +
+  theme_minimal()+  ggtitle("States")
+
 ```
+### Model diagnostic
+We conclude the analysis by inspecting the residuals plot, in order to identify 
+violation to the underlying model assumptions
 
-It appears that sales are inelastic to all the media shown in figure \@ref(fig:plot-elasticities).This means that the sales increase less than proportionally to the investment of the corresponding media. In other words a $1\%$ increase in investment in of the media considered produces an increase of less than $1\%$ in sales. The sales elasticity to Display shows an increasing trend while the sales elasticity to tv_Ron, on the opposite, shows a negative trend that reaches 0. Overall the classical media: rv_sponsorship, tv_cricket and Radio are the media with the highest elasticity.
-
-
-Finally we can forecast the future states. In this example we forecast the states for the next 12 months.
-
-
-```{r include = TRUE}
-# Add 12 months as NA at the end of the sample period
-y.hat <- rep(NA,12) %>% ts(start = as.Date(seq(from=last(Time), by="months", length.out=12)),
-                           frequency = 12)
-
-# Combined time series object
-y.new <- ts(c(y, y.hat), start = start(y), frequency = frequency(y))
-
-# Obtain predicted states
-TVREG.hat <-  dlmFilter(y.new, TVREG.dlm)
-
-# Extract estimated states
-m <- TVREG.hat$m[201:213,]
-colnames(m) <- colnames(s)
-
-# Show table
-m %>% kbl() %>% kable_paper() %>% scroll_box(width = "100%", height = "200px")
+```{r, echo = FALSE, warning = FALSE, message=FALSE}
+# extract model residuals
+mod.res = autoplot(dlr, plot.type = "model.resids")$data 
+mod.res$Time <- t
+# extract state residuals
+state.res <- autoplot(dlr, plot.type = "state.resids")$data
+state.res$Time <- rep(t[2:length(t)], 13) 
 ```
 
 
-The predictions obtained modeling the states as random walks are not really informative as in this case the best forecast is simply equal to previous period value. The adoption of a different stochastic process such as a random walk with drift or an autoregressive process to model the state (in this case the parameters) dynamics could be more useful for this purpose.
+```{r fittedres, fig.cap = "Fitted residuals", code_folding = TRUE}
+# plot model residuals
+ mod.res %>% ggplot() +
+  geom_point(aes(x = Time, y = .resids), color = "royalblue", alpha = 0.4) +
+  ylab("residuals") + ggtitle("Fitted residuals") +
+  theme_minimal() 
 
-## Conclusions
-In this example we showed how state space models can be used to augment the information provided by static time series models. The state space formulation is general and can be adopted for many different models. With it and the Kalman Filter, smoothing, filtering and predicting can be performed.  In this particular example the analysis of the smoothed states in the Dynamic Linear Regression  showed how the marginal effect of the different media changed over the period considered. It is important to note that the behavior of the estimated parameters might also be a symptom of misspecification. In fact, as more variable are added to the model or a different specification is suggested the smoothed states might result in constant values. Moreover, in this particular case the estimated variances resulted particularly small and the variation observed in the smoothed state could be negligible for practical purposes.
+```
 
 
+```{r stateres, echo = FALSE, fig.cap = "State residuals", code_foldin = TRUE}
+state.res %>% ggplot() +
+  geom_point(aes(x = Time, y = .resids), color = "royalblue", alpha = 0.4) +
+  geom_ribbon(aes(x = Time, ymin = - 1.96*.sigma, 
+                  ymax = +1.96*.sigma), alpha = 0.3) +
+  facet_wrap(~.rownames, ncol =4, scales = "free") +
+  theme_minimal() +
+  ylab("residuals") + ggtitle("State residuals")
+```
+
+Both the model and the state residuals appear to be well dispersed with no 
+particular patterns that may indicate autocorrelation or cyclical behavior.
+Both in the model and in the state residuals plot some outliers can be identified.
+
+```{r}
+mod.res %>% ggplot() +
+  geom_qq(aes(sample = .resids), color = "royalblue", alpha = 0.4) +
+  stat_qq_line(aes(sample = .resids), color = "red", alpha = 0.4) +
+  theme_minimal() + 
+  ggtitle("Model residuals")
+```
+
+
+```{r}
+state.res %>% ggplot() +
+  geom_qq(aes(sample = .resids, group = .rownames), color = "royalblue", alpha = 0.4) +
+  stat_qq_line(aes(sample = .resids, group = .rownames), color = "red", alpha = 0.4) +
+  facet_wrap(~.rownames, ncol = 4) +
+  theme_minimal() + 
+  ggtitle("State residuals")
+```
+
+
+
+Finally, the inspection of the qqplots reveal that there is no clear departure
+from normality in the state while the model residuals appear to have heavier tails than
+a normal distribution.

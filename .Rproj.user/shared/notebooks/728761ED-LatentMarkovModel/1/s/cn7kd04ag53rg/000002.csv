@@ -1,6 +1,0 @@
-"0","quarter <- rep(seq(1:8),8,each = 90)"
-"0","day <- seq(1:length(quarter))"
-"0","time_quarter <- data.frame(quarter,day)"
-"0",""
-"0","# assign the quarter to the transaction"
-"0","full_data <- full_data %>% left_join(time_quarter, by = c(""day"" = ""day""))"

@@ -1,0 +1,12 @@
+"0","auto_tuner <- AutoTuner$new(
+  learner = learners,
+  resampling = resampling,
+  measure = measure,
+  search_space = search_space,
+  terminator = terminator,
+  tuner = tuner
+)
+"
+"2","Error in assert_learner(learner) : 
+  Assertion on 'learner' failed: Must inherit from class 'Learner', but has class 'list'.
+"

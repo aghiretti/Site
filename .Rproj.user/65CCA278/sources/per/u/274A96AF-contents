@@ -1,0 +1,44 @@
+library(gtools)
+
+names <- c("Ghiselli", "Dallacasa", "Marsilio", "Gonzaga", "Nocera",
+           "Bardi", "Brianti", "Gallo", "Ferrè", "Cicerone",
+           "Pellicelli", "Campo", "Bigorri", "Ghezzi", "Pinetti",
+           "Piano", "Ponticelli", "Carini", "Floriano")
+
+gruppi <- combinations(length(names),4,names)
+
+write.table(gruppi,"C:/Users/USR02193/OneDrive - Chiesi Farmaceutici S.p.A/Desktop/Blog/culo.csv")
+
+
+### generates allocation list for 2021
+program <-  matrix(NA, nrow = 48, ncol = 4)
+
+l <- data.frame(gruppi)
+
+for(i in 1:48){
+  
+program[i,] = apply(l,2,function(x) sample(x,1))
+
+if(i > 1) {
+  while(any(program[i,] == program[i-1,]))
+    
+}
+
+
+if(i> 4){
+  while(any(program[i,] == program[i-1,]) |
+        any(program[i,] == program[i-2,]) |
+        any(program[i,] == program[i-3,]) |
+        any(program[i,] == program[i-4,])){
+   program[i,] = apply(l,2,function(x) sample(x,1))
+  if(!any(program[i,] == program[i-1,])){
+    break()
+  }  
+  }
+}
+}
+
+
+
+  
+  
