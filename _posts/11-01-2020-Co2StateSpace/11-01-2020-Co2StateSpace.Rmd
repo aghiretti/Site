@@ -58,7 +58,7 @@ Japan, India, China, Argentina, Brazil, Peru, New Zealand and Australia
  
 
 
-```{r, echo = FALSE, messages = FALSE}
+```{r, echo = FALSE, messages = FALSE, warnings = FALSE}
 library(dplyr)
 library(tidyr)
 library(ggplot2)
@@ -80,10 +80,10 @@ project folder
 co2 <- read.csv("owid-co2-data.csv")
 ```
 
-We proceed filtering out the countries and the variables that are not of interest
-to us. Moreover, as it might be interesting to compare the results at continent
-level we add the variable zone which contains the geographic zone of every country
-that we selected.
+We proceed by filtering out the countries all the variables that are not of interest
+to us. In addition, as it might be useful to compare the results at continent
+level we add the variable zone which contains the continent of all the countries 
+retained in the analysis.
 
 ```{r, echo = TRUE}
 # Filter countries to include in the analysis
@@ -132,10 +132,11 @@ ggplotly(p1)
 
 As we immediately see there are big differences in the CO2 emissions. 
 As expected USA is the country with the highest CO2 emissions for the entire period,
-followed by China that shows an impressive positive trend starting from 1975.
+followed by China, whose emissions show an impressive positive trend starting from 1975.
 Germany, Japan and India represent the other four countries with the highest CO2
-values. Since there are great differences between the series, in order to reduce the
-discrepancies it might be useful to take a look at the log transformed data.
+emissions over the period considered. Since there are great differences between the series,
+in order to reduce the discrepancies it might be useful to take a look at the $log$ transformed
+series.
 
 
 ```{r}
@@ -149,9 +150,9 @@ p1 <- dat %>% ggplot(aes(x = year, y = log(co2), color = country)) +
 ggplotly(p1)  
 ```
 
-With the log transform we are able to see that there is a upward trend
-common to all of the countries. By looking at the whole picture in more detail
-we see that Peru and New Zealand are the countries with the lowest emission.
+Now that we can look at the whole picture in more detail we immediately note that
+over the period considered the CO2 emissions have increased steadily for all of the countries. 
+Moreover, Peru and New Zealand emerge clearly as the countries with the lowest emissions.
 Moreover, an interesting pattern is observed around 1945 where many countries 
 exhibit severe downward spikes.
 
@@ -170,11 +171,11 @@ exhibit severe downward spikes.
 
 When we consider the aggregated data over the entire period the differences in
 the CO2 emission between countries are even more evident.
-Oceania and South America are the zone with the lowest and less variable
-average emissions. In Europe the emissions appear on average pretty low but more
-variable compared to those of Oceania and South America. Overall, with the 
-exception of USA and China, we observe
-that the variability and the average value of the CO2 emissions are similiar
+Oceania and South America are the zones with the lowest and less variable
+registered emissions. In Europe the situation is more heterogeneous, where despite
+emissions appear on average pretty low there is more variability between the countries.
+Overall, with the  exception of USA and China, we observe
+that the variability and the average value of the CO2 emissions are similar
 between the countries that belong to the same geographical zone.
 
 ```{r, echo = TRUE, code_folding = TRUE}
@@ -194,7 +195,7 @@ ggplotly(p1)
 
 To conclude our exploratory analysis we compute and examine the correlation of the 
 CO2 emissions between the different countries. 
-It appears that in general there is a general high positive correlation between the 
+It appears that in general there is high positive correlation between the 
 CO2 levels observed in the different countries and apparently this correlation
 is not strictly related to the geographical area.
 
