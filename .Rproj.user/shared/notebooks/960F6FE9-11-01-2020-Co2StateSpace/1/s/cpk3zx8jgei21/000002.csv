@@ -1,0 +1,7 @@
+"0","# extract model residuals"
+"0","mod.res = autoplot(mod.me, plot.type = ""model.resids"")$data %>% "
+"0","  mutate(country = rep(unique(dat$country),each = nrow(y.hat)/15),"
+"0","         Year = rep(seq(from = 1910, to = 2018), 15))"
+"0","# extract state residuals"
+"0","state.res = autoplot(mod.me, plot.type = ""state.resids"")$data %>% "
+"0","  mutate(Year = rep(seq(from = 1911, to =2018),3))"

@@ -1,0 +1,6 @@
+"0","# define balancing pipeline"
+"0","po_under <- po(""classbalancing"", id = ""undersample"", adjust = ""minor"","
+"0","  reference = ""minor"", shuffle = FALSE, ratio = 1 / 6) "
+"0",""
+"0","po_over <- po(""classbalancing"", id = ""oversample"", adjust = ""major"","
+"0","  reference  = ""major"", shuffle = FALSE, ratio = 6)"

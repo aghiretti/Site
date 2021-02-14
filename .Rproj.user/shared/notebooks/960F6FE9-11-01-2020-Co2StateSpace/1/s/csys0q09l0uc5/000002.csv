@@ -1,0 +1,5 @@
+"0","y.hat <- predict(mod.me, type = ""ytt1"")$pred"
+"0","y.hat <- y.hat %>% "
+"0","  # add columns"
+"0","  mutate(country = rep(unique(dat$country),each = nrow(y.hat)/15),"
+"0","  Year = rep(seq(from = 1910, to = 2018), 15))"

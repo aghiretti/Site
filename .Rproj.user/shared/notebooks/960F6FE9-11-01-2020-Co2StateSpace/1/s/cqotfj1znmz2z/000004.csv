@@ -1,0 +1,8 @@
+"0","p1 <- dat %>% ggplot(aes(x = year, y = log(share_global_co2), color = country)) +"
+"0","  geom_line() +"
+"0","  scale_color_manual(values = mycolor) +"
+"0","  ggtitle(""log(CO2) worldwide share"")+"
+"0","  ylab(""log(CO2) share"") +"
+"0","  theme_minimal()"
+"0",""
+"0","ggplotly(p1)  "

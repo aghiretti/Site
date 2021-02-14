@@ -1,0 +1,21 @@
+"0","# Loadings by country"
+"0","m <- loadings %>% "
+"0","  arrange(desc(loading)) %>% "
+"0","  ggplot() +"
+"0","  geom_bar(stat = ""identity"", aes(x = country, y = loading, "
+"0","                                  fill = country, color = country)) +"
+"0","  scale_color_manual(values = mycolor) +"
+"0","  scale_fill_manual(values = mycolor) +"
+"0","  theme_minimal()+  theme(legend.position = ""none"", panel.background = element_blank(),"
+"0","                          axis.text.x = element_text(size = 7, angle = 90))+"
+"0","  ylab(""loadings"")+"
+"0","  ggtitle(""Factor loadings by country"") + "
+"0","  xlab("""")+"
+"0","  facet_wrap(~x,ncol = 2)"
+"0",""
+"0","ggplotly(m)"
+"2","`group_by_()` is deprecated as of dplyr 0.7.0.
+Please use `group_by()` instead.
+See vignette('programming') for more help
+[90mThis warning is displayed once every 8 hours.[39m
+[90mCall `lifecycle::last_warnings()` to see where this warning was generated.[39m"

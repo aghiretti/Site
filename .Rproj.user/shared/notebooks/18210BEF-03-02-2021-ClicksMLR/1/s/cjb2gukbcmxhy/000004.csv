@@ -1,5 +1,4 @@
-"0","train %>% select(click) %>% melt() %>% ggplot()+
-geom_bar(aes(x = value, fill = factor(value)), alpha = 0.7) + theme_minimal()
-"
+"0","train %>% select(click) %>% melt() %>% ggplot()+"
+"0","geom_bar(aes(x = value, fill = factor(value)), alpha = 0.7) + theme_minimal()"
 "2","No id variables; using all as measure variables
 "

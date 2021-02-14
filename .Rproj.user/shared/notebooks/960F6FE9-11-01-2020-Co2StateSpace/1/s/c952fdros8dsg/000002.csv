@@ -19,6 +19,4 @@
 "0","dat <- co2 %>% "
 "0","  # filter the countries and the year"
 "0","  filter(country %in% countries &"
-"0","         year >= 1910) %>% "
-"0","  # select columns"
-"0","  select(iso_code, country, year, zone, co2)"
+"0","         year >= 1910)"

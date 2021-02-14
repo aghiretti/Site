@@ -1,0 +1,4 @@
+"0","# define learners and ids"
+"0","learners <- c(""classif.ksvm"", ""classif.kknn"", ""classif.xgboost"")"
+"0","# obtain the selected learners"
+"0","learners <- lapply(learners,lrn)"

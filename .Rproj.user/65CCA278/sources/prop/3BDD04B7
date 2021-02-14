@@ -2,7 +2,8 @@
     "tempName": "Untitled6",
     "source_window_id": "",
     "Source": "Source",
-    "cursorPosition": "209,18",
-    "scrollLine": "196",
-    "last_setup_crc32": ""
+    "cursorPosition": "179,79",
+    "scrollLine": "0",
+    "last_setup_crc32": "",
+    "ignored_words": "dataset,subsampling,Undersampling,autotuner,workflow\n"
 }

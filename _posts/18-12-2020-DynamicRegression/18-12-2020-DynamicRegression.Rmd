@@ -18,6 +18,7 @@ output:
     self_contained: false
     toc: true
     toc_depth: 3
+draft: true
 bibliography: references.bib
 nocite: | 
   @durbin2012time, @harvey1989time, @dlmharvey, @MARSS, @chan2017challenges, 

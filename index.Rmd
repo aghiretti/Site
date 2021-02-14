@@ -14,6 +14,6 @@ knitr::opts_chunk$set(echo = FALSE)
 ```
 
 
-![](home.jpg){width=100%}  
+![](home.jpg){layout="l-screen-inset"}  
 
 

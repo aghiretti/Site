@@ -1,0 +1,8 @@
+"0","p1 <- state.res %>% ggplot() +"
+"0","  geom_qq(aes(sample = .resids, group = .rownames), color = ""royalblue"", alpha = 0.4) +"
+"0","  stat_qq_line(aes(sample = .resids, group = .rownames), color = ""red"", alpha = 0.4) +"
+"0","  facet_wrap(~.rownames, ncol = 2) +"
+"0","  theme_minimal() + "
+"0","  ggtitle(""State residuals"")"
+"0",""
+"0","ggplotly(p1)"

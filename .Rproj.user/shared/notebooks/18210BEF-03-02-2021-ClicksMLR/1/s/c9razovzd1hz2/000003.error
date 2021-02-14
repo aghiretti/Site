@@ -1,0 +1,1 @@
+{"frames":[{"func":"lapply(auto_tuner)","file":"","line_number":0,"end_line_number":0,"character_number":0,"end_character_number":0},{"func":"match.fun(FUN)","file":"","line_number":0,"end_line_number":0,"character_number":0,"end_character_number":0}],"message":"Error in match.fun(FUN) : \n  l'argomento \"FUN\"  non è specificato e non ha un valore predefinito\n"}

@@ -1,0 +1,12 @@
+"0","# create the autotuner for each learner"
+"0","auto_tuner <- lapply(learners, function(x) AutoTuner$new("
+"0","  learner = x,"
+"0","  resampling = resampling,"
+"0","  measure = measure,"
+"0","  search_space = search_space,"
+"0","  terminator = terminator,"
+"0","  tuner = tuner"
+"0","))"
+"2","Error in .__AutoTuner__initialize(self = self, private = private, super = super,  : 
+  oggetto ""search_space"" non trovato
+"

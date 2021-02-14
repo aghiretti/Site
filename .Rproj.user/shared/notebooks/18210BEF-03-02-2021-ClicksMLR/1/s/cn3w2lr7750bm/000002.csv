@@ -1,0 +1,3 @@
+"0","# define the classification task"
+"0","train$click <- factor(train$click)"
+"0","task <- TaskClassif$new(id = ""ppc"", train, target = ""click"")"

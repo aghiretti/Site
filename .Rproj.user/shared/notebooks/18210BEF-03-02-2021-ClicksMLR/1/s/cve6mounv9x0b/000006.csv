@@ -1,0 +1,8 @@
+"0","# define the sampling strategy"
+"0","inner_resampler <- rsmp(""cv"", folds = 10L)"
+"0",""
+"0","# define the outer resampler"
+"0","outer_resampler <- rsmp(""cv"", folds = 5L)"
+"0",""
+"0","# define the tuner"
+"0","tuner <- tnr(""random_search"")"
