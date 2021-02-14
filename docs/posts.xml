@@ -6,20 +6,19 @@
     <atom:link href="https://www.aghiretti.com/posts.xml" rel="self" type="application/rss+xml"/>
     <description>Data and Statistics</description>
     <generator>Distill</generator>
-    <lastBuildDate>dom, 14 feb 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>sab, 13 feb 2021 00:00:00 +0000</lastBuildDate>
     <item>
       <title>A dynamic factor analysis of the CO2 per capita emissions</title>
       <dc:creator>Alessandro Ghiretti</dc:creator>
       <link>https://www.aghiretti.com/posts/11-01-2020-Co2StateSpace</link>
-      <description>In this post we will use dynamic factor analysis to investigate  
-the per capita CO2 emissions produced over the last 100 years by 15 countries of different geographical   
- and economical areas. To estimate the models we will use the R package MARSS.</description>
+      <description>In this post we will use dynamic factor analysis to investigate the per capita 
+CO2 emissions produced over the last 100 years by 15 countries of different geographical and economical areas. To estimate the model we will use the R package MARSS.</description>
       <category>R</category>
       <category>Econometrics</category>
       <category>Time series</category>
       <category>Environment</category>
       <guid>https://www.aghiretti.com/posts/11-01-2020-Co2StateSpace</guid>
-      <pubDate>dom, 14 feb 2021 00:00:00 +0000</pubDate>
+      <pubDate>sab, 13 feb 2021 00:00:00 +0000</pubDate>
       <media:content url="https://www.aghiretti.com/posts/11-01-2020-Co2StateSpace/Preview.jpg" medium="image" type="image/jpeg"/>
     </item>
   </channel>

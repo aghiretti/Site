@@ -1,9 +1,8 @@
 ---
 title: "A dynamic factor analysis of the CO2 per capita emissions"
 description: |
-  In this post we will use dynamic factor analysis to investigate  
-  the per capita CO2 emissions produced over the last 100 years by 15 countries of different geographical   
-   and economical areas. To estimate the models we will use the R package MARSS.
+  In this post we will use dynamic factor analysis to investigate the per capita 
+  CO2 emissions produced over the last 100 years by 15 countries of different geographical and economical areas. To estimate the model we will use the R package MARSS.
 categories:
   - R
   - Econometrics
@@ -18,11 +17,17 @@ output:
     self_contained: false
     toc: true
     toc_depth: 3
-code_folding: true
+code_folding: "show"
 bibliography: references.bib
 nocite: | 
   @durbin2012time, @harvey1989time, @dlmharvey, @MARSS
 ---
+
+
+<style>
+body {
+text-align: justify}
+</style>
 
 ```{r setup, include=FALSE}
 ```
@@ -247,11 +252,6 @@ ggplot(m, aes(x = X1, y = X2, fill = value), alpha = 0.4) +
   theme_minimal()+  theme( panel.background = element_blank(),
                           axis.text.x = element_text(size = 7, angle = 90))
 ```
-
-## Normality assumption
-In order to fit our model data need to be normal.
-
-
 
 ## Model specification and estimation
 Having explored our data it is now time to specify and fit our model.
