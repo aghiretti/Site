@@ -6,7 +6,7 @@
     <atom:link href="https://www.aghiretti.com/posts.xml" rel="self" type="application/rss+xml"/>
     <description>Data and Statistics</description>
     <generator>Distill</generator>
-    <lastBuildDate>sab, 13 feb 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>dom, 14 feb 2021 00:00:00 +0000</lastBuildDate>
     <item>
       <title>A dynamic factor analysis of the CO2 per capita emissions</title>
       <dc:creator>Alessandro Ghiretti</dc:creator>
@@ -19,7 +19,7 @@ the per capita CO2 emissions produced over the last 100 years by 15 countries of
       <category>Time series</category>
       <category>Environment</category>
       <guid>https://www.aghiretti.com/posts/11-01-2020-Co2StateSpace</guid>
-      <pubDate>sab, 13 feb 2021 00:00:00 +0000</pubDate>
+      <pubDate>dom, 14 feb 2021 00:00:00 +0000</pubDate>
       <media:content url="https://www.aghiretti.com/posts/11-01-2020-Co2StateSpace/Preview.jpg" medium="image" type="image/jpeg"/>
     </item>
   </channel>
