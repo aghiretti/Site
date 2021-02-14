@@ -150,7 +150,7 @@ really important topic especially in the last decade, the effort spent by the mo
 countries to reduce CO2 emissions resulted in lower CO2 shares. On the other hand,
 the industrialization of the emerging countries such as China and India, which have increased 
 their CO2 emissions resulted in a redistribution of the CO2 shares.
-Following further the analysis and considering the log transformed data in Figure \@ref(fig:log2share),
+Following further the analysis and considering the log transformed data in Figure \@ref(fig:logco2share),
 it is evident that in 1945, the end of the second world conflict, 
 the CO2 share of several countries dropped consistently. 
 In particular those of Germany and Italy being are the most
