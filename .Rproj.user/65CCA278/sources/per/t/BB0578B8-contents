@@ -609,12 +609,11 @@ kable_styling(bootstrap_options = c("striped", "hover"))
 
 
 No significant differences in the
-alcohol consumption for the three beverages between the four years are identifiend with the 
+alcohol consumption for the three beverages between the four years are identified with the 
 Wilcoxon test. The paired t-test
 show similar results, but in this case the difference in the average alcohol consumption
-for spirits between 2019 and 2020 appear statistically significant at an $\alpha = 0.5%$
-significance level.
-
+for spirits between 2019 and 2020 appear statistically significant at significance level equal 
+to $\alpha = 0.5%$.
 
 
 
