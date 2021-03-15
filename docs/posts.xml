@@ -6,7 +6,22 @@
     <atom:link href="https://www.aghiretti.com/posts.xml" rel="self" type="application/rss+xml"/>
     <description>Data and Statistics</description>
     <generator>Distill</generator>
-    <lastBuildDate>sab, 13 feb 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 14 Mar 2021 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title> A descriptive analysis of the alcohol consumption in USA from 2017 to 2020</title>
+      <dc:creator>Alessandro Ghiretti</dc:creator>
+      <link>https://www.aghiretti.com/posts/17-02-2020-AlcoholConsumption</link>
+      <description>Does the alcohol consumption in the USA increased over the last four years?
+We will try to answer this question with a descriptive statistical analysisi of the
+consumption of alcohol of a sample of 19 states. 
+The analysis is performed entirely in R.</description>
+      <category>R</category>
+      <category>Statistics</category>
+      <category>Data Analysis</category>
+      <guid>https://www.aghiretti.com/posts/17-02-2020-AlcoholConsumption</guid>
+      <pubDate>Sun, 14 Mar 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://www.aghiretti.com/posts/17-02-2020-AlcoholConsumption/Preview.jpg" medium="image" type="image/jpeg"/>
+    </item>
     <item>
       <title>A dynamic factor analysis of the CO2 per capita emissions</title>
       <dc:creator>Alessandro Ghiretti</dc:creator>
@@ -18,7 +33,7 @@ CO2 emissions produced over the last 100 years by 15 countries of different geog
       <category>Time series</category>
       <category>Environment</category>
       <guid>https://www.aghiretti.com/posts/11-01-2020-Co2StateSpace</guid>
-      <pubDate>sab, 13 feb 2021 00:00:00 +0000</pubDate>
+      <pubDate>Sun, 14 Feb 2021 00:00:00 +0000</pubDate>
       <media:content url="https://www.aghiretti.com/posts/11-01-2020-Co2StateSpace/Preview.jpg" medium="image" type="image/jpeg"/>
     </item>
   </channel>

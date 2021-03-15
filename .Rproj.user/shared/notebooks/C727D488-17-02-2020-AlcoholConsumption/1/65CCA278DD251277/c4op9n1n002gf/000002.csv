@@ -1,0 +1,8 @@
+"0","alcohol %>% ggplot() +"
+"0","  geom_boxplot(aes(x = Year, y = Gallons, color = Beverage,"
+"0","                   fill = Beverage), alpha = 0.5)+"
+"0","  scale_color_npg() +"
+"0","  scale_fill_npg() +"
+"0","  theme_minimal() +"
+"0","  coord_flip() +"
+"0","  ggtitle(""Gallons consumption boxplot"")"

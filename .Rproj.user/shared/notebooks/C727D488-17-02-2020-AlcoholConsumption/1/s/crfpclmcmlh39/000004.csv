@@ -1,0 +1,7 @@
+"0","  alcohol %>% "
+"0","  select(FIPS,Month,Year,Beverage, PerCapita) %>% "
+"0","  pivot_wider(names_from = c(Beverage), values_from = PerCapita) %>% "
+"0","  select(spirits,wine,beer) %>% "
+"0","  cor(use = ""complete.obs"") %>% "
+"0","  kbl(caption = c(""Correlation of the per capita consumption between the different beverages"")) %>%"
+"0","  kable_styling(bootstrap_options = c(""striped"", ""hover""))"

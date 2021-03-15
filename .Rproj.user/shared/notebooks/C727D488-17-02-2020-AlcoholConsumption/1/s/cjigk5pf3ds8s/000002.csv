@@ -1,0 +1,17 @@
+"0","  alcohol %>%
+  group_by(FIPS,Beverage) %>% 
+  summarise(tot_gallons = sum(Gallons)) %>% 
+  ggplot() +
+  geom_pie(aes(x = reorder(FIPS,-tot_gallons), y = tot_gallons, fill = Beverage), alpha = 0.6, stat = ""identity"")+
+  facet_wrap(~Year, nrow = 2, ncol = 2) +
+  scale_color_npg() +
+  scale_fill_npg() +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, vjust=0)) +
+  xlab(""State"") 
+"
+"2","`summarise()` regrouping output by 'FIPS' (override with `.groups` argument)
+"
+"2","Error in geom_pie(aes(x = reorder(FIPS, -tot_gallons), y = tot_gallons,  : 
+  non trovo la funzione ""geom_pie""
+"

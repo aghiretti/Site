@@ -1,0 +1,4541 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+  <meta name="generator" content="distill" />
+
+  <style type="text/css">
+  /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
+  body {
+    visibility: hidden;
+  }
+  </style>
+
+ <!--radix_placeholder_import_source-->
+ <!--/radix_placeholder_import_source-->
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ad0000; } /* Alert */
+code span.an { color: #5e5e5e; } /* Annotation */
+code span.at { color: #20794d; } /* Attribute */
+code span.bn { color: #ad0000; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007ba5; } /* ControlFlow */
+code span.ch { color: #20794d; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #5e5e5e; } /* Comment */
+code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+code span.dt { color: #ad0000; } /* DataType */
+code span.dv { color: #ad0000; } /* DecVal */
+code span.er { color: #ad0000; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #ad0000; } /* Float */
+code span.fu { color: #4758ab; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #5e5e5e; } /* Information */
+code span.kw { color: #007ba5; } /* Keyword */
+code span.op { color: #5e5e5e; } /* Operator */
+code span.ot { color: #007ba5; } /* Other */
+code span.pp { color: #ad0000; } /* Preprocessor */
+code span.sc { color: #20794d; } /* SpecialChar */
+code span.ss { color: #20794d; } /* SpecialString */
+code span.st { color: #20794d; } /* String */
+code span.va { color: #111111; } /* Variable */
+code span.vs { color: #20794d; } /* VerbatimString */
+code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+</style>
+
+  <!--radix_placeholder_meta_tags-->
+<title>Alessandro Ghiretti:  A descriptive analysis of the alcohol consumption in USA from 2017 to 2020</title>
+
+<meta property="description" itemprop="description" content="Does the alcohol consumption in the USA increased over the last four years?&#10;We will try to answer this question with a descriptive statistical analysisi of the&#10;consumption of alcohol of a sample of 19 states. &#10;The analysis is performed entirely in R."/>
+
+<link rel="canonical" href="https://www.aghiretti.com/posts/17-02-2020-AlcoholConsumption/"/>
+
+<!--  https://schema.org/Article -->
+<meta property="article:published" itemprop="datePublished" content="2021-03-15"/>
+<meta property="article:created" itemprop="dateCreated" content="2021-03-15"/>
+<meta name="article:author" content="Alessandro Ghiretti"/>
+
+<!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
+<meta property="og:title" content="Alessandro Ghiretti:  A descriptive analysis of the alcohol consumption in USA from 2017 to 2020"/>
+<meta property="og:type" content="article"/>
+<meta property="og:description" content="Does the alcohol consumption in the USA increased over the last four years?&#10;We will try to answer this question with a descriptive statistical analysisi of the&#10;consumption of alcohol of a sample of 19 states. &#10;The analysis is performed entirely in R."/>
+<meta property="og:url" content="https://www.aghiretti.com/posts/17-02-2020-AlcoholConsumption/"/>
+<meta property="og:image" content="https://www.aghiretti.com/posts/17-02-2020-AlcoholConsumption/Preview.jpg"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:site_name" content="Alessandro Ghiretti"/>
+
+<!--  https://dev.twitter.com/cards/types/summary -->
+<meta property="twitter:card" content="summary_large_image"/>
+<meta property="twitter:title" content="Alessandro Ghiretti:  A descriptive analysis of the alcohol consumption in USA from 2017 to 2020"/>
+<meta property="twitter:description" content="Does the alcohol consumption in the USA increased over the last four years?&#10;We will try to answer this question with a descriptive statistical analysisi of the&#10;consumption of alcohol of a sample of 19 states. &#10;The analysis is performed entirely in R."/>
+<meta property="twitter:url" content="https://www.aghiretti.com/posts/17-02-2020-AlcoholConsumption/"/>
+<meta property="twitter:image" content="https://www.aghiretti.com/posts/17-02-2020-AlcoholConsumption/Preview.jpg"/>
+
+<!--  https://scholar.google.com/intl/en/scholar/inclusion.html#indexing -->
+<meta name="citation_title" content="Alessandro Ghiretti:  A descriptive analysis of the alcohol consumption in USA from 2017 to 2020"/>
+<meta name="citation_fulltext_html_url" content="https://www.aghiretti.com/posts/17-02-2020-AlcoholConsumption/"/>
+<meta name="citation_online_date" content="2021/03/15"/>
+<meta name="citation_publication_date" content="2021/03/15"/>
+<meta name="citation_author" content="Alessandro Ghiretti"/>
+<!--/radix_placeholder_meta_tags-->
+  <!--radix_placeholder_rmarkdown_metadata-->
+
+<script type="text/json" id="radix-rmarkdown-metadata">
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","categories","preview","author","date","output","code_folding","citation_url","canonical_url"]}},"value":[{"type":"character","attributes":{},"value":[" A descriptive analysis of the alcohol consumption in USA from 2017 to 2020"]},{"type":"character","attributes":{},"value":["Does the alcohol consumption in the USA increased over the last four years?\nWe will try to answer this question with a descriptive statistical analysisi of the\nconsumption of alcohol of a sample of 19 states. \nThe analysis is performed entirely in R."]},{"type":"character","attributes":{},"value":["R","Statistics","Data Analysis"]},{"type":"character","attributes":{},"value":["Preview.jpg"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Alessandro Ghiretti"]}]}]},{"type":"character","attributes":{},"value":["2021-03-15"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","toc","toc_depth"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[3]}]}]},{"type":"character","attributes":{},"value":["show"]},{"type":"character","attributes":{},"value":["https://www.aghiretti.com/posts/17-02-2020-AlcoholConsumption/"]},{"type":"character","attributes":{},"value":["https://www.aghiretti.com/posts/17-02-2020-AlcoholConsumption/"]}]}
+</script>
+<!--/radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["17-02-2020-AlcoholConsumption_files/anchor-4.2.2/anchor.min.js","17-02-2020-AlcoholConsumption_files/bowser-1.9.3/bowser.min.js","17-02-2020-AlcoholConsumption_files/crosstalk-1.1.1/css/crosstalk.css","17-02-2020-AlcoholConsumption_files/crosstalk-1.1.1/js/crosstalk.js","17-02-2020-AlcoholConsumption_files/crosstalk-1.1.1/js/crosstalk.js.map","17-02-2020-AlcoholConsumption_files/crosstalk-1.1.1/js/crosstalk.min.js","17-02-2020-AlcoholConsumption_files/crosstalk-1.1.1/js/crosstalk.min.js.map","17-02-2020-AlcoholConsumption_files/distill-2.2.21/template.v2.js","17-02-2020-AlcoholConsumption_files/figure-html5/averagepercapita-1.png","17-02-2020-AlcoholConsumption_files/figure-html5/boxgallons-1.png","17-02-2020-AlcoholConsumption_files/figure-html5/boxpercapita-1.png","17-02-2020-AlcoholConsumption_files/figure-html5/countrygallons-1.png","17-02-2020-AlcoholConsumption_files/figure-html5/countrypercapita-1.png","17-02-2020-AlcoholConsumption_files/figure-html5/gallonspareto-1.png","17-02-2020-AlcoholConsumption_files/figure-html5/gallonspopulationrel-1.png","17-02-2020-AlcoholConsumption_files/figure-html5/percapitadensity-1.png","17-02-2020-AlcoholConsumption_files/figure-html5/percapitaqqplot-1.png","17-02-2020-AlcoholConsumption_files/figure-html5/population-1.png","17-02-2020-AlcoholConsumption_files/figure-html5/totgallons-1.png","17-02-2020-AlcoholConsumption_files/figure-html5/unnamed-chunk-10-1.png","17-02-2020-AlcoholConsumption_files/figure-html5/unnamed-chunk-11-1.png","17-02-2020-AlcoholConsumption_files/figure-html5/unnamed-chunk-12-1.png","17-02-2020-AlcoholConsumption_files/figure-html5/unnamed-chunk-13-1.png","17-02-2020-AlcoholConsumption_files/figure-html5/unnamed-chunk-14-1.png","17-02-2020-AlcoholConsumption_files/figure-html5/unnamed-chunk-15-1.png","17-02-2020-AlcoholConsumption_files/figure-html5/unnamed-chunk-16-1.png","17-02-2020-AlcoholConsumption_files/figure-html5/unnamed-chunk-17-1.png","17-02-2020-AlcoholConsumption_files/figure-html5/unnamed-chunk-18-1.png","17-02-2020-AlcoholConsumption_files/figure-html5/unnamed-chunk-19-1.png","17-02-2020-AlcoholConsumption_files/figure-html5/unnamed-chunk-20-1.png","17-02-2020-AlcoholConsumption_files/figure-html5/unnamed-chunk-4-1.png","17-02-2020-AlcoholConsumption_files/figure-html5/unnamed-chunk-5-1.png","17-02-2020-AlcoholConsumption_files/figure-html5/unnamed-chunk-6-1.png","17-02-2020-AlcoholConsumption_files/figure-html5/unnamed-chunk-7-1.png","17-02-2020-AlcoholConsumption_files/figure-html5/unnamed-chunk-8-1.png","17-02-2020-AlcoholConsumption_files/figure-html5/unnamed-chunk-9-1.png","17-02-2020-AlcoholConsumption_files/header-attrs-2.6/header-attrs.js","17-02-2020-AlcoholConsumption_files/htmlwidgets-1.5.3/htmlwidgets.js","17-02-2020-AlcoholConsumption_files/jquery-3.5.1/jquery-AUTHORS.txt","17-02-2020-AlcoholConsumption_files/jquery-3.5.1/jquery.js","17-02-2020-AlcoholConsumption_files/jquery-3.5.1/jquery.min.js","17-02-2020-AlcoholConsumption_files/jquery-3.5.1/jquery.min.map","17-02-2020-AlcoholConsumption_files/kePrint-0.0.1/kePrint.js","17-02-2020-AlcoholConsumption_files/lightable-0.0.1/lightable.css","17-02-2020-AlcoholConsumption_files/plotly-binding-4.9.3/plotly.js","17-02-2020-AlcoholConsumption_files/plotly-htmlwidgets-css-1.57.1/plotly-htmlwidgets.css","17-02-2020-AlcoholConsumption_files/plotly-main-1.57.1/plotly-latest.min.js","17-02-2020-AlcoholConsumption_files/popper-2.6.0/popper.min.js","17-02-2020-AlcoholConsumption_files/tippy-6.2.7/tippy-bundle.umd.min.js","17-02-2020-AlcoholConsumption_files/tippy-6.2.7/tippy-light-border.css","17-02-2020-AlcoholConsumption_files/tippy-6.2.7/tippy.css","17-02-2020-AlcoholConsumption_files/tippy-6.2.7/tippy.umd.min.js","17-02-2020-AlcoholConsumption_files/typedarray-0.1/typedarray.min.js","17-02-2020-AlcoholConsumption_files/webcomponents-2.0.0/webcomponents.js","distill-preview.png","Preview.jpg"]}
+  </script>
+  <!--radix_placeholder_navigation_in_header-->
+<meta name="distill:offset" content="../.."/>
+
+<script type="application/javascript">
+
+  window.headroom_prevent_pin = false;
+
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+
+    // initialize headroom for banner
+    var header = $('header').get(0);
+    var headerHeight = header.offsetHeight;
+    var headroom = new Headroom(header, {
+      tolerance: 5,
+      onPin : function() {
+        if (window.headroom_prevent_pin) {
+          window.headroom_prevent_pin = false;
+          headroom.unpin();
+        }
+      }
+    });
+    headroom.init();
+    if(window.location.hash)
+      headroom.unpin();
+    $(header).addClass('headroom--transition');
+
+    // offset scroll location for banner on hash change
+    // (see: https://github.com/WickyNilliams/headroom.js/issues/38)
+    window.addEventListener("hashchange", function(event) {
+      window.scrollTo(0, window.pageYOffset - (headerHeight + 25));
+    });
+
+    // responsive menu
+    $('.distill-site-header').each(function(i, val) {
+      var topnav = $(this);
+      var toggle = topnav.find('.nav-toggle');
+      toggle.on('click', function() {
+        topnav.toggleClass('responsive');
+      });
+    });
+
+    // nav dropdowns
+    $('.nav-dropbtn').click(function(e) {
+      $(this).next('.nav-dropdown-content').toggleClass('nav-dropdown-active');
+      $(this).parent().siblings('.nav-dropdown')
+         .children('.nav-dropdown-content').removeClass('nav-dropdown-active');
+    });
+    $("body").click(function(e){
+      $('.nav-dropdown-content').removeClass('nav-dropdown-active');
+    });
+    $(".nav-dropdown").click(function(e){
+      e.stopPropagation();
+    });
+  });
+</script>
+
+<style type="text/css">
+
+/* Theme (user-documented overrideables for nav appearance) */
+
+.distill-site-nav {
+  color: rgba(255, 255, 255, 0.8);
+  background-color: #0F2E3D;
+  font-size: 15px;
+  font-weight: 300;
+}
+
+.distill-site-nav a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.distill-site-nav a:hover {
+  color: white;
+}
+
+@media print {
+  .distill-site-nav {
+    display: none;
+  }
+}
+
+.distill-site-header {
+
+}
+
+.distill-site-footer {
+
+}
+
+
+/* Site Header */
+
+.distill-site-header {
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 3;
+}
+
+.distill-site-header .nav-left {
+  display: inline-block;
+  margin-left: 8px;
+}
+
+@media screen and (max-width: 768px) {
+  .distill-site-header .nav-left {
+    margin-left: 0;
+  }
+}
+
+
+.distill-site-header .nav-right {
+  float: right;
+  margin-right: 8px;
+}
+
+.distill-site-header a,
+.distill-site-header .title {
+  display: inline-block;
+  text-align: center;
+  padding: 14px 10px 14px 10px;
+}
+
+.distill-site-header .title {
+  font-size: 18px;
+  min-width: 150px;
+}
+
+.distill-site-header .logo {
+  padding: 0;
+}
+
+.distill-site-header .logo img {
+  display: none;
+  max-height: 20px;
+  width: auto;
+  margin-bottom: -4px;
+}
+
+.distill-site-header .nav-image img {
+  max-height: 18px;
+  width: auto;
+  display: inline-block;
+  margin-bottom: -3px;
+}
+
+
+
+@media screen and (min-width: 1000px) {
+  .distill-site-header .logo img {
+    display: inline-block;
+  }
+  .distill-site-header .nav-left {
+    margin-left: 20px;
+  }
+  .distill-site-header .nav-right {
+    margin-right: 20px;
+  }
+  .distill-site-header .title {
+    padding-left: 12px;
+  }
+}
+
+
+.distill-site-header .nav-toggle {
+  display: none;
+}
+
+.nav-dropdown {
+  display: inline-block;
+  position: relative;
+}
+
+.nav-dropdown .nav-dropbtn {
+  border: none;
+  outline: none;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 16px 10px;
+  background-color: transparent;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  margin: 0;
+  margin-top: 1px;
+  z-index: 2;
+}
+
+.nav-dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 200px;
+  border: 1px solid rgba(0,0,0,0.15);
+  border-radius: 4px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
+  z-index: 1;
+  margin-top: 2px;
+  white-space: nowrap;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.nav-dropdown-content hr {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.nav-dropdown-active {
+  display: block;
+}
+
+.nav-dropdown-content a, .nav-dropdown-content .nav-dropdown-header {
+  color: black;
+  padding: 6px 24px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.nav-dropdown-content .nav-dropdown-header {
+  display: block;
+  padding: 5px 24px;
+  padding-bottom: 0;
+  text-transform: uppercase;
+  font-size: 14px;
+  color: #999999;
+  white-space: nowrap;
+}
+
+.nav-dropdown:hover .nav-dropbtn {
+  color: white;
+}
+
+.nav-dropdown-content a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.nav-right .nav-dropdown-content {
+  margin-left: -45%;
+  right: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .distill-site-header a, .distill-site-header .nav-dropdown  {display: none;}
+  .distill-site-header a.nav-toggle {
+    float: right;
+    display: block;
+  }
+  .distill-site-header .title {
+    margin-left: 0;
+  }
+  .distill-site-header .nav-right {
+    margin-right: 0;
+  }
+  .distill-site-header {
+    overflow: hidden;
+  }
+  .nav-right .nav-dropdown-content {
+    margin-left: 0;
+  }
+}
+
+
+@media screen and (max-width: 768px) {
+  .distill-site-header.responsive {position: relative; min-height: 500px; }
+  .distill-site-header.responsive a.nav-toggle {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .distill-site-header.responsive a,
+  .distill-site-header.responsive .nav-dropdown {
+    display: block;
+    text-align: left;
+  }
+  .distill-site-header.responsive .nav-left,
+  .distill-site-header.responsive .nav-right {
+    width: 100%;
+  }
+  .distill-site-header.responsive .nav-dropdown {float: none;}
+  .distill-site-header.responsive .nav-dropdown-content {position: relative;}
+  .distill-site-header.responsive .nav-dropdown .nav-dropbtn {
+    display: block;
+    width: 100%;
+    text-align: left;
+  }
+}
+
+/* Site Footer */
+
+.distill-site-footer {
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  z-index: 3;
+  margin-top: 30px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  text-align: center;
+}
+
+/* Headroom */
+
+d-title {
+  padding-top: 6rem;
+}
+
+@media print {
+  d-title {
+    padding-top: 4rem;
+  }
+}
+
+.headroom {
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.headroom--transition {
+  transition: all .4s ease-in-out;
+}
+
+.headroom--unpinned {
+  top: -100px;
+}
+
+.headroom--pinned {
+  top: 0;
+}
+
+/* adjust viewport for navbar height */
+/* helps vertically center bootstrap (non-distill) content */
+.min-vh-100 {
+  min-height: calc(100vh - 100px) !important;
+}
+
+</style>
+
+<script src="../../site_libs/jquery-1.11.3/jquery.min.js"></script>
+<link href="../../site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet"/>
+<link href="../../site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet"/>
+<script src="../../site_libs/headroom-0.9.4/headroom.min.js"></script>
+<script src="../../site_libs/autocomplete-0.37.1/autocomplete.min.js"></script>
+<script src="../../site_libs/fuse-6.4.1/fuse.min.js"></script>
+
+<script type="application/javascript">
+
+function getMeta(metaName) {
+  var metas = document.getElementsByTagName('meta');
+  for (let i = 0; i < metas.length; i++) {
+    if (metas[i].getAttribute('name') === metaName) {
+      return metas[i].getAttribute('content');
+    }
+  }
+  return '';
+}
+
+function offsetURL(url) {
+  var offset = getMeta('distill:offset');
+  return offset ? offset + '/' + url : url;
+}
+
+function createFuseIndex() {
+
+  // create fuse index
+  var options = {
+    keys: [
+      { name: 'title', weight: 20 },
+      { name: 'categories', weight: 15 },
+      { name: 'description', weight: 10 },
+      { name: 'contents', weight: 5 },
+    ],
+    ignoreLocation: true,
+    threshold: 0
+  };
+  var fuse = new window.Fuse([], options);
+
+  // fetch the main search.json
+  return fetch(offsetURL('search.json'))
+    .then(function(response) {
+      if (response.status == 200) {
+        return response.json().then(function(json) {
+          // index main articles
+          json.articles.forEach(function(article) {
+            fuse.add(article);
+          });
+          // download collections and index their articles
+          return Promise.all(json.collections.map(function(collection) {
+            return fetch(offsetURL(collection)).then(function(response) {
+              if (response.status === 200) {
+                return response.json().then(function(articles) {
+                  articles.forEach(function(article) {
+                    fuse.add(article);
+                  });
+                })
+              } else {
+                return Promise.reject(
+                  new Error('Unexpected status from search index request: ' +
+                            response.status)
+                );
+              }
+            });
+          })).then(function() {
+            return fuse;
+          });
+        });
+
+      } else {
+        return Promise.reject(
+          new Error('Unexpected status from search index request: ' +
+                      response.status)
+        );
+      }
+    });
+}
+
+window.document.addEventListener("DOMContentLoaded", function (event) {
+
+  // get search element (bail if we don't have one)
+  var searchEl = window.document.getElementById('distill-search');
+  if (!searchEl)
+    return;
+
+  createFuseIndex()
+    .then(function(fuse) {
+
+      // make search box visible
+      searchEl.classList.remove('hidden');
+
+      // initialize autocomplete
+      var options = {
+        autoselect: true,
+        hint: false,
+        minLength: 2,
+      };
+      window.autocomplete(searchEl, options, [{
+        source: function(query, callback) {
+          const searchOptions = {
+            isCaseSensitive: false,
+            shouldSort: true,
+            minMatchCharLength: 2,
+            limit: 10,
+          };
+          var results = fuse.search(query, searchOptions);
+          callback(results
+            .map(function(result) { return result.item; })
+          );
+        },
+        templates: {
+          suggestion: function(suggestion) {
+            var img = suggestion.preview && Object.keys(suggestion.preview).length > 0
+              ? `<img src="${offsetURL(suggestion.preview)}"</img>`
+              : '';
+            var html = `
+              <div class="search-item">
+                <h3>${suggestion.title}</h3>
+                <div class="search-item-description">
+                  ${suggestion.description || ''}
+                </div>
+                <div class="search-item-preview">
+                  ${img}
+                </div>
+              </div>
+            `;
+            return html;
+          }
+        }
+      }]).on('autocomplete:selected', function(event, suggestion) {
+        window.location.href = offsetURL(suggestion.path);
+      });
+      // remove inline display style on autocompleter (we want to
+      // manage responsive display via css)
+      $('.algolia-autocomplete').css("display", "");
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+
+});
+
+</script>
+
+<style type="text/css">
+
+.nav-search {
+  font-size: x-small;
+}
+
+/* Algolioa Autocomplete */
+
+.algolia-autocomplete {
+  display: inline-block;
+  margin-left: 10px;
+  vertical-align: sub;
+  background-color: white;
+  color: black;
+  padding: 6px;
+  padding-top: 8px;
+  padding-bottom: 0;
+  border-radius: 6px;
+  border: 1px #0F2E3D solid;
+  width: 180px;
+}
+
+
+@media screen and (max-width: 768px) {
+  .distill-site-nav .algolia-autocomplete {
+    display: none;
+    visibility: hidden;
+  }
+  .distill-site-nav.responsive .algolia-autocomplete {
+    display: inline-block;
+    visibility: visible;
+  }
+  .distill-site-nav.responsive .algolia-autocomplete .aa-dropdown-menu {
+    margin-left: 0;
+    width: 400px;
+    max-height: 400px;
+  }
+}
+
+.algolia-autocomplete .aa-input, .algolia-autocomplete .aa-hint {
+  width: 90%;
+  outline: none;
+  border: none;
+}
+
+.algolia-autocomplete .aa-hint {
+  color: #999;
+}
+.algolia-autocomplete .aa-dropdown-menu {
+  width: 550px;
+  max-height: 70vh;
+  overflow-x: visible;
+  overflow-y: scroll;
+  padding: 5px;
+  margin-top: 3px;
+  margin-left: -150px;
+  background-color: #fff;
+  border-radius: 5px;
+  border: 1px solid #999;
+  border-top: none;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion {
+  cursor: pointer;
+  padding: 5px 4px;
+  border-bottom: 1px solid #eee;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion:last-of-type {
+  border-bottom: none;
+  margin-bottom: 2px;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item {
+  overflow: hidden;
+  font-size: 0.8em;
+  line-height: 1.4em;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item h3 {
+  font-size: 1rem;
+  margin-block-start: 0;
+  margin-block-end: 5px;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-description {
+  display: inline-block;
+  overflow: hidden;
+  height: 2.8em;
+  width: 80%;
+  margin-right: 4%;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview {
+  display: inline-block;
+  width: 15%;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview img {
+  height: 3em;
+  width: auto;
+  display: none;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview img[src] {
+  display: initial;
+}
+
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion.aa-cursor {
+  background-color: #eee;
+}
+.algolia-autocomplete .aa-dropdown-menu .aa-suggestion em {
+  font-weight: bold;
+  font-style: normal;
+}
+
+</style>
+
+
+<!--/radix_placeholder_navigation_in_header-->
+  <!--radix_placeholder_distill-->
+
+<style type="text/css">
+
+body {
+  background-color: white;
+}
+
+.pandoc-table {
+  width: 100%;
+}
+
+.pandoc-table>caption {
+  margin-bottom: 10px;
+}
+
+.pandoc-table th:not([align]) {
+  text-align: left;
+}
+
+.pagedtable-footer {
+  font-size: 15px;
+}
+
+d-byline .byline {
+  grid-template-columns: 2fr 2fr;
+}
+
+d-byline .byline h3 {
+  margin-block-start: 1.5em;
+}
+
+d-byline .byline .authors-affiliations h3 {
+  margin-block-start: 0.5em;
+}
+
+.authors-affiliations .orcid-id {
+  width: 16px;
+  height:16px;
+  margin-left: 4px;
+  margin-right: 4px;
+  vertical-align: middle;
+  padding-bottom: 2px;
+}
+
+d-title .dt-tags {
+  margin-top: 1em;
+  grid-column: text;
+}
+
+.dt-tags .dt-tag {
+  text-decoration: none;
+  display: inline-block;
+  color: rgba(0,0,0,0.6);
+  padding: 0em 0.4em;
+  margin-right: 0.5em;
+  margin-bottom: 0.4em;
+  font-size: 70%;
+  border: 1px solid rgba(0,0,0,0.2);
+  border-radius: 3px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+d-article table.gt_table td,
+d-article table.gt_table th {
+  border-bottom: none;
+}
+
+.html-widget {
+  margin-bottom: 2.0em;
+}
+
+.l-screen-inset {
+  padding-right: 16px;
+}
+
+.l-screen .caption {
+  margin-left: 10px;
+}
+
+.shaded {
+  background: rgb(247, 247, 247);
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.shaded .html-widget {
+  margin-bottom: 0;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.shaded .shaded-content {
+  background: white;
+}
+
+.text-output {
+  margin-top: 0;
+  line-height: 1.5em;
+}
+
+.hidden {
+  display: none !important;
+}
+
+d-article {
+  padding-top: 2.5rem;
+  padding-bottom: 30px;
+}
+
+d-appendix {
+  padding-top: 30px;
+}
+
+d-article>p>img {
+  width: 100%;
+}
+
+d-article h2 {
+  margin: 1rem 0 1.5rem 0;
+}
+
+d-article h3 {
+  margin-top: 1.5rem;
+}
+
+d-article iframe {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  margin-bottom: 2.0em;
+  width: 100%;
+}
+
+/* Tweak code blocks */
+
+d-article div.sourceCode code,
+d-article pre code {
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+}
+
+d-article pre,
+d-article div.sourceCode,
+d-article div.sourceCode pre {
+  overflow: auto;
+}
+
+d-article div.sourceCode {
+  background-color: white;
+}
+
+d-article div.sourceCode pre {
+  padding-left: 10px;
+  font-size: 12px;
+  border-left: 2px solid rgba(0,0,0,0.1);
+}
+
+d-article pre {
+  font-size: 12px;
+  color: black;
+  background: none;
+  margin-top: 0;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+d-article pre a {
+  border-bottom: none;
+}
+
+d-article pre a:hover {
+  border-bottom: none;
+  text-decoration: underline;
+}
+
+d-article details {
+  grid-column: text;
+  margin-bottom: 0.8em;
+}
+
+@media(min-width: 768px) {
+
+d-article pre,
+d-article div.sourceCode,
+d-article div.sourceCode pre {
+  overflow: visible !important;
+}
+
+d-article div.sourceCode pre {
+  padding-left: 18px;
+  font-size: 14px;
+}
+
+d-article pre {
+  font-size: 14px;
+}
+
+}
+
+figure img.external {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+/* CSS for d-contents */
+
+.d-contents {
+  grid-column: text;
+  color: rgba(0,0,0,0.8);
+  font-size: 0.9em;
+  padding-bottom: 1em;
+  margin-bottom: 1em;
+  padding-bottom: 0.5em;
+  margin-bottom: 1em;
+  padding-left: 0.25em;
+  justify-self: start;
+}
+
+@media(min-width: 1000px) {
+  .d-contents.d-contents-float {
+    height: 0;
+    grid-column-start: 1;
+    grid-column-end: 4;
+    justify-self: center;
+    padding-right: 3em;
+    padding-left: 2em;
+  }
+}
+
+.d-contents nav h3 {
+  font-size: 18px;
+  margin-top: 0;
+  margin-bottom: 1em;
+}
+
+.d-contents li {
+  list-style-type: none
+}
+
+.d-contents nav > ul {
+  padding-left: 0;
+}
+
+.d-contents ul {
+  padding-left: 1em
+}
+
+.d-contents nav ul li {
+  margin-top: 0.6em;
+  margin-bottom: 0.2em;
+}
+
+.d-contents nav a {
+  font-size: 13px;
+  border-bottom: none;
+  text-decoration: none
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.d-contents nav a:hover {
+  text-decoration: underline solid rgba(0, 0, 0, 0.6)
+}
+
+.d-contents nav > ul > li > a {
+  font-weight: 600;
+}
+
+.d-contents nav > ul > li > ul {
+  font-weight: inherit;
+}
+
+.d-contents nav > ul > li > ul > li {
+  margin-top: 0.2em;
+}
+
+
+.d-contents nav ul {
+  margin-top: 0;
+  margin-bottom: 0.25em;
+}
+
+.d-article-with-toc h2:nth-child(2) {
+  margin-top: 0;
+}
+
+
+/* Figure */
+
+.figure {
+  position: relative;
+  margin-bottom: 2.5em;
+  margin-top: 1.5em;
+}
+
+.figure img {
+  width: 100%;
+}
+
+.figure .caption {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 12px;
+  line-height: 1.5em;
+}
+
+.figure img.external {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+.figure .caption a {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.figure .caption b,
+.figure .caption strong, {
+  font-weight: 600;
+  color: rgba(0, 0, 0, 1.0);
+}
+
+/* Citations */
+
+d-article .citation {
+  color: inherit;
+  cursor: inherit;
+}
+
+div.hanging-indent{
+  margin-left: 1em; text-indent: -1em;
+}
+
+/* Citation hover box */
+
+.tippy-box[data-theme~=light-border] {
+  background-color: rgba(250, 250, 250, 0.95);
+}
+
+.tippy-content > p {
+  margin-bottom: 0;
+  padding: 2px;
+}
+
+
+/* Tweak 1000px media break to show more text */
+
+@media(min-width: 1000px) {
+  .base-grid,
+  distill-header,
+  d-title,
+  d-abstract,
+  d-article,
+  d-appendix,
+  distill-appendix,
+  d-byline,
+  d-footnote-list,
+  d-citation-list,
+  distill-footer {
+    grid-template-columns: [screen-start] 1fr [page-start kicker-start] 80px [middle-start] 50px [text-start kicker-end] 65px 65px 65px 65px 65px 65px 65px 65px [text-end gutter-start] 65px [middle-end] 65px [page-end gutter-end] 1fr [screen-end];
+    grid-column-gap: 16px;
+  }
+
+  .grid {
+    grid-column-gap: 16px;
+  }
+
+  d-article {
+    font-size: 1.06rem;
+    line-height: 1.7em;
+  }
+  figure .caption, .figure .caption, figure figcaption {
+    font-size: 13px;
+  }
+}
+
+@media(min-width: 1180px) {
+  .base-grid,
+  distill-header,
+  d-title,
+  d-abstract,
+  d-article,
+  d-appendix,
+  distill-appendix,
+  d-byline,
+  d-footnote-list,
+  d-citation-list,
+  distill-footer {
+    grid-template-columns: [screen-start] 1fr [page-start kicker-start] 60px [middle-start] 60px [text-start kicker-end] 60px 60px 60px 60px 60px 60px 60px 60px [text-end gutter-start] 60px [middle-end] 60px [page-end gutter-end] 1fr [screen-end];
+    grid-column-gap: 32px;
+  }
+
+  .grid {
+    grid-column-gap: 32px;
+  }
+}
+
+
+/* Get the citation styles for the appendix (not auto-injected on render since
+   we do our own rendering of the citation appendix) */
+
+d-appendix .citation-appendix,
+.d-appendix .citation-appendix {
+  font-size: 11px;
+  line-height: 15px;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  padding-left: 18px;
+  border: 1px solid rgba(0,0,0,0.1);
+  background: rgba(0, 0, 0, 0.02);
+  padding: 10px 18px;
+  border-radius: 3px;
+  color: rgba(150, 150, 150, 1);
+  overflow: hidden;
+  margin-top: -12px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* Include appendix styles here so they can be overridden */
+
+d-appendix {
+  contain: layout style;
+  font-size: 0.8em;
+  line-height: 1.7em;
+  margin-top: 60px;
+  margin-bottom: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  color: rgba(0,0,0,0.5);
+  padding-top: 60px;
+  padding-bottom: 48px;
+}
+
+d-appendix h3 {
+  grid-column: page-start / text-start;
+  font-size: 15px;
+  font-weight: 500;
+  margin-top: 1em;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.65);
+}
+
+d-appendix h3 + * {
+  margin-top: 1em;
+}
+
+d-appendix ol {
+  padding: 0 0 0 15px;
+}
+
+@media (min-width: 768px) {
+  d-appendix ol {
+    padding: 0 0 0 30px;
+    margin-left: -30px;
+  }
+}
+
+d-appendix li {
+  margin-bottom: 1em;
+}
+
+d-appendix a {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+d-appendix > * {
+  grid-column: text;
+}
+
+d-appendix > d-footnote-list,
+d-appendix > d-citation-list,
+d-appendix > distill-appendix {
+  grid-column: screen;
+}
+
+/* Include footnote styles here so they can be overridden */
+
+d-footnote-list {
+  contain: layout style;
+}
+
+d-footnote-list > * {
+  grid-column: text;
+}
+
+d-footnote-list a.footnote-backlink {
+  color: rgba(0,0,0,0.3);
+  padding-left: 0.5em;
+}
+
+
+
+/* Anchor.js */
+
+.anchorjs-link {
+  /*transition: all .25s linear; */
+  text-decoration: none;
+  border-bottom: none;
+}
+*:hover > .anchorjs-link {
+  margin-left: -1.125em !important;
+  text-decoration: none;
+  border-bottom: none;
+}
+
+/* Social footer */
+
+.social_footer {
+  margin-top: 30px;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.67);
+}
+
+.disqus-comments {
+  margin-right: 30px;
+}
+
+.disqus-comment-count {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+}
+
+#disqus_thread {
+  margin-top: 30px;
+}
+
+.article-sharing a {
+  border-bottom: none;
+  margin-right: 8px;
+}
+
+.article-sharing a:hover {
+  border-bottom: none;
+}
+
+.sidebar-section.subscribe {
+  font-size: 12px;
+  line-height: 1.6em;
+}
+
+.subscribe p {
+  margin-bottom: 0.5em;
+}
+
+
+.article-footer .subscribe {
+  font-size: 15px;
+  margin-top: 45px;
+}
+
+
+.sidebar-section.custom {
+  font-size: 12px;
+  line-height: 1.6em;
+}
+
+.custom p {
+  margin-bottom: 0.5em;
+}
+
+/* Styles for listing layout (hide title) */
+.layout-listing d-title, .layout-listing .d-title {
+  display: none;
+}
+
+/* Styles for posts lists (not auto-injected) */
+
+
+.posts-with-sidebar {
+  padding-left: 45px;
+  padding-right: 45px;
+}
+
+.posts-list .description h2,
+.posts-list .description p {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+}
+
+.posts-list .description h2 {
+  font-weight: 700;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.posts-list h2.post-tag {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  padding-bottom: 12px;
+}
+.posts-list {
+  margin-top: 60px;
+  margin-bottom: 24px;
+}
+
+.posts-list .post-preview {
+  text-decoration: none;
+  overflow: hidden;
+  display: block;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 24px 0;
+}
+
+.post-preview-last {
+  border-bottom: none !important;
+}
+
+.posts-list .posts-list-caption {
+  grid-column: screen;
+  font-weight: 400;
+}
+
+.posts-list .post-preview h2 {
+  margin: 0 0 6px 0;
+  line-height: 1.2em;
+  font-style: normal;
+  font-size: 24px;
+}
+
+.posts-list .post-preview p {
+  margin: 0 0 12px 0;
+  line-height: 1.4em;
+  font-size: 16px;
+}
+
+.posts-list .post-preview .thumbnail {
+  box-sizing: border-box;
+  margin-bottom: 24px;
+  position: relative;
+  max-width: 500px;
+}
+.posts-list .post-preview img {
+  width: 100%;
+  display: block;
+}
+
+.posts-list .metadata {
+  font-size: 12px;
+  line-height: 1.4em;
+  margin-bottom: 18px;
+}
+
+.posts-list .metadata > * {
+  display: inline-block;
+}
+
+.posts-list .metadata .publishedDate {
+  margin-right: 2em;
+}
+
+.posts-list .metadata .dt-authors {
+  display: block;
+  margin-top: 0.3em;
+  margin-right: 2em;
+}
+
+.posts-list .dt-tags {
+  display: block;
+  line-height: 1em;
+}
+
+.posts-list .dt-tags .dt-tag {
+  display: inline-block;
+  color: rgba(0,0,0,0.6);
+  padding: 0.3em 0.4em;
+  margin-right: 0.2em;
+  margin-bottom: 0.4em;
+  font-size: 60%;
+  border: 1px solid rgba(0,0,0,0.2);
+  border-radius: 3px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.posts-list img {
+  opacity: 1;
+}
+
+.posts-list img[data-src] {
+  opacity: 0;
+}
+
+.posts-more {
+  clear: both;
+}
+
+
+.posts-sidebar {
+  font-size: 16px;
+}
+
+.posts-sidebar h3 {
+  font-size: 16px;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.sidebar-section {
+  margin-bottom: 30px;
+}
+
+.categories ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.categories li {
+  color: rgba(0, 0, 0, 0.8);
+  margin-bottom: 0;
+}
+
+.categories li>a {
+  border-bottom: none;
+}
+
+.categories li>a:hover {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+}
+
+.categories .active {
+  font-weight: 600;
+}
+
+.categories .category-count {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+
+@media(min-width: 768px) {
+  .posts-list .post-preview h2 {
+    font-size: 26px;
+  }
+  .posts-list .post-preview .thumbnail {
+    float: right;
+    width: 30%;
+    margin-bottom: 0;
+  }
+  .posts-list .post-preview .description {
+    float: left;
+    width: 45%;
+  }
+  .posts-list .post-preview .metadata {
+    float: left;
+    width: 20%;
+    margin-top: 8px;
+  }
+  .posts-list .post-preview p {
+    margin: 0 0 12px 0;
+    line-height: 1.5em;
+    font-size: 16px;
+  }
+  .posts-with-sidebar .posts-list {
+    float: left;
+    width: 75%;
+  }
+  .posts-with-sidebar .posts-sidebar {
+    float: right;
+    width: 20%;
+    margin-top: 60px;
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+}
+
+
+/* Improve display for browsers without grid (IE/Edge <= 15) */
+
+.downlevel {
+  line-height: 1.6em;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  margin: 0;
+}
+
+.downlevel .d-title {
+  padding-top: 6rem;
+  padding-bottom: 1.5rem;
+}
+
+.downlevel .d-title h1 {
+  font-size: 50px;
+  font-weight: 700;
+  line-height: 1.1em;
+  margin: 0 0 0.5rem;
+}
+
+.downlevel .d-title p {
+  font-weight: 300;
+  font-size: 1.2rem;
+  line-height: 1.55em;
+  margin-top: 0;
+}
+
+.downlevel .d-byline {
+  padding-top: 0.8em;
+  padding-bottom: 0.8em;
+  font-size: 0.8rem;
+  line-height: 1.8em;
+}
+
+.downlevel .section-separator {
+  border: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.downlevel .d-article {
+  font-size: 1.06rem;
+  line-height: 1.7em;
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+}
+
+
+.downlevel .d-appendix {
+  padding-left: 0;
+  padding-right: 0;
+  max-width: none;
+  font-size: 0.8em;
+  line-height: 1.7em;
+  margin-bottom: 0;
+  color: rgba(0,0,0,0.5);
+  padding-top: 40px;
+  padding-bottom: 48px;
+}
+
+.downlevel .footnotes ol {
+  padding-left: 13px;
+}
+
+.downlevel .base-grid,
+.downlevel .distill-header,
+.downlevel .d-title,
+.downlevel .d-abstract,
+.downlevel .d-article,
+.downlevel .d-appendix,
+.downlevel .distill-appendix,
+.downlevel .d-byline,
+.downlevel .d-footnote-list,
+.downlevel .d-citation-list,
+.downlevel .distill-footer,
+.downlevel .appendix-bottom,
+.downlevel .posts-container {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+@media(min-width: 768px) {
+  .downlevel .base-grid,
+  .downlevel .distill-header,
+  .downlevel .d-title,
+  .downlevel .d-abstract,
+  .downlevel .d-article,
+  .downlevel .d-appendix,
+  .downlevel .distill-appendix,
+  .downlevel .d-byline,
+  .downlevel .d-footnote-list,
+  .downlevel .d-citation-list,
+  .downlevel .distill-footer,
+  .downlevel .appendix-bottom,
+  .downlevel .posts-container {
+  padding-left: 150px;
+  padding-right: 150px;
+  max-width: 900px;
+}
+}
+
+.downlevel pre code {
+  display: block;
+  border-left: 2px solid rgba(0, 0, 0, .1);
+  padding: 0 0 0 20px;
+  font-size: 14px;
+}
+
+.downlevel code, .downlevel pre {
+  color: black;
+  background: none;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+.downlevel .posts-list .post-preview {
+  color: inherit;
+}
+
+
+
+</style>
+
+<script type="application/javascript">
+
+function is_downlevel_browser() {
+  if (bowser.isUnsupportedBrowser({ msie: "12", msedge: "16"},
+                                 window.navigator.userAgent)) {
+    return true;
+  } else {
+    return window.load_distill_framework === undefined;
+  }
+}
+
+// show body when load is complete
+function on_load_complete() {
+
+  // add anchors
+  if (window.anchors) {
+    window.anchors.options.placement = 'left';
+    window.anchors.add('d-article > h2, d-article > h3, d-article > h4, d-article > h5');
+  }
+
+
+  // set body to visible
+  document.body.style.visibility = 'visible';
+
+  // force redraw for leaflet widgets
+  if (window.HTMLWidgets) {
+    var maps = window.HTMLWidgets.findAll(".leaflet");
+    $.each(maps, function(i, el) {
+      var map = this.getMap();
+      map.invalidateSize();
+      map.eachLayer(function(layer) {
+        if (layer instanceof L.TileLayer)
+          layer.redraw();
+      });
+    });
+  }
+
+  // trigger 'shown' so htmlwidgets resize
+  $('d-article').trigger('shown');
+}
+
+function init_distill() {
+
+  init_common();
+
+  // create front matter
+  var front_matter = $('<d-front-matter></d-front-matter>');
+  $('#distill-front-matter').wrap(front_matter);
+
+  // create d-title
+  $('.d-title').changeElementType('d-title');
+
+  // create d-byline
+  var byline = $('<d-byline></d-byline>');
+  $('.d-byline').replaceWith(byline);
+
+  // create d-article
+  var article = $('<d-article></d-article>');
+  $('.d-article').wrap(article).children().unwrap();
+
+  // move posts container into article
+  $('.posts-container').appendTo($('d-article'));
+
+  // create d-appendix
+  $('.d-appendix').changeElementType('d-appendix');
+
+  // flag indicating that we have appendix items
+  var appendix = $('.appendix-bottom').children('h3').length > 0;
+
+  // replace footnotes with <d-footnote>
+  $('.footnote-ref').each(function(i, val) {
+    appendix = true;
+    var href = $(this).attr('href');
+    var id = href.replace('#', '');
+    var fn = $('#' + id);
+    var fn_p = $('#' + id + '>p');
+    fn_p.find('.footnote-back').remove();
+    var text = fn_p.html();
+    var dtfn = $('<d-footnote></d-footnote>');
+    dtfn.html(text);
+    $(this).replaceWith(dtfn);
+  });
+  // remove footnotes
+  $('.footnotes').remove();
+
+  // move refs into #references-listing
+  $('#references-listing').replaceWith($('#refs'));
+
+  $('h1.appendix, h2.appendix').each(function(i, val) {
+    $(this).changeElementType('h3');
+  });
+  $('h3.appendix').each(function(i, val) {
+    var id = $(this).attr('id');
+    $('.d-contents a[href="#' + id + '"]').parent().remove();
+    appendix = true;
+    $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('d-appendix'));
+  });
+
+  // show d-appendix if we have appendix content
+  $("d-appendix").css('display', appendix ? 'grid' : 'none');
+
+  // localize layout chunks to just output
+  $('.layout-chunk').each(function(i, val) {
+
+    // capture layout
+    var layout = $(this).attr('data-layout');
+
+    // apply layout to markdown level block elements
+    var elements = $(this).children().not('details, div.sourceCode, pre, script');
+    elements.each(function(i, el) {
+      var layout_div = $('<div class="' + layout + '"></div>');
+      if (layout_div.hasClass('shaded')) {
+        var shaded_content = $('<div class="shaded-content"></div>');
+        $(this).wrap(shaded_content);
+        $(this).parent().wrap(layout_div);
+      } else {
+        $(this).wrap(layout_div);
+      }
+    });
+
+
+    // unwrap the layout-chunk div
+    $(this).children().unwrap();
+  });
+
+  // remove code block used to force  highlighting css
+  $('.distill-force-highlighting-css').parent().remove();
+
+  // remove empty line numbers inserted by pandoc when using a
+  // custom syntax highlighting theme
+  $('code.sourceCode a:empty').remove();
+
+  // load distill framework
+  load_distill_framework();
+
+  // wait for window.distillRunlevel == 4 to do post processing
+  function distill_post_process() {
+
+    if (!window.distillRunlevel || window.distillRunlevel < 4)
+      return;
+
+    // hide author/affiliations entirely if we have no authors
+    var front_matter = JSON.parse($("#distill-front-matter").html());
+    var have_authors = front_matter.authors && front_matter.authors.length > 0;
+    if (!have_authors)
+      $('d-byline').addClass('hidden');
+
+    // article with toc class
+    $('.d-contents').parent().addClass('d-article-with-toc');
+
+    // strip links that point to #
+    $('.authors-affiliations').find('a[href="#"]').removeAttr('href');
+
+    // add orcid ids
+    $('.authors-affiliations').find('.author').each(function(i, el) {
+      var orcid_id = front_matter.authors[i].orcidID;
+      if (orcid_id) {
+        var a = $('<a></a>');
+        a.attr('href', 'https://orcid.org/' + orcid_id);
+        var img = $('<img></img>');
+        img.addClass('orcid-id');
+        img.attr('alt', 'ORCID ID');
+        img.attr('src','data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==');
+        a.append(img);
+        $(this).append(a);
+      }
+    });
+
+    // hide elements of author/affiliations grid that have no value
+    function hide_byline_column(caption) {
+      $('d-byline').find('h3:contains("' + caption + '")').parent().css('visibility', 'hidden');
+    }
+
+    // affiliations
+    var have_affiliations = false;
+    for (var i = 0; i<front_matter.authors.length; ++i) {
+      var author = front_matter.authors[i];
+      if (author.affiliation !== "&nbsp;") {
+        have_affiliations = true;
+        break;
+      }
+    }
+    if (!have_affiliations)
+      $('d-byline').find('h3:contains("Affiliations")').css('visibility', 'hidden');
+
+    // published date
+    if (!front_matter.publishedDate)
+      hide_byline_column("Published");
+
+    // document object identifier
+    var doi = $('d-byline').find('h3:contains("DOI")');
+    var doi_p = doi.next().empty();
+    if (!front_matter.doi) {
+      // if we have a citation and valid citationText then link to that
+      if ($('#citation').length > 0 && front_matter.citationText) {
+        doi.html('Citation');
+        $('<a href="#citation"></a>')
+          .text(front_matter.citationText)
+          .appendTo(doi_p);
+      } else {
+        hide_byline_column("DOI");
+      }
+    } else {
+      $('<a></a>')
+         .attr('href', "https://doi.org/" + front_matter.doi)
+         .html(front_matter.doi)
+         .appendTo(doi_p);
+    }
+
+     // change plural form of authors/affiliations
+    if (front_matter.authors.length === 1) {
+      var grid = $('.authors-affiliations');
+      grid.children('h3:contains("Authors")').text('Author');
+      grid.children('h3:contains("Affiliations")').text('Affiliation');
+    }
+
+    // remove d-appendix and d-footnote-list local styles
+    $('d-appendix > style:first-child').remove();
+    $('d-footnote-list > style:first-child').remove();
+
+    // move appendix-bottom entries to the bottom
+    $('.appendix-bottom').appendTo('d-appendix').children().unwrap();
+    $('.appendix-bottom').remove();
+
+    // hoverable references
+    $('span.citation[data-cites]').each(function() {
+      var refHtml = $('#ref-' + $(this).attr('data-cites')).html();
+      window.tippy(this, {
+        allowHTML: true,
+        content: refHtml,
+        maxWidth: 500,
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'light-border',
+        placement: 'bottom-start'
+      });
+    });
+
+    // clear polling timer
+    clearInterval(tid);
+
+    // show body now that everything is ready
+    on_load_complete();
+  }
+
+  var tid = setInterval(distill_post_process, 50);
+  distill_post_process();
+
+}
+
+function init_downlevel() {
+
+  init_common();
+
+   // insert hr after d-title
+  $('.d-title').after($('<hr class="section-separator"/>'));
+
+  // check if we have authors
+  var front_matter = JSON.parse($("#distill-front-matter").html());
+  var have_authors = front_matter.authors && front_matter.authors.length > 0;
+
+  // manage byline/border
+  if (!have_authors)
+    $('.d-byline').remove();
+  $('.d-byline').after($('<hr class="section-separator"/>'));
+  $('.d-byline a').remove();
+
+  // remove toc
+  $('.d-contents').remove();
+
+  // move appendix elements
+  $('h1.appendix, h2.appendix').each(function(i, val) {
+    $(this).changeElementType('h3');
+  });
+  $('h3.appendix').each(function(i, val) {
+    $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('.d-appendix'));
+  });
+
+
+  // inject headers into references and footnotes
+  var refs_header = $('<h3></h3>');
+  refs_header.text('References');
+  $('#refs').prepend(refs_header);
+
+  var footnotes_header = $('<h3></h3');
+  footnotes_header.text('Footnotes');
+  $('.footnotes').children('hr').first().replaceWith(footnotes_header);
+
+  // move appendix-bottom entries to the bottom
+  $('.appendix-bottom').appendTo('.d-appendix').children().unwrap();
+  $('.appendix-bottom').remove();
+
+  // remove appendix if it's empty
+  if ($('.d-appendix').children().length === 0)
+    $('.d-appendix').remove();
+
+  // prepend separator above appendix
+  $('.d-appendix').before($('<hr class="section-separator" style="clear: both"/>'));
+
+  // trim code
+  $('pre>code').each(function(i, val) {
+    $(this).html($.trim($(this).html()));
+  });
+
+  // move posts-container right before article
+  $('.posts-container').insertBefore($('.d-article'));
+
+  $('body').addClass('downlevel');
+
+  on_load_complete();
+}
+
+
+function init_common() {
+
+  // jquery plugin to change element types
+  (function($) {
+    $.fn.changeElementType = function(newType) {
+      var attrs = {};
+
+      $.each(this[0].attributes, function(idx, attr) {
+        attrs[attr.nodeName] = attr.nodeValue;
+      });
+
+      this.replaceWith(function() {
+        return $("<" + newType + "/>", attrs).append($(this).contents());
+      });
+    };
+  })(jQuery);
+
+  // prevent underline for linked images
+  $('a > img').parent().css({'border-bottom' : 'none'});
+
+  // mark non-body figures created by knitr chunks as 100% width
+  $('.layout-chunk').each(function(i, val) {
+    var figures = $(this).find('img, .html-widget');
+    if ($(this).attr('data-layout') !== "l-body") {
+      figures.css('width', '100%');
+    } else {
+      figures.css('max-width', '100%');
+      figures.filter("[width]").each(function(i, val) {
+        var fig = $(this);
+        fig.css('width', fig.attr('width') + 'px');
+      });
+
+    }
+  });
+
+  // auto-append index.html to post-preview links in file: protocol
+  // and in rstudio ide preview
+  $('.post-preview').each(function(i, val) {
+    if (window.location.protocol === "file:")
+      $(this).attr('href', $(this).attr('href') + "index.html");
+  });
+
+  // get rid of index.html references in header
+  if (window.location.protocol !== "file:") {
+    $('.distill-site-header a[href]').each(function(i,val) {
+      $(this).attr('href', $(this).attr('href').replace("index.html", "./"));
+    });
+  }
+
+  // add class to pandoc style tables
+  $('tr.header').parent('thead').parent('table').addClass('pandoc-table');
+  $('.kable-table').children('table').addClass('pandoc-table');
+
+  // add figcaption style to table captions
+  $('caption').parent('table').addClass("figcaption");
+
+  // initialize posts list
+  if (window.init_posts_list)
+    window.init_posts_list();
+
+  // implmement disqus comment link
+  $('.disqus-comment-count').click(function() {
+    window.headroom_prevent_pin = true;
+    $('#disqus_thread').toggleClass('hidden');
+    if (!$('#disqus_thread').hasClass('hidden')) {
+      var offset = $(this).offset();
+      $(window).resize();
+      $('html, body').animate({
+        scrollTop: offset.top - 35
+      });
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  if (is_downlevel_browser())
+    init_downlevel();
+  else
+    window.addEventListener('WebComponentsReady', init_distill);
+});
+
+</script>
+
+<style type="text/css">
+/* base variables */
+
+/* Edit the CSS properties in this file to create a custom
+   Distill theme. Only edit values in the right column
+   for each row; values shown are the CSS defaults.
+   To return any property to the default,
+   you may set its value to: unset
+   All rows must end with a semi-colon.                      */
+
+/* Optional: embed custom fonts here with `@import`          */
+/* This must remain at the top of this file.                 */
+
+
+
+html {
+  /*-- Main font sizes --*/
+  --title-size:      50px;
+  --body-size:       1.06rem;
+  --code-size:       14px;
+  --aside-size:      12px;
+  --fig-cap-size:    13px;
+  /*-- Main font colors --*/
+  --title-color:     #000000;
+  --header-color:    rgba(0, 0, 0, 0.8);
+  --body-color:      rgba(0, 0, 0, 0.8);
+  --aside-color:     rgba(0, 0, 0, 0.6);
+  --fig-cap-color:   rgba(0, 0, 0, 0.6);
+  /*-- Specify custom fonts ~~~ must be imported above   --*/
+  --heading-font:    sans-serif;
+  --mono-font:       monospace;
+  --body-font:       sans-serif;
+  --navbar-font:     sans-serif;  /* websites + blogs only */
+}
+
+/*-- ARTICLE METADATA --*/
+d-byline {
+  --heading-size:    0.6rem;
+  --heading-color:   rgba(0, 0, 0, 0.5);
+  --body-size:       0.8rem;
+  --body-color:      rgba(0, 0, 0, 0.8);
+}
+
+/*-- ARTICLE TABLE OF CONTENTS --*/
+.d-contents {
+  --heading-size:    18px;
+  --contents-size:   13px;
+}
+
+/*-- ARTICLE APPENDIX --*/
+d-appendix {
+  --heading-size:    15px;
+  --heading-color:   rgba(0, 0, 0, 0.65);
+  --text-size:       0.8em;
+  --text-color:      rgba(0, 0, 0, 0.5);
+}
+
+/*-- WEBSITE HEADER + FOOTER --*/
+/* These properties only apply to Distill sites and blogs  */
+
+.distill-site-header {
+  --title-size:       18px;
+  --text-color:       rgba(255, 255, 255, 0.8);
+  --text-size:        15px;
+  --hover-color:      white;
+  --bkgd-color:       #0F2E3D;
+}
+
+.distill-site-footer {
+  --text-color:       rgba(255, 255, 255, 0.8);
+  --text-size:        15px;
+  --hover-color:      white;
+  --bkgd-color:       #0F2E3D;
+}
+
+/*-- Additional custom styles --*/
+/* Add any additional CSS rules below                      */
+</style>
+<style type="text/css">
+/* base variables */
+
+/* Edit the CSS properties in this file to create a custom
+   Distill theme. Only edit values in the right column
+   for each row; values shown are the CSS defaults.
+   To return any property to the default,
+   you may set its value to: unset
+   All rows must end with a semi-colon.                      */
+
+/* Optional: embed custom fonts here with `@import`          */
+/* This must remain at the top of this file.                 */
+@import url('https://fonts.googleapis.com/css2?family=Roboto Condensed');
+@import url('https://fonts.googleapis.com/css2?family=Catamaran');
+@import url('https://fonts.googleapis.com/css2?family=Fira Mono');
+
+
+html {
+  /*-- Main font sizes --*/
+  --title-size:      50px;
+  --body-size:       1.06rem;
+  --code-size:       14px;
+  --aside-size:      12px;
+  --fig-cap-size:    13px;
+  
+  /*-- Main font colors --*/
+  --title-color:     purple;
+  --header-color:    rgba(0, 0, 0, 0.8);
+  --body-color:      rgba(0, 0, 0, 0.8);
+  --aside-color:     rgba(0, 0, 0, 0.6);
+  --fig-cap-color:   rgba(0, 0, 0, 0.6);
+  /*-- Specify custom fonts ~~~ must be imported above   --*/
+  --heading-font:    'Roboto Condensed', sans-serif;         /* edited */
+  --mono-font:       'Roboto', monospace;     /* edited */
+  --body-font:       'Roboto', sans-serif;         /* edited */
+  --navbar-font:     'Roboto Condensed', sans-serif;   /* edited */
+}
+
+/*-- ARTICLE METADATA --*/
+.d-byline {
+  --heading-size:    0.6rem;
+  --heading-color:   rgba(0, 0, 0, 0.5);
+  --body-size:       0.8rem;
+  --body-color:      rgba(0, 0, 0, 0.8);
+}
+
+/*-- ARTICLE TABLE OF CONTENTS --*/
+.d-contents {
+  --heading-size:    20px;
+  --contents-size:   16px;
+}
+
+/*-- ARTICLE APPENDIX --*/
+.d-appendix {
+  --heading-size:    15px;
+  --heading-color:   rgba(0, 0, 0, 0.65);
+  --text-size:       0.8em;
+  --text-color:      rgba(0, 0, 0, 0.5);
+}
+
+/*-- WEBSITE HEADER + FOOTER --*/
+/* These properties only apply to Distill sites and blogs  */
+
+.distill-site-header {
+  --title-size:       18px;
+  --text-color:       black;
+  --text-size:        15px;
+  --hover-color:      purple;
+  --bkgd-color:       white;
+}
+
+.distill-site-footer {
+  --text-color:       black;
+  --text-size:        15px;
+  --hover-color:      purple;
+  --bkgd-color:       white;
+}
+
+/*-- Additional custom styles --*/
+/* Add any additional CSS rules below                      */
+
+.;;</style>
+<style type="text/css">
+/* base style */
+
+/* FONT FAMILIES */
+
+:root {
+  --heading-default: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  --mono-default: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  --body-default: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+}
+
+body,
+.posts-list .post-preview p,
+.posts-list .description p {
+  font-family: var(--body-font), var(--body-default);
+}
+
+h1, h2, h3, h4, h5, h6,
+.posts-list .post-preview h2,
+.posts-list .description h2 {
+  font-family: var(--heading-font), var(--heading-default);
+}
+
+d-article div.sourceCode code,
+d-article pre code {
+  font-family: var(--mono-font), var(--mono-default);
+}
+
+
+/*-- TITLE --*/
+d-title h1,
+.posts-list > h1 {
+  color: var(--title-color, black);
+}
+
+d-title h1 {
+  font-size: var(--title-size, 50px);
+}
+
+/*-- HEADERS --*/
+d-article h1,
+d-article h2,
+d-article h3,
+d-article h4,
+d-article h5,
+d-article h6 {
+  color: var(--header-color, rgba(0, 0, 0, 0.8));
+}
+
+/*-- BODY --*/
+d-article > p,  /* only text inside of <p> tags */
+d-article > ul, /* lists */
+d-article > ol {
+  color: var(--body-color, rgba(0, 0, 0, 0.8));
+  font-size: var(--body-size, 1.06rem);
+}
+
+
+/*-- CODE --*/
+d-article div.sourceCode code,
+d-article pre code {
+  font-size: var(--code-size, 14px);
+}
+
+/*-- ASIDE --*/
+d-article aside {
+  font-size: var(--aside-size, 12px);
+  color: var(--aside-color, rgba(0, 0, 0, 0.6));
+}
+
+/*-- FIGURE CAPTIONS --*/
+figure .caption,
+figure figcaption,
+.figure .caption {
+  font-size: var(--fig-cap-size, 13px);
+  color: var(--fig-cap-color, rgba(0, 0, 0, 0.6));
+}
+
+/*-- METADATA --*/
+d-byline h3 {
+  font-size: var(--heading-size, 0.6rem);
+  color: var(--heading-color, rgba(0, 0, 0, 0.5));
+}
+
+d-byline {
+  font-size: var(--body-size, 0.8rem);
+  color: var(--body-color, rgba(0, 0, 0, 0.8));
+}
+
+d-byline a,
+d-article d-byline a {
+  color: var(--body-color, rgba(0, 0, 0, 0.8));
+}
+
+/*-- TABLE OF CONTENTS --*/
+.d-contents nav h3 {
+  font-size: var(--heading-size, 18px);
+}
+
+.d-contents nav a {
+  font-size: var(--contents-size, 13px);
+}
+
+/*-- APPENDIX --*/
+d-appendix h3 {
+  font-size: var(--heading-size, 15px);
+  color: var(--heading-color, rgba(0, 0, 0, 0.65));
+}
+
+d-appendix {
+  font-size: var(--text-size, 0.8em);
+  color: var(--text-color, rgba(0, 0, 0, 0.5));
+}
+
+d-appendix d-footnote-list a.footnote-backlink {
+  color: var(--text-color, rgba(0, 0, 0, 0.5));
+}
+
+/*-- WEBSITE HEADER + FOOTER --*/
+.distill-site-header .title {
+  font-size: var(--title-size, 18px);
+  font-family: var(--navbar-font), var(--heading-default);
+}
+
+.distill-site-header a,
+.nav-dropdown .nav-dropbtn {
+  font-family: var(--navbar-font), var(--heading-default);
+}
+
+.nav-dropdown .nav-dropbtn {
+  color: var(--text-color, rgba(255, 255, 255, 0.8));
+  font-size: var(--text-size, 15px);
+}
+
+.distill-site-header a:hover,
+.nav-dropdown:hover .nav-dropbtn {
+  color: var(--hover-color, white);
+}
+
+.distill-site-header {
+  font-size: var(--text-size, 15px);
+  color: var(--text-color, rgba(255, 255, 255, 0.8));
+  background-color: var(--bkgd-color, #0F2E3D);
+}
+
+.distill-site-footer {
+  font-size: var(--text-size, 15px);
+  color: var(--text-color, rgba(255, 255, 255, 0.8));
+  background-color: var(--bkgd-color, #0F2E3D);
+}
+
+.distill-site-footer a:hover {
+  color: var(--hover-color, white);
+}</style>
+<!--/radix_placeholder_distill-->
+  <script src="../../site_libs/header-attrs-2.6/header-attrs.js"></script>
+  <script src="../../site_libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+  <script src="../../site_libs/plotly-binding-4.9.3/plotly.js"></script>
+  <script src="../../site_libs/typedarray-0.1/typedarray.min.js"></script>
+  <script src="../../site_libs/jquery-3.5.1/jquery.min.js"></script>
+  <link href="../../site_libs/crosstalk-1.1.1/css/crosstalk.css" rel="stylesheet" />
+  <script src="../../site_libs/crosstalk-1.1.1/js/crosstalk.min.js"></script>
+  <link href="../../site_libs/plotly-htmlwidgets-css-1.57.1/plotly-htmlwidgets.css" rel="stylesheet" />
+  <script src="../../site_libs/plotly-main-1.57.1/plotly-latest.min.js"></script>
+  <script src="../../site_libs/kePrint-0.0.1/kePrint.js"></script>
+  <link href="../../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+  <script src="../../site_libs/popper-2.6.0/popper.min.js"></script>
+  <link href="../../site_libs/tippy-6.2.7/tippy.css" rel="stylesheet" />
+  <link href="../../site_libs/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
+  <script src="../../site_libs/tippy-6.2.7/tippy.umd.min.js"></script>
+  <script src="../../site_libs/anchor-4.2.2/anchor.min.js"></script>
+  <script src="../../site_libs/bowser-1.9.3/bowser.min.js"></script>
+  <script src="../../site_libs/webcomponents-2.0.0/webcomponents.js"></script>
+  <script src="../../site_libs/distill-2.2.21/template.v2.js"></script>
+  <!--radix_placeholder_site_in_header-->
+<!--/radix_placeholder_site_in_header-->
+
+
+</head>
+
+<body>
+
+<!--radix_placeholder_front_matter-->
+
+<script id="distill-front-matter" type="text/json">
+{"title":" A descriptive analysis of the alcohol consumption in USA from 2017 to 2020","description":"Does the alcohol consumption in the USA increased over the last four years?\nWe will try to answer this question with a descriptive statistical analysisi of the\nconsumption of alcohol of a sample of 19 states. \nThe analysis is performed entirely in R.","authors":[{"author":"Alessandro Ghiretti","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2021-03-15T00:00:00.000+01:00","citationText":"Ghiretti, 2021"}
+</script>
+
+<!--/radix_placeholder_front_matter-->
+<!--radix_placeholder_navigation_before_body-->
+<header class="header header--fixed" role="banner">
+<nav class="distill-site-nav distill-site-header">
+<div class="nav-left">
+<a href="../../index.html" class="title">Alessandro Ghiretti</a>
+<a href="https://www.linkedin.com/in/alessandro-ghiretti-90/">
+<i class="fab fa-linkedin-in" aria-hidden="true"></i>
+</a>
+<a href="../../index.xml">
+<i class="fa fa-rss" aria-hidden="true"></i>
+</a>
+<input id="distill-search" class="nav-search hidden" type="text" placeholder="Search..."/>
+</div>
+<div class="nav-right">
+<a href="../../index.html">Home</a>
+<a href="../../posts.html">Posts</a>
+<a href="../../about.html">About</a>
+<a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
+</div>
+</nav>
+</header>
+<!--/radix_placeholder_navigation_before_body-->
+<!--radix_placeholder_site_before_body-->
+<!--/radix_placeholder_site_before_body-->
+
+<div class="d-title">
+<h1>A descriptive analysis of the alcohol consumption in USA from 2017 to 2020</h1>
+<!--radix_placeholder_categories-->
+<div class="dt-tags">
+  <a href="../../posts.html#category:R" class="dt-tag">R</a>
+  <a href="../../posts.html#category:Statistics" class="dt-tag">Statistics</a>
+  <a href="../../posts.html#category:Data_Analysis" class="dt-tag">Data Analysis</a>
+</div>
+<!--/radix_placeholder_categories-->
+<p><p>Does the alcohol consumption in the USA increased over the last four years? We will try to answer this question with a descriptive statistical analysisi of the consumption of alcohol of a sample of 19 states. The analysis is performed entirely in R.</p></p>
+</div>
+
+<div class="d-byline">
+  Alessandro Ghiretti  
+  
+<br/>2021-03-15
+</div>
+
+<div class="d-article">
+<div class="d-contents d-contents-float">
+<nav class="l-text toc figcaption" id="TOC">
+<h3>Contents</h3>
+<ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#data-description">Data Description</a></li>
+<li><a href="#data-analysis">Data Analysis</a>
+<ul>
+<li><a href="#testing-for-differences-in-the-average-per-capita-consumption">Testing for differences in the average per capita consumption</a></li>
+</ul></li>
+</ul>
+</nav>
+</div>
+<style>
+body {
+text-align: justify}
+</style>
+<style>
+table, th, td {
+    font-size: 11px;
+}
+</style>
+<div class="layout-chunk" data-layout="l-body">
+
+</div>
+<h1 id="introduction">Introduction</h1>
+<p>Alcohol has historically, and continues to, hold an important role in social engagement and bonding for many. Social drinking or moderate alcohol consumption for many is pleasurable.</p>
+<p>However, alcohol consumption – especially in excess – is linked to a number of negative outcomes: as a risk factor for diseases and health impacts; crime; road incidents; and for some, alcohol dependence. Globally alcohol consumption causes 2.8 million premature deaths per year.</p>
+<p>PRecisely, constant and excessive alcohol use has been shown to cause many health complications and increase the risk of many diseases. For example, alcohol consumption increases the risk of various types of cancer, cardiovascular disease, and liver disease. The cost of such health complications from alcohol is substantial. As of 2017, it was estimated that the health care costs alone from the abuse of alcohol in the United States were around 27 billion dollars a year.</p>
+<p>A common health complication from the abuse of alcohol is liver cirrhosis. Cirrhosis is scarring of the liver from repeated injury. It can cause other health complications such as high blood pressure, bleeding, and infection, and can result in early death if left untreated. In 2017, there were over 22,000 alcohol-related liver cirrhosis deaths in the U.S., almost double the number reported 15 years earlier.</p>
+<h1 id="data-description">Data Description</h1>
+<p>The data contains the monthly alcohol consumption, spanning from 2017 to the first nine months of 2020, of a sample of 19 USA States. The variables considered are:</p>
+<ul>
+<li><p>Year: the reference year</p></li>
+<li><p>Month: the reference month</p></li>
+<li><p>FIPS: the name of the state where data were collected</p></li>
+<li><p>Beverage: the type of alcoholic beverage (beer, wine or spirits)</p></li>
+<li><p>Gallons: the total gallons of alcohol consumed from the population ranging from 14 to 65 years old</p></li>
+<li><p>Population: the total drinking population in the state at a given date</p></li>
+<li><p>PerCapita: the per capita alcohol consumption</p></li>
+</ul>
+<div class="layout-chunk" data-layout="l-body">
+
+</div>
+<h1 id="data-analysis">Data Analysis</h1>
+<div class="layout-chunk" data-layout="l-body">
+
+</div>
+<p>The figure <a href="#fig:timegallons">1</a> shows the mension consumption of alcohol in gallons. From the figure it is clear that the series is characterized by an evident seasonal component with increases in the months of June and December, both characterized by the presence of holidays and decreases during January, February and March. In June we have Father’s Day and Independence Day while in December Christmas and New Year’s Day. The seasonal trend is particularly evident for beer and wine whereas it is less pronounced for liquors.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="figure"><span id="fig:timegallons"></span>
+<div id="htmlwidget-f33b7cd69db40fb2fd83" style="width:624px;height:384px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-f33b7cd69db40fb2fd83">{"x":{"data":[{"orientation":"v","width":[25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971],"base":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"x":[17167,17198,17226,17257,17287,17318,17348,17379,17410,17440,17471,17501,17532,17563,17591,17622,17652,17683,17713,17744,17775,17805,17836,17866,17897,17928,17956,17987,18017,18048,18078,18109,18140,18170,18201,18231,18262,18293,18322,18353,18383,18414,18444,18475,18506],"y":[16543316,15732413,18221695,17363128,19220744,22144040,17017932,17729987,17019341,18967158,20298665,24799786,16784015,16005401,18527352,17546305,20428983,22191256,17538879,18858549,17704047,19341957,20947729,23191486,18531469,16997765,18833415,18750847,20064499,22721772,18727959,19335154,18022824,21338477,21208526,24506770,19464286,17938869,20995029,19816263,20878640,23941880,21029205,18087893,13644289],"text":["Date: 2017-01-01<br />Gallons:  16543316<br />Date: 2017-01-01<br />Beverage: spirits<br />Beverage: spirits","Date: 2017-02-01<br />Gallons:  15732413<br />Date: 2017-02-01<br />Beverage: spirits<br />Beverage: spirits","Date: 2017-03-01<br />Gallons:  18221695<br />Date: 2017-03-01<br />Beverage: spirits<br />Beverage: spirits","Date: 2017-04-01<br />Gallons:  17363128<br />Date: 2017-04-01<br />Beverage: spirits<br />Beverage: spirits","Date: 2017-05-01<br />Gallons:  19220744<br />Date: 2017-05-01<br />Beverage: spirits<br />Beverage: spirits","Date: 2017-06-01<br />Gallons:  22144040<br />Date: 2017-06-01<br />Beverage: spirits<br />Beverage: spirits","Date: 2017-07-01<br />Gallons:  17017932<br />Date: 2017-07-01<br />Beverage: spirits<br />Beverage: spirits","Date: 2017-08-01<br />Gallons:  17729987<br />Date: 2017-08-01<br />Beverage: spirits<br />Beverage: spirits","Date: 2017-09-01<br />Gallons:  17019341<br />Date: 2017-09-01<br />Beverage: spirits<br />Beverage: spirits","Date: 2017-10-01<br />Gallons:  18967158<br />Date: 2017-10-01<br />Beverage: spirits<br />Beverage: spirits","Date: 2017-11-01<br />Gallons:  20298665<br />Date: 2017-11-01<br />Beverage: spirits<br />Beverage: spirits","Date: 2017-12-01<br />Gallons:  24799786<br />Date: 2017-12-01<br />Beverage: spirits<br />Beverage: spirits","Date: 2018-01-01<br />Gallons:  16784015<br />Date: 2018-01-01<br />Beverage: spirits<br />Beverage: spirits","Date: 2018-02-01<br />Gallons:  16005401<br />Date: 2018-02-01<br />Beverage: spirits<br />Beverage: spirits","Date: 2018-03-01<br />Gallons:  18527352<br />Date: 2018-03-01<br />Beverage: spirits<br />Beverage: spirits","Date: 2018-04-01<br />Gallons:  17546305<br />Date: 2018-04-01<br />Beverage: spirits<br />Beverage: spirits","Date: 2018-05-01<br />Gallons:  20428983<br />Date: 2018-05-01<br />Beverage: spirits<br />Beverage: spirits","Date: 2018-06-01<br />Gallons:  22191256<br />Date: 2018-06-01<br />Beverage: spirits<br />Beverage: spirits","Date: 2018-07-01<br />Gallons:  17538879<br />Date: 2018-07-01<br />Beverage: spirits<br />Beverage: spirits","Date: 2018-08-01<br />Gallons:  18858549<br />Date: 2018-08-01<br />Beverage: spirits<br />Beverage: spirits","Date: 2018-09-01<br />Gallons:  17704047<br />Date: 2018-09-01<br />Beverage: spirits<br />Beverage: spirits","Date: 2018-10-01<br />Gallons:  19341957<br />Date: 2018-10-01<br />Beverage: spirits<br />Beverage: spirits","Date: 2018-11-01<br />Gallons:  20947729<br />Date: 2018-11-01<br />Beverage: spirits<br />Beverage: spirits","Date: 2018-12-01<br />Gallons:  23191486<br />Date: 2018-12-01<br />Beverage: spirits<br />Beverage: spirits","Date: 2019-01-01<br />Gallons:  18531469<br />Date: 2019-01-01<br />Beverage: spirits<br />Beverage: spirits","Date: 2019-02-01<br />Gallons:  16997765<br />Date: 2019-02-01<br />Beverage: spirits<br />Beverage: spirits","Date: 2019-03-01<br />Gallons:  18833415<br />Date: 2019-03-01<br />Beverage: spirits<br />Beverage: spirits","Date: 2019-04-01<br />Gallons:  18750847<br />Date: 2019-04-01<br />Beverage: spirits<br />Beverage: spirits","Date: 2019-05-01<br />Gallons:  20064499<br />Date: 2019-05-01<br />Beverage: spirits<br />Beverage: spirits","Date: 2019-06-01<br />Gallons:  22721772<br />Date: 2019-06-01<br />Beverage: spirits<br />Beverage: spirits","Date: 2019-07-01<br />Gallons:  18727959<br />Date: 2019-07-01<br />Beverage: spirits<br />Beverage: spirits","Date: 2019-08-01<br />Gallons:  19335154<br />Date: 2019-08-01<br />Beverage: spirits<br />Beverage: spirits","Date: 2019-09-01<br />Gallons:  18022824<br />Date: 2019-09-01<br />Beverage: spirits<br />Beverage: spirits","Date: 2019-10-01<br />Gallons:  21338477<br />Date: 2019-10-01<br />Beverage: spirits<br />Beverage: spirits","Date: 2019-11-01<br />Gallons:  21208526<br />Date: 2019-11-01<br />Beverage: spirits<br />Beverage: spirits","Date: 2019-12-01<br />Gallons:  24506770<br />Date: 2019-12-01<br />Beverage: spirits<br />Beverage: spirits","Date: 2020-01-01<br />Gallons:  19464286<br />Date: 2020-01-01<br />Beverage: spirits<br />Beverage: spirits","Date: 2020-02-01<br />Gallons:  17938869<br />Date: 2020-02-01<br />Beverage: spirits<br />Beverage: spirits","Date: 2020-03-01<br />Gallons:  20995029<br />Date: 2020-03-01<br />Beverage: spirits<br />Beverage: spirits","Date: 2020-04-01<br />Gallons:  19816263<br />Date: 2020-04-01<br />Beverage: spirits<br />Beverage: spirits","Date: 2020-05-01<br />Gallons:  20878640<br />Date: 2020-05-01<br />Beverage: spirits<br />Beverage: spirits","Date: 2020-06-01<br />Gallons:  23941880<br />Date: 2020-06-01<br />Beverage: spirits<br />Beverage: spirits","Date: 2020-07-01<br />Gallons:  21029205<br />Date: 2020-07-01<br />Beverage: spirits<br />Beverage: spirits","Date: 2020-08-01<br />Gallons:  18087893<br />Date: 2020-08-01<br />Beverage: spirits<br />Beverage: spirits","Date: 2020-09-01<br />Gallons:  13644289<br />Date: 2020-09-01<br />Beverage: spirits<br />Beverage: spirits"],"type":"bar","marker":{"autocolorscale":false,"color":"rgba(230,75,53,0.5)","line":{"width":1.88976377952756,"color":"rgba(230,75,53,1)"}},"name":"spirits","legendgroup":"spirits","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":[25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971],"base":[16543316,15732413,18221695,17363128,19220744,22144040,17017932,17729987,17019341,18967158,20298665,24799786,16784015,16005401,18527352,17546305,20428983,22191256,17538879,18858549,17704047,19341957,20947729,23191486,18531469,16997765,18833415,18750847,20064499,22721772,18727959,19335154,18022824,21338477,21208526,24506770,19464286,17938869,20995029,19816263,20878640,23941880,21029205,18087893,13644289],"x":[17167,17198,17226,17257,17287,17318,17348,17379,17410,17440,17471,17501,17532,17563,17591,17622,17652,17683,17713,17744,17775,17805,17836,17866,17897,17928,17956,17987,18017,18048,18078,18109,18140,18170,18201,18231,18262,18293,18322,18353,18383,18414,18444,18475,18506],"y":[27304220,27480467,30087106,28310360,28473234,31252517,26057757,29192370,27041393,30756362,34521244,35971237,28020859,27172424,28430629,28190546,30374823,30431581,27367552,29593389,27012106,30624138,33825902,35332562,29589983,27301865,27027012,29471987,29590803,29103839,27632189,28495905,26604099,31710361,32729301,35598374,29877025,27758155,30484238,30499127,29333916,31868769,27551215,24319778,18125843],"text":["Date: 2017-01-01<br />Gallons:  27304220<br />Date: 2017-01-01<br />Beverage: wine<br />Beverage: wine","Date: 2017-02-01<br />Gallons:  27480467<br />Date: 2017-02-01<br />Beverage: wine<br />Beverage: wine","Date: 2017-03-01<br />Gallons:  30087106<br />Date: 2017-03-01<br />Beverage: wine<br />Beverage: wine","Date: 2017-04-01<br />Gallons:  28310360<br />Date: 2017-04-01<br />Beverage: wine<br />Beverage: wine","Date: 2017-05-01<br />Gallons:  28473234<br />Date: 2017-05-01<br />Beverage: wine<br />Beverage: wine","Date: 2017-06-01<br />Gallons:  31252517<br />Date: 2017-06-01<br />Beverage: wine<br />Beverage: wine","Date: 2017-07-01<br />Gallons:  26057757<br />Date: 2017-07-01<br />Beverage: wine<br />Beverage: wine","Date: 2017-08-01<br />Gallons:  29192370<br />Date: 2017-08-01<br />Beverage: wine<br />Beverage: wine","Date: 2017-09-01<br />Gallons:  27041393<br />Date: 2017-09-01<br />Beverage: wine<br />Beverage: wine","Date: 2017-10-01<br />Gallons:  30756362<br />Date: 2017-10-01<br />Beverage: wine<br />Beverage: wine","Date: 2017-11-01<br />Gallons:  34521244<br />Date: 2017-11-01<br />Beverage: wine<br />Beverage: wine","Date: 2017-12-01<br />Gallons:  35971237<br />Date: 2017-12-01<br />Beverage: wine<br />Beverage: wine","Date: 2018-01-01<br />Gallons:  28020859<br />Date: 2018-01-01<br />Beverage: wine<br />Beverage: wine","Date: 2018-02-01<br />Gallons:  27172424<br />Date: 2018-02-01<br />Beverage: wine<br />Beverage: wine","Date: 2018-03-01<br />Gallons:  28430629<br />Date: 2018-03-01<br />Beverage: wine<br />Beverage: wine","Date: 2018-04-01<br />Gallons:  28190546<br />Date: 2018-04-01<br />Beverage: wine<br />Beverage: wine","Date: 2018-05-01<br />Gallons:  30374823<br />Date: 2018-05-01<br />Beverage: wine<br />Beverage: wine","Date: 2018-06-01<br />Gallons:  30431581<br />Date: 2018-06-01<br />Beverage: wine<br />Beverage: wine","Date: 2018-07-01<br />Gallons:  27367552<br />Date: 2018-07-01<br />Beverage: wine<br />Beverage: wine","Date: 2018-08-01<br />Gallons:  29593389<br />Date: 2018-08-01<br />Beverage: wine<br />Beverage: wine","Date: 2018-09-01<br />Gallons:  27012106<br />Date: 2018-09-01<br />Beverage: wine<br />Beverage: wine","Date: 2018-10-01<br />Gallons:  30624138<br />Date: 2018-10-01<br />Beverage: wine<br />Beverage: wine","Date: 2018-11-01<br />Gallons:  33825902<br />Date: 2018-11-01<br />Beverage: wine<br />Beverage: wine","Date: 2018-12-01<br />Gallons:  35332562<br />Date: 2018-12-01<br />Beverage: wine<br />Beverage: wine","Date: 2019-01-01<br />Gallons:  29589983<br />Date: 2019-01-01<br />Beverage: wine<br />Beverage: wine","Date: 2019-02-01<br />Gallons:  27301865<br />Date: 2019-02-01<br />Beverage: wine<br />Beverage: wine","Date: 2019-03-01<br />Gallons:  27027012<br />Date: 2019-03-01<br />Beverage: wine<br />Beverage: wine","Date: 2019-04-01<br />Gallons:  29471987<br />Date: 2019-04-01<br />Beverage: wine<br />Beverage: wine","Date: 2019-05-01<br />Gallons:  29590803<br />Date: 2019-05-01<br />Beverage: wine<br />Beverage: wine","Date: 2019-06-01<br />Gallons:  29103839<br />Date: 2019-06-01<br />Beverage: wine<br />Beverage: wine","Date: 2019-07-01<br />Gallons:  27632189<br />Date: 2019-07-01<br />Beverage: wine<br />Beverage: wine","Date: 2019-08-01<br />Gallons:  28495905<br />Date: 2019-08-01<br />Beverage: wine<br />Beverage: wine","Date: 2019-09-01<br />Gallons:  26604099<br />Date: 2019-09-01<br />Beverage: wine<br />Beverage: wine","Date: 2019-10-01<br />Gallons:  31710361<br />Date: 2019-10-01<br />Beverage: wine<br />Beverage: wine","Date: 2019-11-01<br />Gallons:  32729301<br />Date: 2019-11-01<br />Beverage: wine<br />Beverage: wine","Date: 2019-12-01<br />Gallons:  35598374<br />Date: 2019-12-01<br />Beverage: wine<br />Beverage: wine","Date: 2020-01-01<br />Gallons:  29877025<br />Date: 2020-01-01<br />Beverage: wine<br />Beverage: wine","Date: 2020-02-01<br />Gallons:  27758155<br />Date: 2020-02-01<br />Beverage: wine<br />Beverage: wine","Date: 2020-03-01<br />Gallons:  30484238<br />Date: 2020-03-01<br />Beverage: wine<br />Beverage: wine","Date: 2020-04-01<br />Gallons:  30499127<br />Date: 2020-04-01<br />Beverage: wine<br />Beverage: wine","Date: 2020-05-01<br />Gallons:  29333916<br />Date: 2020-05-01<br />Beverage: wine<br />Beverage: wine","Date: 2020-06-01<br />Gallons:  31868769<br />Date: 2020-06-01<br />Beverage: wine<br />Beverage: wine","Date: 2020-07-01<br />Gallons:  27551215<br />Date: 2020-07-01<br />Beverage: wine<br />Beverage: wine","Date: 2020-08-01<br />Gallons:  24319778<br />Date: 2020-08-01<br />Beverage: wine<br />Beverage: wine","Date: 2020-09-01<br />Gallons:  18125843<br />Date: 2020-09-01<br />Beverage: wine<br />Beverage: wine"],"type":"bar","marker":{"autocolorscale":false,"color":"rgba(77,187,213,0.5)","line":{"width":1.88976377952756,"color":"rgba(77,187,213,1)"}},"name":"wine","legendgroup":"wine","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"orientation":"v","width":[25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971,25.1999999999971],"base":[43847536,43212880,48308801,45673488,47693978,53396557,43075689,46922357,44060734,49723520,54819909,60771023,44804874,43177825,46957981,45736851,50803806,52622837,44906431,48451938,44716153,49966095,54773631,58524048,48121452,44299630,45860427,48222834,49655302,51825611,46360148,47831059,44626923,53048838,53937827,60105144,49341311,45697024,51479267,50315390,50212556,55810649,48580420,42407671,31770132],"x":[17167,17198,17226,17257,17287,17318,17348,17379,17410,17440,17471,17501,17532,17563,17591,17622,17652,17683,17713,17744,17775,17805,17836,17866,17897,17928,17956,17987,18017,18048,18078,18109,18140,18170,18201,18231,18262,18293,18322,18353,18383,18414,18444,18475,18506],"y":[169580598,159341144,186032678,196348964,206022560,229482614,209079317,213051312,201383969,188688206,187331206,194872231,166614772,156454390,177581430,189593318,209413892,222851071,210948200,219809365,198432723,182237796,185500299,185071445,172655412,153041249,177351645,191925521,215194377,211410681,213705401,216901941,195463493,190962768,189773812,185411462,179981988,161013763,170074653,188354928,198915383,220220140,210227485,192190200,118694085],"text":["Date: 2017-01-01<br />Gallons: 169580598<br />Date: 2017-01-01<br />Beverage: beer<br />Beverage: beer","Date: 2017-02-01<br />Gallons: 159341144<br />Date: 2017-02-01<br />Beverage: beer<br />Beverage: beer","Date: 2017-03-01<br />Gallons: 186032678<br />Date: 2017-03-01<br />Beverage: beer<br />Beverage: beer","Date: 2017-04-01<br />Gallons: 196348964<br />Date: 2017-04-01<br />Beverage: beer<br />Beverage: beer","Date: 2017-05-01<br />Gallons: 206022560<br />Date: 2017-05-01<br />Beverage: beer<br />Beverage: beer","Date: 2017-06-01<br />Gallons: 229482614<br />Date: 2017-06-01<br />Beverage: beer<br />Beverage: beer","Date: 2017-07-01<br />Gallons: 209079317<br />Date: 2017-07-01<br />Beverage: beer<br />Beverage: beer","Date: 2017-08-01<br />Gallons: 213051312<br />Date: 2017-08-01<br />Beverage: beer<br />Beverage: beer","Date: 2017-09-01<br />Gallons: 201383969<br />Date: 2017-09-01<br />Beverage: beer<br />Beverage: beer","Date: 2017-10-01<br />Gallons: 188688206<br />Date: 2017-10-01<br />Beverage: beer<br />Beverage: beer","Date: 2017-11-01<br />Gallons: 187331206<br />Date: 2017-11-01<br />Beverage: beer<br />Beverage: beer","Date: 2017-12-01<br />Gallons: 194872231<br />Date: 2017-12-01<br />Beverage: beer<br />Beverage: beer","Date: 2018-01-01<br />Gallons: 166614772<br />Date: 2018-01-01<br />Beverage: beer<br />Beverage: beer","Date: 2018-02-01<br />Gallons: 156454390<br />Date: 2018-02-01<br />Beverage: beer<br />Beverage: beer","Date: 2018-03-01<br />Gallons: 177581430<br />Date: 2018-03-01<br />Beverage: beer<br />Beverage: beer","Date: 2018-04-01<br />Gallons: 189593318<br />Date: 2018-04-01<br />Beverage: beer<br />Beverage: beer","Date: 2018-05-01<br />Gallons: 209413892<br />Date: 2018-05-01<br />Beverage: beer<br />Beverage: beer","Date: 2018-06-01<br />Gallons: 222851071<br />Date: 2018-06-01<br />Beverage: beer<br />Beverage: beer","Date: 2018-07-01<br />Gallons: 210948200<br />Date: 2018-07-01<br />Beverage: beer<br />Beverage: beer","Date: 2018-08-01<br />Gallons: 219809365<br />Date: 2018-08-01<br />Beverage: beer<br />Beverage: beer","Date: 2018-09-01<br />Gallons: 198432723<br />Date: 2018-09-01<br />Beverage: beer<br />Beverage: beer","Date: 2018-10-01<br />Gallons: 182237796<br />Date: 2018-10-01<br />Beverage: beer<br />Beverage: beer","Date: 2018-11-01<br />Gallons: 185500299<br />Date: 2018-11-01<br />Beverage: beer<br />Beverage: beer","Date: 2018-12-01<br />Gallons: 185071445<br />Date: 2018-12-01<br />Beverage: beer<br />Beverage: beer","Date: 2019-01-01<br />Gallons: 172655412<br />Date: 2019-01-01<br />Beverage: beer<br />Beverage: beer","Date: 2019-02-01<br />Gallons: 153041249<br />Date: 2019-02-01<br />Beverage: beer<br />Beverage: beer","Date: 2019-03-01<br />Gallons: 177351645<br />Date: 2019-03-01<br />Beverage: beer<br />Beverage: beer","Date: 2019-04-01<br />Gallons: 191925521<br />Date: 2019-04-01<br />Beverage: beer<br />Beverage: beer","Date: 2019-05-01<br />Gallons: 215194377<br />Date: 2019-05-01<br />Beverage: beer<br />Beverage: beer","Date: 2019-06-01<br />Gallons: 211410681<br />Date: 2019-06-01<br />Beverage: beer<br />Beverage: beer","Date: 2019-07-01<br />Gallons: 213705401<br />Date: 2019-07-01<br />Beverage: beer<br />Beverage: beer","Date: 2019-08-01<br />Gallons: 216901941<br />Date: 2019-08-01<br />Beverage: beer<br />Beverage: beer","Date: 2019-09-01<br />Gallons: 195463493<br />Date: 2019-09-01<br />Beverage: beer<br />Beverage: beer","Date: 2019-10-01<br />Gallons: 190962768<br />Date: 2019-10-01<br />Beverage: beer<br />Beverage: beer","Date: 2019-11-01<br />Gallons: 189773812<br />Date: 2019-11-01<br />Beverage: beer<br />Beverage: beer","Date: 2019-12-01<br />Gallons: 185411462<br />Date: 2019-12-01<br />Beverage: beer<br />Beverage: beer","Date: 2020-01-01<br />Gallons: 179981988<br />Date: 2020-01-01<br />Beverage: beer<br />Beverage: beer","Date: 2020-02-01<br />Gallons: 161013763<br />Date: 2020-02-01<br />Beverage: beer<br />Beverage: beer","Date: 2020-03-01<br />Gallons: 170074653<br />Date: 2020-03-01<br />Beverage: beer<br />Beverage: beer","Date: 2020-04-01<br />Gallons: 188354928<br />Date: 2020-04-01<br />Beverage: beer<br />Beverage: beer","Date: 2020-05-01<br />Gallons: 198915383<br />Date: 2020-05-01<br />Beverage: beer<br />Beverage: beer","Date: 2020-06-01<br />Gallons: 220220140<br />Date: 2020-06-01<br />Beverage: beer<br />Beverage: beer","Date: 2020-07-01<br />Gallons: 210227485<br />Date: 2020-07-01<br />Beverage: beer<br />Beverage: beer","Date: 2020-08-01<br />Gallons: 192190200<br />Date: 2020-08-01<br />Beverage: beer<br />Beverage: beer","Date: 2020-09-01<br />Gallons: 118694085<br />Date: 2020-09-01<br />Beverage: beer<br />Beverage: beer"],"type":"bar","marker":{"autocolorscale":false,"color":"rgba(0,160,135,0.5)","line":{"width":1.88976377952756,"color":"rgba(0,160,135,1)"}},"name":"beer","legendgroup":"beer","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":45.4063926940639,"r":7.30593607305936,"b":41.8264840182648,"l":54.7945205479452},"font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"title":{"text":"Gallons consumed","font":{"color":"rgba(0,0,0,1)","family":"","size":17.5342465753425},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[17086.19,18586.81],"tickmode":"array","ticktext":["2017","2018","2019","2020"],"tickvals":[17167,17532,17897,18262],"categoryorder":"array","categoryarray":["2017","2018","2019","2020"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.65296803652968,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"Date","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-14143958.55,297023129.55],"tickmode":"array","ticktext":["0e+00","1e+08","2e+08"],"tickvals":[0,100000000,200000000],"categoryorder":"array","categoryarray":["0e+00","1e+08","2e+08"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.65296803652968,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"Gallons","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":true,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895},"y":0.959399606299213},"annotations":[{"text":"Beverage","x":1.02,"y":1,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"left","yanchor":"bottom","legendTitle":true}],"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","showSendToCloud":false},"source":"A","attrs":{"12dc2e5723fd":{"x":{},"y":{},"colour":{},"fill":{},"type":"bar"}},"cur_data":"12dc2e5723fd","visdat":{"12dc2e5723fd":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<p class="caption">
+Figure 1: Time trend of the total aounth of monthly Gallons consumed
+</p>
+</div>
+</div>
+<p>The median consumption of gallons of alcohol over the period under consideration, (Figure <a href="#fig:boxgallons">2</a>) appears constant, with beer being the most consumed beverage, followed by wine and liquor. The distributions of all three beverages are characterized by a strong right heavy tail, and this is particularly evident for beer. On the whole, during the four years considered, neither marked changes in the median value of liters consumed nor in the shape of the distributions can be observed.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="figure"><span id="fig:boxgallons"></span>
+<img src="17-02-2020-AlcoholConsumption_files/figure-html5/boxgallons-1.png" alt="Boxplot of the Gallons of alcohol consumed" width="624" />
+<p class="caption">
+Figure 2: Boxplot of the Gallons of alcohol consumed
+</p>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#twupsdvokh .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#twupsdvokh .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#twupsdvokh .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#twupsdvokh .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 4px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#twupsdvokh .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#twupsdvokh .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#twupsdvokh .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#twupsdvokh .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#twupsdvokh .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#twupsdvokh .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#twupsdvokh .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#twupsdvokh .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#twupsdvokh .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#twupsdvokh .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#twupsdvokh .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#twupsdvokh .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#twupsdvokh .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#twupsdvokh .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#twupsdvokh .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#twupsdvokh .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#twupsdvokh .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#twupsdvokh .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#twupsdvokh .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#twupsdvokh .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#twupsdvokh .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#twupsdvokh .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#twupsdvokh .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#twupsdvokh .gt_left {
+  text-align: left;
+}
+
+#twupsdvokh .gt_center {
+  text-align: center;
+}
+
+#twupsdvokh .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#twupsdvokh .gt_font_normal {
+  font-weight: normal;
+}
+
+#twupsdvokh .gt_font_bold {
+  font-weight: bold;
+}
+
+#twupsdvokh .gt_font_italic {
+  font-style: italic;
+}
+
+#twupsdvokh .gt_super {
+  font-size: 65%;
+}
+
+#twupsdvokh .gt_footnote_marks {
+  font-style: italic;
+  font-size: 65%;
+}
+</style>
+<div id="twupsdvokh" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1"><strong>Characteristic</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>spirits</strong>, N = 796</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>wine</strong>, N = 796</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>beer</strong>, N = 712</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr>
+      <td class="gt_row gt_left">Gallons</td>
+      <td class="gt_row gt_center"></td>
+      <td class="gt_row gt_center"></td>
+      <td class="gt_row gt_center"></td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">Median (IQR)</td>
+      <td class="gt_row gt_center">826,410 (898,872)</td>
+      <td class="gt_row gt_center">1,176,046 (1,615,904)</td>
+      <td class="gt_row gt_center">8,272,000 (8,001,811)</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">25%,75%</td>
+      <td class="gt_row gt_center">345,335,1,244,207</td>
+      <td class="gt_row gt_center">411,036,2,026,940</td>
+      <td class="gt_row gt_center">4,065,487,12,067,298</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">Mean (SD)</td>
+      <td class="gt_row gt_center">1,091,658 (1,055,421)</td>
+      <td class="gt_row gt_center">1,655,149 (1,716,043)</td>
+      <td class="gt_row gt_center">12,077,520 (13,482,372)</td>
+    </tr>
+  </tbody>
+  
+  
+</table></div>
+</div>
+<p>The boxplot of per capita consumption <a href="#fig:boxpercapita">3</a> delineates a different picture. While beer remains the beverage with the highest median per capita consumption, spirits are almost at the same level, while wine seems to be the least consumed beverage on a per capita level. Also in this case there are no evident changes in median values and the variance, a s well as the distributions seems to be constant in the period for all three beverages.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="figure"><span id="fig:boxpercapita"></span>
+<img src="17-02-2020-AlcoholConsumption_files/figure-html5/boxpercapita-1.png" alt="Boxplot of the per capita alcohol consumption" width="624" />
+<p class="caption">
+Figure 3: Boxplot of the per capita alcohol consumption
+</p>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#czxyqmrfcv .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#czxyqmrfcv .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#czxyqmrfcv .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#czxyqmrfcv .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 4px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#czxyqmrfcv .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#czxyqmrfcv .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#czxyqmrfcv .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#czxyqmrfcv .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#czxyqmrfcv .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#czxyqmrfcv .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#czxyqmrfcv .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#czxyqmrfcv .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#czxyqmrfcv .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#czxyqmrfcv .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#czxyqmrfcv .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#czxyqmrfcv .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#czxyqmrfcv .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#czxyqmrfcv .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#czxyqmrfcv .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#czxyqmrfcv .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#czxyqmrfcv .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#czxyqmrfcv .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#czxyqmrfcv .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#czxyqmrfcv .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#czxyqmrfcv .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#czxyqmrfcv .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#czxyqmrfcv .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#czxyqmrfcv .gt_left {
+  text-align: left;
+}
+
+#czxyqmrfcv .gt_center {
+  text-align: center;
+}
+
+#czxyqmrfcv .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#czxyqmrfcv .gt_font_normal {
+  font-weight: normal;
+}
+
+#czxyqmrfcv .gt_font_bold {
+  font-weight: bold;
+}
+
+#czxyqmrfcv .gt_font_italic {
+  font-style: italic;
+}
+
+#czxyqmrfcv .gt_super {
+  font-size: 65%;
+}
+
+#czxyqmrfcv .gt_footnote_marks {
+  font-style: italic;
+  font-size: 65%;
+}
+</style>
+<div id="czxyqmrfcv" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1"><strong>Characteristic</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>spirits</strong>, N = 796</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>wine</strong>, N = 796</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>beer</strong>, N = 712</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr>
+      <td class="gt_row gt_left">PerCapita</td>
+      <td class="gt_row gt_center"></td>
+      <td class="gt_row gt_center"></td>
+      <td class="gt_row gt_center"></td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">Median (IQR)</td>
+      <td class="gt_row gt_center">0.08 (0.04)</td>
+      <td class="gt_row gt_center">0.03 (0.02)</td>
+      <td class="gt_row gt_center">0.09 (0.02)</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">25%,75%</td>
+      <td class="gt_row gt_center">0.06,0.10</td>
+      <td class="gt_row gt_center">0.03,0.05</td>
+      <td class="gt_row gt_center">0.08,0.10</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">Mean (SD)</td>
+      <td class="gt_row gt_center">0.08 (0.03)</td>
+      <td class="gt_row gt_center">0.04 (0.01)</td>
+      <td class="gt_row gt_center">0.09 (0.02)</td>
+    </tr>
+  </tbody>
+  
+  
+</table></div>
+</div>
+<p>The annual amount of gallons of alcohol consumed grouped by beverage, figure <a href="#fig:totgallons">4</a>, shows a slight increase in total alcohol consumption, while there is a slight downward trend in total beer gallons consumed. The results appear clear in the table <a href="#tab:changegallons">1</a> which shows the percentage change in total gallons consumed between 2019 and 2020. While the amount of liquor gallons increased by 2.17%, wine and beer experienced a decrease in total gallons consumed by 2.00% and 6.59% respectively.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="figure"><span id="fig:totgallons"></span>
+<img src="17-02-2020-AlcoholConsumption_files/figure-html5/totgallons-1.png" alt="Total Gallons of alcohol consumed by beverage and year" width="624" />
+<p class="caption">
+Figure 4: Total Gallons of alcohol consumed by beverage and year
+</p>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:changegallons">Table 1: </span>Percentage change in the total gallons consumed
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Beverage
+</th>
+<th style="text-align:right;">
+2019
+</th>
+<th style="text-align:right;">
+2020
+</th>
+<th style="text-align:right;">
+% Change
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+spirits
+</td>
+<td style="text-align:right;">
+171985704
+</td>
+<td style="text-align:right;">
+175796354
+</td>
+<td style="text-align:right;">
+2.17
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+wine
+</td>
+<td style="text-align:right;">
+254817682
+</td>
+<td style="text-align:right;">
+249818066
+</td>
+<td style="text-align:right;">
+-2.00
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+beer
+</td>
+<td style="text-align:right;">
+1747649720
+</td>
+<td style="text-align:right;">
+1639672625
+</td>
+<td style="text-align:right;">
+-6.59
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The same trends observed in total gallons consumed are seen in the annual average of per capita consumption. Per capita alcohol consumption increased substantially during the first nine months of 2020 as did wine consumption, but to a much less pronounced extent. The increase in average per capita alcohol consumption observed between 2019 and 2020 is 10.42%. The increasing trend in average annual per capita consumption observed since 2008, however, while before the rate of increase was almost constant, in the last year it has experienced a pronounced acceleration. All changes from the previous year’s average are shown in the table <a href="#tab:percapitachange">2</a>.</p>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="17-02-2020-AlcoholConsumption_files/figure-html5/averagepercapita-1.png" width="624" /></p>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:percapitachange">Table 2: </span>Percentage change in the average per capita consumption
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Beverage
+</th>
+<th style="text-align:right;">
+2019
+</th>
+<th style="text-align:right;">
+2020
+</th>
+<th style="text-align:right;">
+% Change
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+spirits
+</td>
+<td style="text-align:right;">
+0.0809938
+</td>
+<td style="text-align:right;">
+0.0918311
+</td>
+<td style="text-align:right;">
+11.80
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+wine
+</td>
+<td style="text-align:right;">
+0.0343611
+</td>
+<td style="text-align:right;">
+0.0362358
+</td>
+<td style="text-align:right;">
+5.17
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+beer
+</td>
+<td style="text-align:right;">
+0.0890701
+</td>
+<td style="text-align:right;">
+0.0890772
+</td>
+<td style="text-align:right;">
+0.01
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Looking at individual states, the state with the highest annual value of gallons of alcohol consumed is Texas, followed by Florida and Illinois (Figure <a href="#fig:countrygallons">5</a>). These three states together account for nearly 60% (Figure <a href="#fig:gallonspareto">6</a>) of the total gallons of alcohol consumed among the 19 states considered. The result appears stable over the four years.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="figure"><span id="fig:countrygallons"></span>
+<img src="17-02-2020-AlcoholConsumption_files/figure-html5/countrygallons-1.png" alt="Total gallons of alcohol consumed by State " width="624" />
+<p class="caption">
+Figure 5: Total gallons of alcohol consumed by State
+</p>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="figure"><span id="fig:gallonspareto"></span>
+<img src="17-02-2020-AlcoholConsumption_files/figure-html5/gallonspareto-1.png" alt="Cumulative percentage alcohol consumption" width="624" />
+<p class="caption">
+Figure 6: Cumulative percentage alcohol consumption
+</p>
+</div>
+</div>
+<p>The highest average annual per capita consumption is observed in Delaware, followed by North Dakota, Alasaka, and Colorado (Figure <a href="#fig:countrypercapita">7</a>). Utah represents the state with the lowest per capita alcohol consumption, but the result may be skewed because, as in Louisiana and Wisconsin, no beer consumption is recorded and Oregon does not observe any alcohol consumption in any of the four years considered. The population is relatively constant over the four years, and while Texas, Florida, and Illinois are the states with the highest populations, Delaware, North Dakota, and Alaska are those with the lowest population values (Figure <a href="#fig:population">8</a>). Overall, although Texas, Florida, and Illinois are the states with the highest overall alcohol consumption, consumption appears to be well distributed across the population, resulting in low total per capita consumption. In contrast, despite the fact that total gallons of alcohol consumed in Delaware, North Dakota, and Alaska are low, and feature smaller populations, per capita consumption is higher. This means that on average the population drinks more, especially spirits.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="figure"><span id="fig:countrypercapita"></span>
+<img src="17-02-2020-AlcoholConsumption_files/figure-html5/countrypercapita-1.png" alt="Total per capita consumption" width="624" />
+<p class="caption">
+Figure 7: Total per capita consumption
+</p>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="figure"><span id="fig:population"></span>
+<img src="17-02-2020-AlcoholConsumption_files/figure-html5/population-1.png" alt="Average population per state" width="624" />
+<p class="caption">
+Figure 8: Average population per state
+</p>
+</div>
+</div>
+<p>Next, we proceed to inspect the correlation between the variables considered at different levels. First, we explore the correlation between gallons, per capita consumption, and population moles. Second, we inspect the correlation of gallons of alcohol consumed among the different beverages, and finally, we consider the correlation of per capita consumption among the three beverages. Gallons of alcohol consumed appears to be positively correlated with both per capita consumption (0.27) and population (0.57) (Table <a href="#tab:corrmatrix">3</a>). The result seems reasonable in that the more people are allowed to drink the more liters of alcohol are consumed, however the same people could also increase their consumption which is reflected in the lower correlation coefficient. The table <a href="#tab:corrmatrixgallons">4</a> and <a href="#tab:corrmatrixpercapita">5</a> show, respectively, the correlation in gallons and per capita consumption across beverages. The estimated correlation structure for gallons of alcohol consumed is particularly strong and is almost equal to 1, for all three beverages. This means that alcohol consumption increases almost linearly regardless of the type of alcohol consumed. In contrast, when we consider per capita consumption the estimated correlations appear much weaker. In particular it can be observed that the correlation between per capita consumption of alcohol with beer and wine are equal to 0.56 and 0.46 whereas the correlation between per capita consumption of wine and beer is almost null (0.07). This can be interpreted with the fact that although in general the amount of alcohol consumed tends to increase linearly across the different beverages, on a per capita basis there is a tendency to consume alcohol and wine or alcohol and beer. Thus, wine and beer are considered as potential replacement types of alcohol.</p>
+<div class="layout-chunk" data-layout="l-body">
+<table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:corrmatrix">Table 3: </span>Correlation between gallons of alcohol, per capita consumption and population
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+Gallons
+</th>
+<th style="text-align:right;">
+Per capita
+</th>
+<th style="text-align:right;">
+Population
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Gallons
+</td>
+<td style="text-align:right;">
+1.0000000
+</td>
+<td style="text-align:right;">
+0.2630068
+</td>
+<td style="text-align:right;">
+0.5708289
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+PerCapita
+</td>
+<td style="text-align:right;">
+0.2630068
+</td>
+<td style="text-align:right;">
+1.0000000
+</td>
+<td style="text-align:right;">
+-0.0600650
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Population
+</td>
+<td style="text-align:right;">
+0.5708289
+</td>
+<td style="text-align:right;">
+-0.0600650
+</td>
+<td style="text-align:right;">
+1.0000000
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:corrmatrixgallons">Table 4: </span>Correlation of the gallons consumed between the different beverages
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+spirits
+</th>
+<th style="text-align:right;">
+wine
+</th>
+<th style="text-align:right;">
+beer
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+spirits
+</td>
+<td style="text-align:right;">
+1.0000000
+</td>
+<td style="text-align:right;">
+0.9684375
+</td>
+<td style="text-align:right;">
+0.9190840
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+wine
+</td>
+<td style="text-align:right;">
+0.9684375
+</td>
+<td style="text-align:right;">
+1.0000000
+</td>
+<td style="text-align:right;">
+0.8891645
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+beer
+</td>
+<td style="text-align:right;">
+0.9190840
+</td>
+<td style="text-align:right;">
+0.8891645
+</td>
+<td style="text-align:right;">
+1.0000000
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:corrmatrixpercapita">Table 5: </span>Correlation of the per capita consumption between the different beverages
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+spirits
+</th>
+<th style="text-align:right;">
+wine
+</th>
+<th style="text-align:right;">
+beer
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+spirits
+</td>
+<td style="text-align:right;">
+1.0000000
+</td>
+<td style="text-align:right;">
+0.6172054
+</td>
+<td style="text-align:right;">
+0.4229289
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+wine
+</td>
+<td style="text-align:right;">
+0.6172054
+</td>
+<td style="text-align:right;">
+1.0000000
+</td>
+<td style="text-align:right;">
+0.0205614
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+beer
+</td>
+<td style="text-align:right;">
+0.4229289
+</td>
+<td style="text-align:right;">
+0.0205614
+</td>
+<td style="text-align:right;">
+1.0000000
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The correlation structure in gallons of alcohol consumed appears evident in<br />
+Figure <a href="#fig:gallonspopulationrel">9</a>, which shows the relationship between the median value of gallons of individual beverages consumed by each state and the corresponding average population. The relationship is clearly positive and strictly linear and remains constant over time. The slopes associated with the population resulting by a linear fit for 2019 are all positive and statistically significant at the 5% level.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="figure"><span id="fig:gallonspopulationrel"></span>
+<img src="17-02-2020-AlcoholConsumption_files/figure-html5/gallonspopulationrel-1.png" alt="Relationship between the average population and the median value of gallons consumed" width="624" />
+<p class="caption">
+Figure 9: Relationship between the average population and the median value of gallons consumed
+</p>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<table style="text-align:center">
+<caption>
+<strong>Regression fit for the 2019 median gallons consumed with population</strong>
+</caption>
+<tr>
+<td colspan="4" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td colspan="3">
+<em>Dependent variable:</em>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td colspan="3" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td colspan="3">
+Gallons
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(1)
+</td>
+<td>
+(2)
+</td>
+<td>
+(3)
+</td>
+</tr>
+<tr>
+<td colspan="4" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Population
+</td>
+<td>
+0.172<sup>***</sup> (0.012)
+</td>
+<td>
+0.271<sup>***</sup> (0.025)
+</td>
+<td>
+2.147<sup>***</sup> (0.061)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Constant
+</td>
+<td>
+100,055.500 (97,774.900)
+</td>
+<td>
+42,728.780 (210,912.700)
+</td>
+<td>
+-1,047,212.000<sup>*</sup> (527,372.600)
+</td>
+</tr>
+<tr>
+<td colspan="4" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Observations
+</td>
+<td>
+18
+</td>
+<td>
+18
+</td>
+<td>
+16
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+R<sup>2</sup>
+</td>
+<td>
+0.930
+</td>
+<td>
+0.876
+</td>
+<td>
+0.989
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Adjusted R<sup>2</sup>
+</td>
+<td>
+0.925
+</td>
+<td>
+0.868
+</td>
+<td>
+0.988
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Residual Std. Error
+</td>
+<td>
+293,231.500 (df = 16)
+</td>
+<td>
+627,217.900 (df = 16)
+</td>
+<td>
+1,495,580.000 (df = 14)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+F Statistic
+</td>
+<td>
+211.846<sup>***</sup> (df = 1; 16)
+</td>
+<td>
+113.149<sup>***</sup> (df = 1; 16)
+</td>
+<td>
+1,240.302<sup>***</sup> (df = 1; 14)
+</td>
+</tr>
+<tr>
+<td colspan="4" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+<em>Note:</em>
+</td>
+<td colspan="3" style="text-align:right">
+<sup><em></sup>p&lt;0.1; <sup><strong></sup>p&lt;0.05; <sup></strong></em></sup>p&lt;0.01
+</td>
+</tr>
+</table>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<p><img src="17-02-2020-AlcoholConsumption_files/figure-html5/unnamed-chunk-8-1.png" width="624" /></p>
+</div>
+<h3 id="testing-for-differences-in-the-average-per-capita-consumption">Testing for differences in the average per capita consumption</h3>
+<p>We proceed to test for differences in the mean per capita consumption over the first nine months of the four years. The data appears not normally distributed (Figure <a href="#fig:percapitadensity">10</a> and <a href="#fig:percapitaqqplot">11</a> but the sample size in each group are big enough (n&gt;100) to invoke central limit theorem and apply paired t-tests.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="figure"><span id="fig:percapitadensity"></span>
+<img src="17-02-2020-AlcoholConsumption_files/figure-html5/percapitadensity-1.png" alt="Kernel estimate of the per capita consumption distribution" width="624" />
+<p class="caption">
+Figure 10: Kernel estimate of the per capita consumption distribution
+</p>
+</div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="figure"><span id="fig:percapitaqqplot"></span>
+<img src="17-02-2020-AlcoholConsumption_files/figure-html5/percapitaqqplot-1.png" alt="QQ-Plot of the per capita alcohol consumption" width="624" />
+<p class="caption">
+Figure 11: QQ-Plot of the per capita alcohol consumption
+</p>
+</div>
+</div>
+<p>Overall the variances do not differ much between groups (Table <a href="#tab:summaryyeartest"><strong>??</strong></a>) and equal variances are assumed for the test. We proceed to test the differences in means with a series of paired t-tests and Wilcoxon tests with Bonferroni adjustment for multiple comparisons. The results of both tests are reported in Table <a href="#tab:wilcoxontest">6</a> and <a href="#tab:ttest">7</a>.</p>
+<div class="layout-chunk" data-layout="l-body">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#bfitdxmdwu .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#bfitdxmdwu .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#bfitdxmdwu .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#bfitdxmdwu .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 4px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#bfitdxmdwu .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#bfitdxmdwu .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#bfitdxmdwu .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#bfitdxmdwu .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#bfitdxmdwu .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#bfitdxmdwu .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#bfitdxmdwu .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#bfitdxmdwu .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#bfitdxmdwu .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#bfitdxmdwu .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#bfitdxmdwu .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#bfitdxmdwu .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#bfitdxmdwu .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#bfitdxmdwu .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#bfitdxmdwu .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#bfitdxmdwu .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#bfitdxmdwu .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#bfitdxmdwu .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#bfitdxmdwu .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#bfitdxmdwu .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#bfitdxmdwu .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#bfitdxmdwu .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#bfitdxmdwu .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#bfitdxmdwu .gt_left {
+  text-align: left;
+}
+
+#bfitdxmdwu .gt_center {
+  text-align: center;
+}
+
+#bfitdxmdwu .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#bfitdxmdwu .gt_font_normal {
+  font-weight: normal;
+}
+
+#bfitdxmdwu .gt_font_bold {
+  font-weight: bold;
+}
+
+#bfitdxmdwu .gt_font_italic {
+  font-style: italic;
+}
+
+#bfitdxmdwu .gt_super {
+  font-size: 65%;
+}
+
+#bfitdxmdwu .gt_footnote_marks {
+  font-style: italic;
+  font-size: 65%;
+}
+</style>
+<div id="bfitdxmdwu" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_center gt_columns_bottom_border" rowspan="2" colspan="1"><strong>Characteristic</strong></th>
+      <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="2">
+        <span class="gt_column_spanner"><strong>Spirits</strong></span>
+      </th>
+      <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="2">
+        <span class="gt_column_spanner"><strong>Wine</strong></span>
+      </th>
+      <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="2">
+        <span class="gt_column_spanner"><strong>Beer</strong></span>
+      </th>
+    </tr>
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>2019</strong>, N = 162</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>2020</strong>, N = 148</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>2019</strong>, N = 162</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>2020</strong>, N = 148</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>2019</strong>, N = 144</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>2020</strong>, N = 136</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr>
+      <td class="gt_row gt_left">PerCapita</td>
+      <td class="gt_row gt_center"></td>
+      <td class="gt_row gt_center"></td>
+      <td class="gt_row gt_center"></td>
+      <td class="gt_row gt_center"></td>
+      <td class="gt_row gt_center"></td>
+      <td class="gt_row gt_center"></td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">Median (IQR)</td>
+      <td class="gt_row gt_center">0.076 (0.034)</td>
+      <td class="gt_row gt_center">0.085 (0.036)</td>
+      <td class="gt_row gt_center">0.034 (0.017)</td>
+      <td class="gt_row gt_center">0.035 (0.017)</td>
+      <td class="gt_row gt_center">0.087 (0.027)</td>
+      <td class="gt_row gt_center">0.086 (0.027)</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">25%,75%</td>
+      <td class="gt_row gt_center">0.061,0.095</td>
+      <td class="gt_row gt_center">0.070,0.106</td>
+      <td class="gt_row gt_center">0.025,0.042</td>
+      <td class="gt_row gt_center">0.027,0.044</td>
+      <td class="gt_row gt_center">0.074,0.101</td>
+      <td class="gt_row gt_center">0.075,0.102</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">Mean (SD)</td>
+      <td class="gt_row gt_center">0.081 (0.026)</td>
+      <td class="gt_row gt_center">0.092 (0.033)</td>
+      <td class="gt_row gt_center">0.034 (0.013)</td>
+      <td class="gt_row gt_center">0.036 (0.013)</td>
+      <td class="gt_row gt_center">0.089 (0.022)</td>
+      <td class="gt_row gt_center">0.089 (0.020)</td>
+    </tr>
+  </tbody>
+  
+  
+</table></div>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:wilcoxontest">Table 6: </span>Paired Wilcoxon
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Beverage
+</th>
+<th style="text-align:left;">
+group
+</th>
+<th style="text-align:right;">
+p-value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+spirits
+</td>
+<td style="text-align:left;">
+2017-2018
+</td>
+<td style="text-align:right;">
+1.000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+spirits
+</td>
+<td style="text-align:left;">
+2018-2019
+</td>
+<td style="text-align:right;">
+1.000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+spirits
+</td>
+<td style="text-align:left;">
+2019-2020
+</td>
+<td style="text-align:right;">
+1.000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+wine
+</td>
+<td style="text-align:left;">
+2017-2018
+</td>
+<td style="text-align:right;">
+1.000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+wine
+</td>
+<td style="text-align:left;">
+2018-2019
+</td>
+<td style="text-align:right;">
+1.000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+wine
+</td>
+<td style="text-align:left;">
+2019-2020
+</td>
+<td style="text-align:right;">
+1.000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+beer
+</td>
+<td style="text-align:left;">
+2017-2018
+</td>
+<td style="text-align:right;">
+0.567
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+beer
+</td>
+<td style="text-align:left;">
+2018-2019
+</td>
+<td style="text-align:right;">
+1.000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+beer
+</td>
+<td style="text-align:left;">
+2019-2020
+</td>
+<td style="text-align:right;">
+1.000
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:ttest">Table 7: </span>Paired t-test
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Beverage
+</th>
+<th style="text-align:left;">
+group
+</th>
+<th style="text-align:right;">
+p-value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+spirits
+</td>
+<td style="text-align:left;">
+2017-2018
+</td>
+<td style="text-align:right;">
+1.00000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+spirits
+</td>
+<td style="text-align:left;">
+2018-2019
+</td>
+<td style="text-align:right;">
+0.98600
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+spirits
+</td>
+<td style="text-align:left;">
+2019-2020
+</td>
+<td style="text-align:right;">
+0.00133
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+wine
+</td>
+<td style="text-align:left;">
+2017-2018
+</td>
+<td style="text-align:right;">
+1.00000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+wine
+</td>
+<td style="text-align:left;">
+2018-2019
+</td>
+<td style="text-align:right;">
+1.00000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+wine
+</td>
+<td style="text-align:left;">
+2019-2020
+</td>
+<td style="text-align:right;">
+0.29900
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+beer
+</td>
+<td style="text-align:left;">
+2017-2018
+</td>
+<td style="text-align:right;">
+1.00000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+beer
+</td>
+<td style="text-align:left;">
+2018-2019
+</td>
+<td style="text-align:right;">
+1.00000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+beer
+</td>
+<td style="text-align:left;">
+2019-2020
+</td>
+<td style="text-align:right;">
+1.00000
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>No significant differences in the alcohol consumption for the three beverages between the four years are identifiend with the Wilcoxon test. The paired t-test show similar results, but in this case the difference in the average alcohol consumption for spirits between 2019 and 2020 appear statistically significant at an <span class="math inline">\(\alpha = 0.5%\)</span> significance level.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<!--radix_placeholder_article_footer-->
+<!--/radix_placeholder_article_footer-->
+</div>
+
+<div class="d-appendix">
+</div>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+<!--radix_placeholder_site_after_body-->
+<!--/radix_placeholder_site_after_body-->
+<!--radix_placeholder_appendices-->
+<div class="appendix-bottom">
+  <h3 id="citation">Citation</h3>
+  <p>For attribution, please cite this work as</p>
+  <pre class="citation-appendix short">Ghiretti (2021, March 15). Alessandro Ghiretti:  A descriptive analysis of the alcohol consumption in USA from 2017 to 2020. Retrieved from https://www.aghiretti.com/posts/17-02-2020-AlcoholConsumption/</pre>
+  <p>BibTeX citation</p>
+  <pre class="citation-appendix long">@misc{ghiretti2021,
+  author = {Ghiretti, Alessandro},
+  title = {Alessandro Ghiretti:  A descriptive analysis of the alcohol consumption in USA from 2017 to 2020},
+  url = {https://www.aghiretti.com/posts/17-02-2020-AlcoholConsumption/},
+  year = {2021}
+}</pre>
+</div>
+<!--/radix_placeholder_appendices-->
+<!--radix_placeholder_navigation_after_body-->
+<!--/radix_placeholder_navigation_after_body-->
+
+</body>
+
+</html>

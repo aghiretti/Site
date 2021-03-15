@@ -10,11 +10,11 @@
     },
     {
       "path": "index.html",
-      "title": "Data, Statistics and Econometrics",
+      "title": "The Statistician's lair",
       "description": "",
       "author": [],
       "contents": "\r\n\r\n\r\n\r\n\r\n",
-      "last_modified": "2021-02-14T16:10:59+01:00"
+      "last_modified": "2021-02-18T22:09:51+01:00"
     },
     {
       "path": "posts.html",
@@ -22,7 +22,7 @@
       "description": "",
       "author": [],
       "contents": "\r\n\r\n\r\n\r\n",
-      "last_modified": "2021-02-14T16:10:59+01:00"
+      "last_modified": "2021-02-18T22:07:23+01:00"
     }
   ],
   "collections": ["posts/posts.json"]

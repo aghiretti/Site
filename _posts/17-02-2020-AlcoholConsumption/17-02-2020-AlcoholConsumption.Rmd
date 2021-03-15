@@ -1,0 +1,621 @@
+---
+title: " A descriptive analysis of the alcohol consumption in USA from 2017 to 2020"
+description: |
+  Does the alcohol consumption in the USA increased over the last four years?
+  We will try to answer this question with a descriptive statistical analysisi of the
+  consumption of alcohol of a sample of 19 states. 
+  The analysis is performed entirely in R.
+categories:
+  - R
+  - Statistics
+  - Data Analysis
+preview: Preview.jpg
+author:
+  - name: Alessandro Ghiretti 
+date: "`r Sys.Date()`"
+output: 
+  distill::distill_article:
+    self_contained: false
+    toc: true
+    toc_depth: 3
+code_folding: "show"
+---
+<style>
+body {
+text-align: justify}
+</style>
+
+<style>
+table, th, td {
+    font-size: 11px;
+}
+</style>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r}
+library(stargazer)
+library(rstatix)
+library(gtsummary)
+library(labelled)
+library(purrr)
+library(broom)
+library(reshape2)
+library(kableExtra)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(plotly)
+library(forcats)
+library(readxl)
+library(ggsci)
+```
+# Introduction
+Alcohol has historically, and continues to, hold an important role in social engagement and bonding for many. 
+Social drinking or moderate alcohol consumption for many is pleasurable.
+
+However, alcohol consumption – especially in excess – is linked to a number of negative outcomes: as a risk factor for diseases and health impacts; crime; road incidents; and for some, alcohol dependence. Globally alcohol consumption causes 2.8 million premature deaths per year.
+
+PRecisely, constant and excessive alcohol use has been shown to cause many health complications and increase the risk of many diseases. For example, alcohol consumption increases the risk of various types of cancer, cardiovascular disease, and liver disease. The cost of such health complications from alcohol is substantial. As of 2017, it was estimated that the health care costs alone from the abuse of alcohol in the United States were around 27 billion dollars a year.
+
+A common health complication from the abuse of alcohol is liver cirrhosis. Cirrhosis is scarring of the liver from repeated injury. It can cause other health complications such as high blood pressure, bleeding, and infection, and can result in early death if left untreated. In 2017, there were over 22,000 alcohol-related liver cirrhosis deaths in the U.S., almost double the number reported 15 years earlier.
+
+
+# Data Description
+The data contains the monthly alcohol consumption, spanning from 2017 to the
+first nine months of 2020, of a sample of 19 USA States.
+The variables considered are:
+  
+  * Year: the reference year
+  
+  * Month: the reference month
+  
+  * FIPS: the name of the state where data were collected
+  
+  * Beverage: the type of alcoholic beverage (beer, wine or spirits)
+  
+  * Gallons: the total gallons of alcohol consumed from the population ranging
+  from 14 to 65 years old
+  
+  * Population: the total drinking population in the state at a given date
+  
+  * PerCapita: the per capita alcohol consumption
+
+
+
+```{r}
+setwd("C:\\Users\\USR02193\\OneDrive - Chiesi Farmaceutici S.p.A\\Desktop\\Blog\\Data\\Alcohol\\")
+filename <- "alcsales_September2020.xlsx"
+
+alcohol <- read_xlsx(filename,sheet = 3)
+```
+
+# Data Analysis
+
+```{r}
+# define lables for factors
+berverage_labels <- c("spirits", "wine", "beer")
+country_labels <- c("Alaska",	"Arkansas", "Colorado",	"Connecticut",
+               "Delaware", "Florida", "Illinois", "Kansas", "Kentucky",
+               "Louisiana", "Massachusetts", "Missouri", "North Dakota",
+               "Oregon", "Tennessee", "Texas", "Utah", "Virginia", "Wisconsin")
+
+# recode variables as factors
+alcohol <- alcohol %>% mutate(
+  Beverage = factor(alcohol$Beverage, labels = berverage_labels),
+  FIPS = factor(alcohol$FIPS, labels = country_labels),
+  Date = as.Date(paste("01",alcohol$Month, alcohol$Year, sep="/"), format = "%d/%m/%Y"),
+  Year = factor(alcohol$Year),
+  Month = factor(alcohol$Month))
+
+
+
+```
+
+The figure \@ref(fig:timegallons) shows the mension consumption of alcohol in gallons. 
+From the figure it is clear that the series is characterized by an evident seasonal component with increases in the months of June and December, both characterized by the presence of holidays and decreases during January, February and March. 
+In June we have Father's Day and Independence Day while in December Christmas and New Year's Day.
+The seasonal trend is particularly evident for beer and wine whereas it is less pronounced for liquors.
+
+
+```{r timegallons, fig.cap = "Time trend of the total aounth of monthly Gallons consumed"}
+  p1 <- alcohol %>% 
+  group_by(Date, Beverage) %>% 
+  summarise(Gallons = sum(Gallons)) %>% 
+  ggplot() +
+  geom_bar(aes(x = Date, y = Gallons, group = Date, color = Beverage,
+                   fill = Beverage), alpha = 0.5, stat = "identity")+
+  scale_color_npg() +
+  scale_fill_npg() +
+  theme_minimal() +
+  ggtitle("Gallons consumed")
+
+ggplotly(p1)
+```
+
+
+
+
+The median consumption of gallons of alcohol over the period under consideration,
+(Figure \@ref(fig:boxgallons)) appears constant, with beer being the most consumed beverage,
+followed by wine and liquor. The distributions of all three beverages are characterized by a strong right heavy tail, and this is particularly evident for beer.
+On the whole, during the four years considered, neither marked changes in the median value of liters consumed nor in the shape of the distributions can be observed.
+
+
+```{r boxgallons, fig.cap = "Boxplot of the Gallons of alcohol consumed"}
+alcohol %>% ggplot() +
+  geom_boxplot(aes(x = Year, y = Gallons, color = Beverage,
+                   fill = Beverage), alpha = 0.5)+
+  scale_color_npg() +
+  scale_fill_npg() +
+  theme_minimal() +
+  coord_flip() +
+  ggtitle("Gallons consumption boxplot")
+  
+```
+
+```{r}
+alcohol %>% select(Beverage, Gallons) %>% 
+  tbl_summary(by = Beverage, 
+              type = list(Gallons ~ "continuous2"),
+              label = list(Beverage ~ "Beverage"),
+              statistic = all_continuous() ~ c("{median} ({IQR})",
+                                                   "{p25},{p75}",
+                                                   "{mean} ({sd})"))
+```
+The boxplot of per capita consumption \@ref(fig:boxpercapita) delineates a different picture. 
+While beer remains the beverage with the highest median per capita consumption, spirits are almost at the same level, 
+while wine seems to be the least consumed beverage on a per capita level. 
+Also in this case there are no evident changes in median values and the variance, a
+s well as the distributions seems to be constant in the period for all three beverages.
+
+
+```{r boxpercapita, fig.cap= "Boxplot of the per capita alcohol consumption"}
+alcohol %>% ggplot() +
+  geom_boxplot(aes(x = Year, y = PerCapita, color = Beverage,
+                   fill = Beverage), alpha = 0.5)+
+  scale_color_npg() +
+  scale_fill_npg() +
+  theme_minimal() +
+  coord_flip() +
+  ggtitle("Per capita consumption boxplot")
+```
+
+```{r}
+alcohol %>% select(Beverage, PerCapita) %>% 
+  tbl_summary(by = Beverage, 
+              type = list(PerCapita ~ "continuous2"),
+              label = list(Beverage ~ "Beverage"),
+              statistic = all_continuous() ~ c("{median} ({IQR})",
+                                                   "{p25},{p75}",
+                                                   "{mean} ({sd})"))
+```
+
+The annual amount of gallons of alcohol consumed grouped by beverage, figure \@ref(fig:totgallons), 
+shows a slight increase in total alcohol consumption, while there is a slight downward trend in total beer gallons consumed. The results appear clear in the table \@ref(tab:changegallons) which shows 
+the percentage change in total gallons consumed between 2019 and 2020. 
+While the amount of liquor gallons increased by 2.17%, 
+wine and beer experienced a decrease in total gallons consumed by 2.00% and 6.59% respectively.
+
+```{r totgallons, fig.cap = "Total Gallons of alcohol consumed by beverage and year"}
+alcohol %>% 
+  filter(Month %in% seq(1:9)) %>% 
+  group_by(Year,Beverage) %>% 
+  summarise(Gallons =sum(Gallons)) %>% 
+  ggplot(aes(x = Beverage, y = Gallons, fill = Year)) +
+  geom_bar(alpha = 0.6, position ="dodge", stat='identity')+
+  scale_color_npg() +
+  scale_fill_npg() +
+  theme_minimal() +
+  ggtitle("Total Gallons consumed")
+```
+```{r changegallons}
+alcohol %>% 
+  filter(Month %in% seq(1:9) & Year %in% c(2019,2020)) %>% 
+  group_by(Beverage,Year) %>% 
+  summarise(Gallons = sum(Gallons)) %>% 
+  dcast(Beverage~Year) %>% 
+  mutate(`% Change` = round(((`2020`-`2019`)/`2020`)*100,2)) %>% 
+  kbl(caption = c("Percentage change in the total gallons consumed")) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+  
+```
+The same trends observed in total gallons consumed are seen in the annual average of per capita consumption.
+Per capita alcohol consumption increased substantially during the first nine months of 2020 as did wine consumption, 
+but to a much less pronounced extent. The increase in average per capita alcohol 
+consumption observed between
+2019 and 2020 is 10.42%. The increasing trend in average annual per capita consumption observed
+since 2008, however, while before the rate of increase was almost constant, 
+in the last year it has experienced a pronounced acceleration.
+All changes from the previous year's average are shown in the table \@ref(tab:percapitachange).
+
+
+
+```{r averagepercapita}
+alcohol %>% 
+  filter(Month %in% seq(1:9)) %>% 
+  group_by(Year,Beverage) %>% 
+  summarise(PerCapita = mean(PerCapita)) %>% 
+  ggplot(aes(x = Beverage, y = PerCapita, fill = Year)) +
+  geom_bar(alpha = 0.6, position ="dodge", stat='identity')+
+  scale_color_npg() +
+  scale_fill_npg() +
+  theme_minimal() +
+  ggtitle("Average per capita consumption")
+```
+
+```{r percapitachange}
+alcohol %>% 
+  filter(Month %in% seq(1:9) & Year %in% c(2019,2020)) %>% 
+  group_by(Beverage,Year) %>% 
+  summarise(PerCapita = mean(PerCapita)) %>% 
+  dcast(Beverage~Year) %>% 
+  mutate(`% Change` = round(((`2020`-`2019`)/`2020`)*100,2)) %>% 
+  kbl(caption = c("Percentage change in the average per capita consumption")) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+  
+```
+
+
+Looking at individual states, the state with the highest annual value of gallons of alcohol consumed is Texas,
+followed by Florida and Illinois (Figure \@ref(fig:countrygallons)).
+These three states together account for nearly 60% (Figure \@ref(fig:gallonspareto)) 
+of the total gallons of alcohol consumed among the 19 states considered. 
+The result appears stable over the four years.
+
+```{r countrygallons, fig.cap = "Total gallons of alcohol consumed by State "}
+  alcohol %>%
+  group_by(Year,FIPS,Beverage) %>% 
+  summarise(tot_gallons = sum(Gallons)) %>% 
+  ggplot() +
+  geom_bar(aes(x = reorder(FIPS,-tot_gallons), y = tot_gallons, fill = Beverage), alpha = 0.6, stat = "identity")+
+  facet_wrap(~Year, nrow = 2, ncol = 2) +
+  scale_color_npg() +
+  scale_fill_npg() +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, vjust=0)) +
+  ggtitle("Total gallons consumed") +
+  xlab("State") +
+  ylab("Gallons")
+
+```
+
+```{r gallonspareto, fig.cap = "Cumulative percentage alcohol consumption"}
+grouped_gallons <- alcohol %>%
+  group_by(Year,FIPS) %>% 
+  summarise(gallons = sum(Gallons))
+
+cum_perc_gallons <- grouped_gallons %>%  
+  group_by(Year) %>% 
+  mutate(tot_year = sum(gallons)) %>% 
+  ungroup() %>% 
+  mutate(tot_prc = (gallons/tot_year)*100) %>% 
+  arrange(Year,desc(tot_prc)) %>% 
+  group_by(Year) %>% 
+  mutate(cum_prc = cumsum(tot_prc)) %>% 
+  ungroup() %>% 
+  arrange(Year, desc(cum_prc))
+
+
+cum_perc_gallons %>% 
+  filter(Year == 2019) %>% 
+  ggplot() +
+  geom_bar(aes(x = reorder(FIPS,-tot_prc), y = tot_prc, 
+               fill = Year), alpha = 0.6, stat = "identity") +
+  geom_point(aes(x = FIPS, y = cum_prc, 
+                color = Year), alpha = 0.6) +
+  geom_path(aes(x = FIPS,y = cum_prc, group = 1, 
+                color = Year), alpha = 0.6) +
+   facet_wrap(~Year, nrow = 2, ncol = 2) +
+  scale_color_npg() +
+  scale_fill_npg() +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, vjust=0)) +
+  ggtitle("Cumulative percentage of gallons of alcohol consumed") +
+  xlab("State") +
+  ylab("% of gallons")
+```
+
+
+
+
+The highest average annual per capita consumption is observed in Delaware, followed by North Dakota, Alasaka, and Colorado (Figure \@ref(fig:countrypercapita)). Utah represents the state with the lowest per capita alcohol consumption, but the result may be skewed because, as in Louisiana and Wisconsin, no beer consumption is recorded and Oregon does not observe any alcohol consumption in any of the four years considered.
+The population is relatively constant over the four years, and while Texas, Florida, and Illinois are the states with the highest populations, Delaware, North Dakota, and Alaska are those with the lowest population values
+(Figure \@ref(fig:population)). 
+Overall, although Texas, Florida, and Illinois are the states with the highest overall alcohol consumption, consumption appears to be well distributed across the population, resulting in low total per capita consumption. In contrast, despite the fact that total gallons of alcohol consumed in Delaware, North Dakota, and Alaska are low, and feature smaller populations, per capita consumption is higher. This means that on average the population drinks more, especially spirits.
+
+
+
+```{r countrypercapita, fig.cap = "Total per capita consumption"}
+  alcohol %>%
+  group_by(Year,FIPS,Beverage) %>% 
+  summarise(tot_percapita = sum(PerCapita)) %>% 
+  ggplot() +
+  geom_bar(aes(x = reorder(FIPS,-tot_percapita), y = tot_percapita, fill = Beverage), alpha = 0.6, stat = "identity")+
+  facet_wrap(~Year, nrow = 2, ncol = 2) +
+  scale_color_npg() +
+  scale_fill_npg() +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, vjust=0)) +
+  ggtitle("Total per capita consumption") +
+  xlab("State") +
+  ylab("Gallons per capita")
+
+
+```
+
+
+
+
+
+```{r population, fig.cap = "Average population per state"}
+alcohol %>% 
+  group_by(FIPS, Year) %>% 
+  summarise(pop = mean(Population)) %>% 
+  ggplot() +
+  geom_bar(aes(x=fct_reorder(FIPS,pop), y = pop, fill = Year), 
+           stat = "identity", alpha = 0.6) +
+  scale_color_npg() +
+  scale_fill_npg() +
+  theme_minimal() +
+  coord_flip() +
+  theme(
+    panel.grid.major.y = element_blank(),
+    panel.border = element_blank(),
+    axis.ticks.y = element_blank()) +
+  ggtitle("Population by country")+
+  xlab("State") +
+  ylab("Population")
+```
+
+
+
+
+Next, we proceed to inspect the correlation between the variables considered at different levels.
+First, we explore the correlation between gallons, per capita consumption, and population moles. Second, we inspect the correlation of gallons of alcohol consumed among the different beverages, and finally, we consider the correlation of per capita consumption among the three beverages. Gallons of alcohol consumed appears to be positively correlated with both per capita consumption (0.27) and population (0.57) (Table \@ref(tab:corrmatrix)).
+The result seems reasonable in that the more people are allowed to drink the more liters of alcohol are consumed, however
+the same people could also increase their consumption which is reflected in the lower correlation coefficient.
+The table \@ref(tab:corrmatrixgallons) and \@ref(tab:corrmatrixpercapita)
+show, respectively, the correlation in gallons and per capita consumption across beverages. The estimated correlation structure for gallons of alcohol consumed is
+particularly strong and is almost equal to 1, for all three beverages. This means that alcohol consumption increases almost linearly regardless of the type of alcohol consumed.
+In contrast, when we consider per capita consumption the estimated correlations appear much weaker. 
+In particular it can be observed that the correlation between per capita consumption of alcohol with beer and wine are equal to 0.56 and 0.46 whereas the correlation between per capita consumption of wine and beer is almost null (0.07). This can be interpreted with the fact that although in general the amount of alcohol consumed tends to increase linearly across the different beverages, on a per capita basis there is a tendency to consume alcohol and wine or alcohol and beer. Thus, wine and beer are considered as potential replacement types of alcohol.
+
+```{r corrmatrix}
+alcohol %>% 
+  select(Gallons, PerCapita, Population) %>% 
+  cor(use = "complete.obs") %>% 
+  kbl(caption = c("Correlation between gallons of alcohol, per capita consumption and population"),
+      col.names = c("Gallons", "Per capita","Population")) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+```
+
+
+
+```{r corrmatrixgallons}
+  alcohol %>% 
+  select(FIPS,Month,Year,Beverage, Gallons) %>% 
+  pivot_wider(names_from = c(Beverage), values_from = Gallons) %>% 
+  select(spirits,wine,beer) %>% 
+  cor(use = "complete.obs") %>% 
+  kbl(caption = c("Correlation of the gallons consumed between the different beverages")) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+```
+
+```{r corrmatrixpercapita}
+  alcohol %>% 
+  select(FIPS,Month,Year,Beverage, PerCapita) %>% 
+  pivot_wider(names_from = c(Beverage), values_from = PerCapita) %>% 
+  select(spirits,wine,beer) %>% 
+  cor(use = "complete.obs") %>% 
+  kbl(caption = c("Correlation of the per capita consumption between the different beverages")) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+```
+The correlation structure in gallons of alcohol consumed appears evident in  
+Figure \@ref(fig:gallonspopulationrel), which shows the relationship between the median value of gallons of individual beverages consumed by each state and the corresponding average population. The 
+relationship is clearly positive and strictly linear and remains constant over time.  The slopes associated with the population resulting by a linear fit for 2019 are all positive and statistically significant at the 5% level.
+
+```{r gallonspopulationrel, fig.cap = "Relationship between the average population and the median value of gallons consumed"}
+alcohol %>% 
+  group_by(FIPS,Year,Beverage) %>% 
+  summarise(pop = mean(Population),
+            Gallons = median(Gallons)) %>% 
+  ggplot(aes(x = pop, y = Gallons, color = Beverage)) +
+  geom_point(size = 2, alpha = 0.5) +
+  geom_smooth(method = "lm", se = FALSE) +
+  facet_wrap(~Year, ncol = 2, nrow = 2) +
+   scale_color_npg() +
+  scale_fill_npg() +
+  theme_minimal() +
+  ggtitle("Gallons vs Population") +
+  xlab("Population") +
+  ylab("Gallons")
+```
+
+
+
+
+
+
+```{r}
+mod_fun <- function(df) lm(Gallons ~ Population, data = df)
+
+lm.fit <- alcohol %>% 
+  group_by(FIPS,Year,Beverage) %>% 
+  summarise(Population = mean(Population),
+            Gallons = mean(Gallons)) %>% 
+  ungroup() %>% 
+  group_by(Beverage,Year) %>% 
+  nest() %>% 
+  mutate(model = map(data, mod_fun))
+
+lm.2019<- lm.fit %>% filter(Year == 2019)
+
+tab_fun <- function(df) stargazer(df, type = "html")
+```
+
+```{r, results='asis'}
+summary.2019 <- stargazer(lm.2019$model, type = "html", 
+          title = "Regression fit for the 2019 median gallons consumed with population", 
+          header = FALSE,
+          single.row = TRUE)
+```
+```{r}
+alcohol %>% 
+  group_by(FIPS,Year,Beverage) %>% 
+  summarise(pop = mean(Population),
+            Gallons = mean(PerCapita)) %>% 
+  ggplot(aes(x = pop, y = Gallons, color = Beverage)) +
+  geom_point(size = 2, alpha = 0.5) +
+  facet_wrap(~Year, ncol = 2, nrow = 2) +
+  scale_color_npg() +
+  scale_fill_npg() +
+  theme_minimal() +
+  ggtitle("Per capita gallons vs Population") +
+  xlab("Population") +
+  ylab("Gallons")
+```
+
+
+
+
+### Testing for differences in the average per capita consumption
+
+We proceed to test for differences in the mean per capita consumption over the first 
+nine months of the four years.
+The data appears not normally distributed (Figure \@ref(fig:percapitadensity)
+and \@ref(fig:percapitaqqplot) but the sample size in each group are big enough (n>100)
+to invoke central limit theorem and apply paired t-tests.
+
+
+```{r percapitadensity, fig.cap = "Kernel estimate of the per capita consumption distribution"}
+alcohol %>%
+  filter(Month %in% seq(1:9) & Year %in% c(2019,2020)) %>%
+  group_by(Beverage,Year) %>%
+  ggplot()+
+  geom_density(aes(x = PerCapita, fill = Beverage, color = Beverage), alpha = 0.5) +
+facet_wrap(~Year + Beverage) +
+  scale_color_npg() +
+  scale_fill_npg() +
+  theme_minimal()
+```
+
+
+
+```{r percapitaqqplot, fig.cap = "QQ-Plot of the per capita alcohol consumption"}
+alcohol %>%
+  filter(Month %in% seq(1:9) & Year %in% c(2019,2020)) %>%
+  group_by(Beverage,Year) %>%
+  ggplot()+
+  stat_qq(aes(sample = PerCapita, fill = Beverage, color = Beverage), alpha = 0.5) +
+  stat_qq_line(aes(sample = PerCapita)) +
+facet_wrap(~Year + Beverage, scales = "free") +
+  scale_color_npg() +
+  scale_fill_npg() +
+  theme_minimal() +
+  ggtitle("Per capita consumption QQ-plot")
+```
+
+
+Overall the variances do not differ much between groups (Table \@ref(tab:summaryyeartest))
+and equal variances are assumed for the test.
+We proceed to test the differences in means with a series of paired t-tests
+and Wilcoxon tests with Bonferroni adjustment for multiple comparisons.
+The results of both tests are reported in Table \@ref(tab:wilcoxontest) and
+\@ref(tab:ttest).
+
+```{r summaryyeartest}
+# define function for summary tables
+table_summary <- function(df){
+  df %>% tbl_summary(by = Year,
+              type = list(PerCapita ~ "continuous2"),
+              statistic = all_continuous() ~ c("{median} ({IQR})",
+                                                   "{p25},{p75}",
+                                                   "{mean} ({sd})"))
+}
+
+# summary tables
+tables <- alcohol %>%
+  filter(Month %in% seq(1:9) & Year %in% c(2019,2020)) %>%
+  select(Beverage,Year, PerCapita) %>%
+  mutate(Year = factor(Year)) %>%
+  group_by(Beverage) %>%
+  nest() %>%
+  mutate(tab =  map(data,table_summary))
+
+tbl_merge(tables$tab) %>%
+  modify_spanning_header(list(c("stat_1_1", "stat_2_1") ~ "**Spirits**",
+                         c("stat_1_2", "stat_2_2") ~ "**Wine**",
+                         c("stat_1_3", "stat_2_3") ~ "**Beer**")) %>%
+  as_gt()
+```
+
+
+
+```{r}
+comp <- list(c("2017","2018"),c("2018","2019"),c("2019","2020"))
+
+
+wilcoxon <- alcohol %>%
+  filter(Month %in% seq(1:9)) %>%
+  select(Beverage, Year, PerCapita) %>%
+  group_by(Beverage) %>%
+  pairwise_wilcox_test(data = .,PerCapita~Year,
+                       alternative = c("greater"),
+                       comparisons = comp,
+                       p.adjust.method = "bonferroni")
+
+tTest <- alcohol %>%
+  filter(Month %in% seq(1:9)) %>%
+  select(Beverage, Year, PerCapita) %>%
+  group_by(Beverage) %>%
+  pairwise_t_test(data = .,PerCapita~Year,
+                       alternative = c("greater"),
+                      comparisons = comp,
+                      p.adjust.method = "bonferroni")
+
+```
+
+
+```{r wilcoxontest}
+wilcoxon %>% 
+  select(Beverage,group1,group2, p.adj) %>% 
+  mutate(group1 = as.character(group1),
+         group2 = as.character(group2)) %>% 
+  unite("group",group1:group2, sep = "-") %>% 
+  kbl(caption = c("Paired Wilcoxon"),
+    col.names = c("Beverage",
+                  "group",
+                  "p-value")) %>%
+kable_styling(bootstrap_options = c("striped", "hover"))
+```
+
+
+```{r ttest}
+tTest %>% 
+  select(Beverage,group1,group2,p.adj) %>% 
+  mutate(group1 = as.character(group1),
+         group2 = as.character(group2)) %>% 
+  unite("group",group1:group2, sep = "-") %>% 
+  kbl(caption = c("Paired t-test"),
+    col.names = c("Beverage",
+                  "group",
+                  "p-value")) %>%
+kable_styling(bootstrap_options = c("striped", "hover"))
+  
+```
+
+
+No significant differences in the
+alcohol consumption for the three beverages between the four years are identifiend with the 
+Wilcoxon test. The paired t-test
+show similar results, but in this case the difference in the average alcohol consumption
+for spirits between 2019 and 2020 appear statistically significant at an $\alpha = 0.5%$
+significance level.
+
+
+
+
+

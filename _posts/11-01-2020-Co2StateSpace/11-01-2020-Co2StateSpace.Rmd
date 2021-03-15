@@ -5,7 +5,7 @@ description: |
   CO2 emissions produced over the last 100 years by 15 countries of different geographical and economical areas. To estimate the model we will use the R package MARSS.
 categories:
   - R
-  - Econometrics
+  - CO2
   - Time series
   - Environment
 preview: Preview.jpg

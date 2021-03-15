@@ -1,0 +1,12 @@
+"0","alcohol %>% "
+"0","  filter(Month %in% seq(1:9) & Year %in% c(2019,2020)) %>% "
+"0","  group_by(Beverage,Year) %>% "
+"0","  summarise(PerCapita = median(PerCapita)) %>% "
+"0","  dcast(Beverage~Year) %>% "
+"0","  mutate(`% Change` = round(((`2020`-`2019`)/`2020`)*100,2)) %>% "
+"0","  kbl() %>%"
+"0","  kable_styling(bootstrap_options = c(""striped"", ""hover""))"
+"2","`summarise()` has grouped output by 'Beverage'. You can override using the `.groups` argument.
+"
+"2","Using PerCapita as value column: use value.var to override.
+"

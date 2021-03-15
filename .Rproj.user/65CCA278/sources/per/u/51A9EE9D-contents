@@ -1,9 +1,0 @@
-library(dplyr)
-library(janitor)
-library(tidyr)
-
-
-
-my_data <- read.delim("C:\\Users\\USR02193\\OneDrive - Chiesi Farmaceutici S.p.A\\Desktop\\Blog\\Data\\Basket\\20-21RD.csv", header = TRUE)
-
-colnames(my_data) <- janitor::clean_names(my_data)

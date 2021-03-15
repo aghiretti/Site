@@ -1,0 +1,8 @@
+"0","wilcoxon <- alcohol %>%
+  filter(Month %in% seq(1:9)) %>%
+  select(Beverage, Year, PerCapita) %>%
+  group_by(Beverage,Year) %>% 
+  summarise(n())
+"
+"2","`summarise()` has grouped output by 'Beverage'. You can override using the `.groups` argument.
+"

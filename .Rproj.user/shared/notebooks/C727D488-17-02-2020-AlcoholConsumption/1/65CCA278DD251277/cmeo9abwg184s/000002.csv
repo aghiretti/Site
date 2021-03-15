@@ -1,0 +1,6 @@
+"0","alcohol %>% "
+"0","  select(Gallons, PerCapita, Population) %>% "
+"0","  cor(use = ""complete.obs"") %>% "
+"0","  kbl(caption = c(""Correlation between gallons of alcohol, per capita consumption and population""),"
+"0","      col.names = c(""gallons"", ""percapita"",""opulation"")) %>%"
+"0","  kable_styling(bootstrap_options = c(""striped"", ""hover""))"

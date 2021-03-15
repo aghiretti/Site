@@ -1,0 +1,13 @@
+"0","  p1 <- alcohol %>% "
+"0","  group_by(Date, Beverage) %>% "
+"0","  summarise(Gallons = sum(Gallons)) %>% "
+"0","  ggplot() +"
+"0","  geom_bar(aes(x = Date, y = Gallons, group = Date, color = Beverage,"
+"0","                   fill = Beverage), alpha = 0.5, stat = ""identity"")+"
+"0","  scale_color_npg() +"
+"0","  scale_fill_npg() +"
+"0","  theme_minimal() +"
+"0","  ggtitle(""Gallons consumed"")"
+"2","`summarise()` has grouped output by 'Date'. You can override using the `.groups` argument.
+"
+"0","ggplotly(p1)"

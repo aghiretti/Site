@@ -1,0 +1,5 @@
+"0","setwd(""C:\\Users\\USR02193\\OneDrive - Chiesi Farmaceutici S.p.A\\Desktop\\Blog\\Data\\Alcohol\\"")"
+"2","The working directory was changed to C:/Users/USR02193/OneDrive - Chiesi Farmaceutici S.p.A/Desktop/Blog/Data/Alcohol inside a notebook chunk. The working directory will be reset when the chunk is finished running. Use the knitr root.dir option in the setup chunk to change the working directory for notebook chunks."
+"0","filename <- ""alcsales_September2020.xlsx"""
+"0",""
+"0","alcohol <- read_xlsx(filename,sheet = 3)"

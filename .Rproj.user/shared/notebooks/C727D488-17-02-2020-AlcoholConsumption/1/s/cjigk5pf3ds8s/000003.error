@@ -1,0 +1,1 @@
+{"frames":[],"message":"Error in geom_pie(aes(x = reorder(FIPS, -tot_gallons), y = tot_gallons,  : \n  non trovo la funzione \"geom_pie\"\n"}

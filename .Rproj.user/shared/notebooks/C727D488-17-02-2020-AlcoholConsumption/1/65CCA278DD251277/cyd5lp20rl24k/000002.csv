@@ -1,0 +1,8 @@
+"0","alcohol %>% select(Beverage, Gallons) %>% "
+"0","  tbl_summary(by = Beverage, "
+"0","              type = list(Gallons ~ ""continuous2""),"
+"0","              label = list(Beverage ~ ""Beverage""),"
+"0","              statistic = all_continuous() ~ c(""{median} ({IQR})"","
+"0","                                                   ""{p25},{p75}"","
+"0","                                                   ""{mean} ({sd})""))"
+"2","The `.dots` argument of `group_by()` is deprecated as of dplyr 1.0.0."

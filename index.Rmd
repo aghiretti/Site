@@ -1,5 +1,5 @@
 ---
-title: "Data, Statistics and Econometrics"
+title: "The Statistician's lair"
 description: "" 
             
 site: distill::distill_website

@@ -1,0 +1,16 @@
+"0","test.summary <- stargazer(mean.test$test, type = ""html"", 
+          title = ""wilcoxon test results"", 
+          header = FALSE,
+          single.row = TRUE)
+"
+"1","
+"
+"1",""
+"1","% Error: Unrecognized object type.
+"
+"1",""
+"1","% Error: Unrecognized object type.
+"
+"1",""
+"1","% Error: Unrecognized object type.
+"
