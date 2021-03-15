@@ -6,7 +6,7 @@
     <atom:link href="https://www.aghiretti.com/posts.xml" rel="self" type="application/rss+xml"/>
     <description>Data and Statistics</description>
     <generator>Distill</generator>
-    <lastBuildDate>Sun, 14 Mar 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 15 Mar 2021 00:00:00 +0000</lastBuildDate>
     <item>
       <title> A descriptive analysis of the alcohol consumption in USA from 2017 to 2020</title>
       <dc:creator>Alessandro Ghiretti</dc:creator>
@@ -19,7 +19,7 @@ The analysis is performed entirely in R.</description>
       <category>Statistics</category>
       <category>Data Analysis</category>
       <guid>https://www.aghiretti.com/posts/17-02-2020-AlcoholConsumption</guid>
-      <pubDate>Sun, 14 Mar 2021 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 15 Mar 2021 00:00:00 +0000</pubDate>
       <media:content url="https://www.aghiretti.com/posts/17-02-2020-AlcoholConsumption/Preview.jpg" medium="image" type="image/jpeg"/>
     </item>
     <item>
