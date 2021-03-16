@@ -11,7 +11,7 @@ categories:
 preview: Preview.jpg
 author:
   - name: Alessandro Ghiretti 
-date: "`r Sys.Date()`"
+date: 2021-02-14
 output: 
   distill::distill_article:
     self_contained: false
@@ -156,7 +156,7 @@ the CO2 share of several countries dropped consistently.
 In particular those of Germany and Italy being are the most
 evident.
 
-```{r, logco2share, fig.cap= "log transform of the global CO2 share"}
+```{r, logco2share, fig.cap= "log transform of the global CO2 share", code_folding=TRUE}
 p1 <- dat %>% ggplot(aes(x = year, y = log(share_global_co2), color = country)) +
   geom_line() +
   scale_color_manual(values = mycolor) +
@@ -187,7 +187,7 @@ the CO2 per capita series exhibits a downward trend the same does not hold for B
 Peru and India for which the trend is slight increasing.
 
 
-```{r co2capita, fig.cap= "Time serie plot of the CO2 per capita emissions"}
+```{r co2capita, fig.cap= "Time serie plot of the CO2 per capita emissions", code_folding=TRUE}
 p1 <- dat %>% ggplot(aes(x = year, y = co2_per_capita, color = country)) +
   geom_line() +
   scale_color_manual(values = mycolor) +
@@ -238,7 +238,7 @@ It appears that in general there is high positive correlation between the
 CO2 levels observed in the different countries and apparently this correlation
 is not strictly related to the geographical area.
 
-```{r}
+```{r, code_folding=TRUE}
 m <- dat %>% 
   select(country,year,co2_per_capita) %>% 
   pivot_wider( names_from  = country, values_from = co2_per_capita) %>% 
@@ -364,7 +364,7 @@ covariance matrix. As it is generally suggested when fitting this kind of models
 are standardized. In the following  we reshape our data in a $N \times T$ matrix and
 proceed to fit the model.
 
-```{r, echo = TRUE}
+```{r, echo = TRUE, code_folding=TRUE}
 # row: country column: year
 y <- dat %>% 
   select(co2_per_capita, year, country, iso_code) %>% 
@@ -400,7 +400,7 @@ the sum of the variance of the squared loadings. This usually results in high fa
 loadings for a smaller number of variables and low factor loadings for the rest.
 
 
-```{r, echo = TRUE}
+```{r, echo = TRUE, code_folding=TRUE}
 # perform rotation of the states before plotting
 # get the inverse of the rotation matrix
 Z.est <- coef(mod.me, type = "matrix")$Z
@@ -448,7 +448,7 @@ s$Year <- rep(seq(from = 1910, to =2018),3)
 ```
 
 
-```{r states, fig.cap = "Estimate smoothed states", code_folding = TRUE}
+```{r states, fig.cap = "Estimate smoothed states", code_folding = TRUE, code_folding=TRUE}
 p1 <- trends.rot %>% ggplot() +
   geom_line(aes(x = Year, y = val, group = state, color = state), size = 1.3, alpha = 0.7) +
   scale_color_brewer(palette = "Set2") +
@@ -538,7 +538,7 @@ of the model for the different countries we compute the following error metrics:
 * MAE: $mean(|y - \hat{y}|)$
 * MAPE:$mean \left( \left| \frac{100( y - \hat{y})}{y} \right|   \right)$
 
-```{r, echo = TRUE}
+```{r, echo = TRUE, code_folding=TRUE}
 # define the metrics
 mse <- function(x){
    m <- mean((x$y - x$estimate)^2)
@@ -582,7 +582,7 @@ compared to those observed with the MAE and MSE.
 We conclude the analysis with the inspection of the residuals plot, to 
 check if the underlying model assumptions of normality are satisfied.
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, code_folding=TRUE}
 # extract model residuals
 mod.res = autoplot(mod.me, plot.type = "model.resids")$data %>% 
   mutate(country = rep(unique(dat$country),each = nrow(y.hat)/15),
@@ -608,7 +608,7 @@ ggplotly(p1)
 
 
 
-```{r stateres, fig.cap = "State residuals plot", code_foldin = TRUE}
+```{r stateres, fig.cap = "State residuals plot", code_folding = TRUE}
 p1 <- state.res %>% ggplot() +
   geom_point(aes(x = Year, y = .resids, group = .rownames), color = "royalblue", alpha = 0.4) +
   geom_ribbon(aes(x = Year, ymin = - 1.96*.sigma, 
@@ -631,7 +631,7 @@ are not particularly large. We next move the inspection of the QQ-plot of the fi
 and of the state residuals.
 
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, code_folding=TRUE}
 p1 <- mod.res %>% ggplot() +
   geom_qq(aes(sample = .resids, group = country), color = "royalblue", alpha = 0.4) +
   stat_qq_line(aes(sample = .resids, group = country), color = "red", alpha = 0.4) +
@@ -643,7 +643,7 @@ ggplotly(p1)
 ```
 
 
-```{r, echo = FALSE}
+```{r, echo = TRUE, code_folding=TRUE}
 p1 <- state.res %>% ggplot() +
   geom_qq(aes(sample = .resids, group = .rownames), color = "royalblue", alpha = 0.4) +
   stat_qq_line(aes(sample = .resids, group = .rownames), color = "red", alpha = 0.4) +

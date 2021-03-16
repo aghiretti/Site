@@ -1,5 +1,5 @@
 ---
-title: "The Statistician's lair"
+title: "The Statistician's Lair"
 description: "" 
             
 site: distill::distill_website
